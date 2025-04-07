@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart' as domain;
-import 'package:gasosa_app/domain/usecases/add_vehicle_usecase.dart';
+import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../mocks/fallbacks_values.dart';
-import '../../mocks/mock_classes.dart';
+import '../../../mocks/fallbacks_values.dart';
+import '../../../mocks/mock_classes.dart';
 
 void main() {
   late MockVehicleRepository mockVehicleRepository;
