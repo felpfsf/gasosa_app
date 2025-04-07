@@ -17,8 +17,8 @@ import 'package:gasosa_app/data/repositories/vehicle_repository_impl.dart'
     as _i106;
 import 'package:gasosa_app/domain/repositories/refuel_repository.dart' as _i857;
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart' as _i35;
-import 'package:gasosa_app/domain/usecases/add_refuel_usecase.dart' as _i491;
-import 'package:gasosa_app/domain/usecases/add_vehicle_usecase.dart' as _i726;
+import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart' as _i491;
+import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart' as _i726;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
