@@ -1,0 +1,8 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'refuel_dao.dart';
+
+// ignore_for_file: type=lint
+mixin _$RefuelDaoMixin on DatabaseAccessor<GasosaDatabase> {
+  $RefuelsTable get refuels => attachedDatabase.refuels;
+}
