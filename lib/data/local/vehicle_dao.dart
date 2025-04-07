@@ -17,4 +17,12 @@ class VehicleDao extends DatabaseAccessor<GasosaDatabase>
   Stream<List<Vehicle>> watchAllVehicles() {
     return select(vehicles).watch();
   }
+
+  Future<void> updateVehicle(VehiclesCompanion entry) async {
+    await update(vehicles).replace(entry);
+  }
+
+  Future<void> deleteVehicle(String id) async {
+    await (delete(vehicles)..where((vehicle) => vehicle.id.equals(id))).go();
+  }
 }
