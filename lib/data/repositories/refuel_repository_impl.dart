@@ -1,8 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:drift/drift.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
-import 'package:gasosa_app/data/local/dabase.dart';
 import 'package:gasosa_app/data/local/refuel_dao.dart';
+import 'package:gasosa_app/data/mappers/refuel_mapper.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart' as domain;
 import 'package:gasosa_app/domain/repositories/refuel_repository.dart';
 import 'package:injectable/injectable.dart';
@@ -17,18 +16,20 @@ class RefuelRepositoryImpl implements RefuelRepository {
   Future<Either<Failure, domain.Refuel>> addRefuel(domain.Refuel refuel) async {
     try {
       await _refuelDao.insertRefuel(
-        RefuelsCompanion.insert(
-          id: refuel.id,
-          vehicleId: refuel.vehicleId,
-          date: refuel.date,
-          odometer: refuel.odometer,
-          fuelType: refuel.fuelType,
-          liters: refuel.liters,
-          totalValue: refuel.totalValue,
-          pricePerLiter: Value(refuel.pricePerLiter),
-          coldStartLitters: Value(refuel.coldStartLitters),
-          createdAt: refuel.createdAt,
-        ),
+        // RefuelsCompanion.insert(
+        //   id: refuel.id,
+        //   vehicleId: refuel.vehicleId,
+        //   date: refuel.date,
+        //   odometer: refuel.odometer,
+        //   fuelType: refuel.fuelType,
+        //   liters: refuel.liters,
+        //   totalValue: refuel.totalValue,
+        //   pricePerLiter: Value(refuel.pricePerLiter),
+        //   coldStartLitters: Value(refuel.coldStartLitters),
+        //   createdAt: refuel.createdAt,
+        //   createdBy: refuel.createdBy,
+        // ),
+        refuel.toCompanion(),
       );
 
       return Right(refuel);

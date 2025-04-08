@@ -10,7 +10,10 @@ class Refuel {
   final double? coldStartLitters;
   final String? noteImageUrl;
   final bool isSynced;
+  final String createdBy;
   final DateTime createdAt;
+  final String? updatedBy;
+  final DateTime? updatedAt;
 
   Refuel({
     required this.id,
@@ -24,6 +27,9 @@ class Refuel {
     this.coldStartLitters,
     this.noteImageUrl,
     this.isSynced = false,
+    required this.createdBy,
     required this.createdAt,
+    this.updatedBy,
+    this.updatedAt,
   });
 }
