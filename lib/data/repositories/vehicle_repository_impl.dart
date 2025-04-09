@@ -29,8 +29,22 @@ class VehicleRepositoryImpl implements VehicleRepository {
       );
 
       return Right(vehicle);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(DatabaseFailure('Erro ao salvar o veículo: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, domain.Vehicle>> findVehicleById(String id) async {
+    try {
+      final vehicle = await _vehicleDao.findVehicleById(id);
+      if (vehicle == null) {
+        return Left(DatabaseFailure('Veículo não encontrado'));
+      }
+
+      return Right(vehicle.toDomain());
+    } catch (e) {
+      return Left(DatabaseFailure('Erro ao buscar o veículo: $e'));
     }
   }
 
@@ -50,7 +64,7 @@ class VehicleRepositoryImpl implements VehicleRepository {
       );
 
       return Right(null);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(DatabaseFailure('Erro ao atualizar o veículo: $e'));
     }
   }
@@ -60,7 +74,7 @@ class VehicleRepositoryImpl implements VehicleRepository {
     try {
       await _vehicleDao.deleteVehicle(id);
       return Right(null);
-    } on Exception catch (e) {
+    } catch (e) {
       return Left(DatabaseFailure('Erro ao deletar o veículo: $e'));
     }
   }

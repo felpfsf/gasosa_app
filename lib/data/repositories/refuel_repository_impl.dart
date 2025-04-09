@@ -37,4 +37,39 @@ class RefuelRepositoryImpl implements RefuelRepository {
       return Left(DatabaseFailure('Erro ao salvar o abastecimento: $e'));
     }
   }
+
+  @override
+  Future<Either<Failure, domain.Refuel>> findRefuelById(String id) async {
+    try {
+      final refuel = await _refuelDao.findRefuelById(id);
+      if (refuel == null) {
+        return Left(DatabaseFailure('Abastecimento não encontrado'));
+      }
+
+      return Right(refuel.toDomain());
+    } catch (e) {
+      return Left(DatabaseFailure('Erro ao buscar o abastecimento: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateRefuel(domain.Refuel refuel) async {
+    try {
+      await _refuelDao.updateRefuel(refuel.toCompanion(forUpdate: true));
+
+      return Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure('Erro ao atualizar o abastecimento: $e'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteRefuel(String id) async {
+    try {
+      await _refuelDao.deleteRefuel(id);
+      return Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure('Erro ao deletar o abastecimento: $e'));
+    }
+  }
 }
