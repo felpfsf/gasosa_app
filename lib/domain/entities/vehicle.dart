@@ -18,4 +18,23 @@ class Vehicle {
     this.updatedBy,
     this.updatedAt,
   });
+
+  Vehicle copyWith({
+    String? name,
+    String? plate,
+    String? fuelType,
+    DateTime? updatedAt,
+    String? updatedBy,
+  }) {
+    return Vehicle(
+      id: id,
+      userId: userId,
+      name: name ?? this.name,
+      plate: plate ?? this.plate,
+      fuelType: fuelType ?? this.fuelType,
+      createdAt: createdAt,
+      updatedBy: updatedBy ?? this.updatedBy,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
