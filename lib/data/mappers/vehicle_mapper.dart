@@ -16,3 +16,18 @@ extension VehicleMapper on domain.Vehicle {
     );
   }
 }
+
+extension VehicleDataTodomain on Vehicle {
+  domain.Vehicle toDomain() {
+    return domain.Vehicle(
+      id: id,
+      name: name,
+      plate: plate,
+      fuelType: fuelType,
+      userId: userId,
+      createdAt: createdAt,
+      updatedBy: updatedBy,
+      updatedAt: updatedAt,
+    );
+  }
+}

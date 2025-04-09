@@ -14,4 +14,17 @@ extension UserMapper on domain.User {
     );
   }
 }
+
+extension UserDataTodomain on User {
+  domain.User toDomain() {
+    return domain.User(
+      id: id,
+      name: name,
+      email: email,
+      photoUrl: photoUrl,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    );
+  }
+}
   
