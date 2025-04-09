@@ -28,6 +28,7 @@ void main() {
       plate: 'DEF5678',
       fuelType: 'ethanol',
       createdAt: DateTime.now(),
+      userId: 'user-1',
     );
 
     when(
@@ -47,6 +48,7 @@ void main() {
       plate: 'DEF5678',
       fuelType: 'ethanol',
       createdAt: DateTime.now(),
+      userId: 'user-1',
     );
 
     when(

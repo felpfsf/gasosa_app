@@ -30,6 +30,7 @@ void main() {
       plate: 'ABC1234',
       fuelType: 'gasoline',
       createdAt: DateTime.now(),
+      userId: 'user-1',
     );
 
     when(
@@ -49,6 +50,7 @@ void main() {
       plate: 'ABC1234',
       fuelType: 'gasoline',
       createdAt: DateTime.now(),
+      userId: 'user-1',
     );
 
     when(

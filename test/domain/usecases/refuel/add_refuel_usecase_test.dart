@@ -35,6 +35,7 @@ void main() {
       noteImageUrl: null,
       isSynced: false,
       createdAt: DateTime.now(),
+      createdBy: 'user-1',
     );
 
     when(
@@ -61,6 +62,7 @@ void main() {
       noteImageUrl: null,
       isSynced: false,
       createdAt: DateTime.now(),
+      createdBy: 'user-1',
     );
 
     when(
