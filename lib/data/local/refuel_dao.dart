@@ -19,4 +19,17 @@ class RefuelDao extends DatabaseAccessor<GasosaDatabase> with _$RefuelDaoMixin {
           ..orderBy([(tbl) => OrderingTerm.desc(tbl.date)]))
         .watch();
   }
+
+  Future<void> updateRefuel(RefuelsCompanion entry) async {
+    await update(refuels).replace(entry);
+  }
+
+  Future<void> deleteRefuel(String id) async {
+    await (delete(refuels)..where((refuel) => refuel.id.equals(id))).go();
+  }
+
+  Future<Refuel?> findRefuelById(String id) async {
+    return (select(refuels)
+      ..where((refuel) => refuel.id.equals(id))).getSingleOrNull();
+  }
 }

@@ -25,4 +25,9 @@ class VehicleDao extends DatabaseAccessor<GasosaDatabase>
   Future<void> deleteVehicle(String id) async {
     await (delete(vehicles)..where((vehicle) => vehicle.id.equals(id))).go();
   }
+
+  Future<Vehicle?> findVehicleById(String id) async {
+    return (select(vehicles)
+      ..where((vehicle) => vehicle.id.equals(id))).getSingleOrNull();
+  }
 }
