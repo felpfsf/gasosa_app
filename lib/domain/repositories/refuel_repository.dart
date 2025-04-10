@@ -7,4 +7,5 @@ abstract interface class RefuelRepository {
   Future<Either<Failure, Refuel>> findRefuelById(String id);
   Future<Either<Failure, void>> updateRefuel(Refuel refuel);
   Future<Either<Failure, void>> deleteRefuel(String id);
+  Stream<List<Refuel>> watchRefuelByVehicleId(String vehicleId);
 }

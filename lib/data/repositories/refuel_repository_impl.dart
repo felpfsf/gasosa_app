@@ -72,4 +72,11 @@ class RefuelRepositoryImpl implements RefuelRepository {
       return Left(DatabaseFailure('Erro ao deletar o abastecimento: $e'));
     }
   }
+
+  @override
+  Stream<List<domain.Refuel>> watchRefuelByVehicleId(String vehicleId) {
+    return _refuelDao
+        .watchRefuelByVehicleId(vehicleId)
+        .map((refuels) => refuels.map((refuel) => refuel.toDomain()).toList());
+  }
 }
