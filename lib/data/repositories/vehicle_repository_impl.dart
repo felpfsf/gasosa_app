@@ -78,4 +78,13 @@ class VehicleRepositoryImpl implements VehicleRepository {
       return Left(DatabaseFailure('Erro ao deletar o veículo: $e'));
     }
   }
+
+  @override
+  Stream<List<domain.Vehicle>> watchAllVehiclesByUserId(String userId) {
+    return _vehicleDao
+        .watchAllVehiclesByUserId(userId)
+        .map(
+          (vehicles) => vehicles.map((vehicle) => vehicle.toDomain()).toList(),
+        );
+  }
 }

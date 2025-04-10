@@ -7,4 +7,5 @@ abstract interface class VehicleRepository {
   Future<Either<Failure, void>> updateVehicle(Vehicle vehicle);
   Future<Either<Failure, void>> deleteVehicle(String id);
   Future<Either<Failure, Vehicle>> findVehicleById(String id);
+  Stream<List<Vehicle>> watchAllVehiclesByUserId(String userId);
 }
