@@ -37,6 +37,8 @@ import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart'
     as _i793;
 import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart'
     as _i868;
+import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart'
+    as _i1070;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -80,6 +82,14 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
+    );
+    gh.factory<_i1070.IVehicleCubit>(
+      () => _i1070.VehicleCubit(
+        gh<_i868.IWatchAllVehiclesByUserIdUsecase>(),
+        gh<_i267.IAddVehicleUsecase>(),
+        gh<_i793.IUpdateVehicleUsecase>(),
+        gh<_i766.IDeleteVehicleUsecase>(),
+      ),
     );
     gh.factory<_i406.IFindVehicleByIdUsecase>(
       () => _i406.FindVehicleByIdUsecase(
