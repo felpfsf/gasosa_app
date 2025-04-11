@@ -31,6 +31,10 @@ dependencies:
   # Functional programming (Right / Left)
   dartz: ^0.10.1
   uuid: ^4.5.1
+  flutter_bloc: ^9.1.0
+  freezed: ^3.0.6
+  freezed_annotation: ^3.0.0
+  bloc_test: ^10.0.0
 
 # ------------------------
 # DEPENDÊNCIAS DE DESENVOLVIMENTO
