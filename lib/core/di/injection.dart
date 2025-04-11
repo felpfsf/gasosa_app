@@ -9,8 +9,10 @@ import 'injection.config.dart';
 final GetIt getIt = GetIt.instance;
 
 @injectableInit
-Future<void> configureDependencies() async {
-  getIt.init();
+Future<void> configureDependencies({
+  String enviroment = Environment.dev,
+}) async {
+  getIt.init(environment: enviroment);
   manualRegisterOverride();
 }
 

@@ -19,12 +19,24 @@ import 'package:gasosa_app/domain/repositories/refuel_repository.dart' as _i857;
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart' as _i35;
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart'
     as _i452;
+import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart'
+    as _i146;
+import 'package:gasosa_app/domain/usecases/refuel/find_refuel_by_id_usecase.dart'
+    as _i586;
+import 'package:gasosa_app/domain/usecases/refuel/update_refuel_usecase.dart'
+    as _i925;
+import 'package:gasosa_app/domain/usecases/refuel/watch_all_refuels_by_vehicle_id_usecase.dart'
+    as _i353;
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart'
     as _i267;
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart'
     as _i766;
+import 'package:gasosa_app/domain/usecases/vehicle/find_vehicle_by_id_usecase.dart'
+    as _i406;
 import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart'
     as _i793;
+import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart'
+    as _i868;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -38,26 +50,56 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i35.VehicleRepository>(
       () => _i106.VehicleRepositoryImpl(gh<_i208.VehicleDao>()),
     );
-    gh.lazySingleton<_i857.RefuelRepository>(
-      () => _i146.RefuelRepositoryImpl(gh<_i441.RefuelDao>()),
-    );
-    gh.factory<_i793.UpdateVehicleUsecase>(
-      () => _i793.UpdateVehicleUsecase(
-        vehicleRepository: gh<_i35.VehicleRepository>(),
-      ),
-    );
-    gh.factory<_i766.DeleteVehicleUsecase>(
-      () => _i766.DeleteVehicleUsecase(
-        vehicleRepository: gh<_i35.VehicleRepository>(),
-      ),
-    );
-    gh.factory<_i267.AddVehicleUsecase>(
+    gh.factory<_i267.IAddVehicleUsecase>(
       () => _i267.AddVehicleUsecase(
         vehicleRepository: gh<_i35.VehicleRepository>(),
       ),
     );
-    gh.factory<_i452.AddRefuelUsecase>(
+    gh.factory<_i766.IDeleteVehicleUsecase>(
+      () => _i766.DeleteVehicleUsecase(
+        vehicleRepository: gh<_i35.VehicleRepository>(),
+      ),
+    );
+    gh.lazySingleton<_i857.RefuelRepository>(
+      () => _i146.RefuelRepositoryImpl(gh<_i441.RefuelDao>()),
+    );
+    gh.factory<_i793.IUpdateVehicleUsecase>(
+      () => _i793.UpdateVehicleUsecase(
+        vehicleRepository: gh<_i35.VehicleRepository>(),
+      ),
+    );
+    gh.factory<_i868.IWatchAllVehiclesByUserIdUsecase>(
+      () => _i868.WatchAllVehiclesByUserIdUsecase(
+        vehicleRepository: gh<_i35.VehicleRepository>(),
+      ),
+    );
+    gh.factory<_i353.IWatchAllRefuelsByVehicleIdUsecase>(
+      () => _i353.WatchAllRefuelsByVehicleIdUsecase(
+        refuelRepository: gh<_i857.RefuelRepository>(),
+      ),
+    );
+    gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
+    );
+    gh.factory<_i406.IFindVehicleByIdUsecase>(
+      () => _i406.FindVehicleByIdUsecase(
+        vehicleRepository: gh<_i35.VehicleRepository>(),
+      ),
+    );
+    gh.factory<_i586.IFindRefuelByIdUsecase>(
+      () => _i586.FindRefuelByIdUsecase(
+        refuelRepository: gh<_i857.RefuelRepository>(),
+      ),
+    );
+    gh.factory<_i146.IDeleteRefuelUsecase>(
+      () => _i146.DeleteRefuelUsecase(
+        refuelRepository: gh<_i857.RefuelRepository>(),
+      ),
+    );
+    gh.factory<_i925.IUpdateRefuelUsecase>(
+      () => _i925.UpdateRefuelUsecase(
+        refuelRepository: gh<_i857.RefuelRepository>(),
+      ),
     );
     return this;
   }
