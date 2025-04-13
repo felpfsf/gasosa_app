@@ -36,10 +36,10 @@ void main() {
   });
 
   setUp(() {
-    watchAllVehiclesByUserIdUsecase = MockWaWatchAllVehiclesByUserIdUsecase();
-    addVehicleUsecase = MockWaAddVehicleUsecase();
-    updateVehicleUsecase = MockWaUpdateVehicleUsecase();
-    deleteVehicleUsecase = MockWaDeleteVehicleUsecase();
+    watchAllVehiclesByUserIdUsecase = MockWatchAllVehiclesByUserIdUsecase();
+    addVehicleUsecase = MockAddVehicleUsecase();
+    updateVehicleUsecase = MockUpdateVehicleUsecase();
+    deleteVehicleUsecase = MockDeleteVehicleUsecase();
 
     vehicleCubit = VehicleCubit(
       watchAllVehiclesByUserIdUsecase,
@@ -49,137 +49,145 @@ void main() {
     );
   });
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emit [loading, loaded] when watch stream emits vehicles',
-    build: () {
-      when(
-        () => watchAllVehiclesByUserIdUsecase(userId),
-      ).thenAnswer((_) => Stream.value([vehicle]));
+  group('Vehicle Cubit', () {
+    blocTest<VehicleCubit, VehicleState>(
+      'emit [loading, loaded] when watch stream emits vehicles',
+      build: () {
+        when(
+          () => watchAllVehiclesByUserIdUsecase(userId),
+        ).thenAnswer((_) => Stream.value([vehicle]));
 
-      return vehicleCubit;
-    },
-    act: (cubit) => cubit.fetchVehicles(userId),
-    expect:
-        () => [
-          const VehicleState.loading(),
-          VehicleState.loaded([vehicle]),
-        ],
-    verify: (_) {
-      verify(() => watchAllVehiclesByUserIdUsecase(userId)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (cubit) => cubit.fetchVehicles(userId),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.loaded([vehicle]),
+          ],
+      verify: (_) {
+        verify(() => watchAllVehiclesByUserIdUsecase(userId)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, loaded] when addVehicle is successful',
-    build: () {
-      when(
-        () => addVehicleUsecase(vehicle),
-      ).thenAnswer((_) => Future.value(Right(vehicle)));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, loaded] when addVehicle is successful',
+      build: () {
+        when(
+          () => addVehicleUsecase(vehicle),
+        ).thenAnswer((_) => Future.value(Right(vehicle)));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.addVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.success('Vehicle added successfully'),
-    ],
-    verify: (_) {
-      verify(() => addVehicleUsecase(vehicle)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.addVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.success('Vehicle added successfully'),
+          ],
+      verify: (_) {
+        verify(() => addVehicleUsecase(vehicle)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, error] when addVehicle fails',
-    build: () {
-      when(
-        () => addVehicleUsecase(vehicle),
-      ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, error] when addVehicle fails',
+      build: () {
+        when(
+          () => addVehicleUsecase(vehicle),
+        ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.addVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.error(message: 'error'),
-    ],
-    verify: (_) {
-      verify(() => addVehicleUsecase(vehicle)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.addVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.error(message: 'error'),
+          ],
+      verify: (_) {
+        verify(() => addVehicleUsecase(vehicle)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, success] when updateVehicle is successful',
-    build: () {
-      when(
-        () => updateVehicleUsecase(vehicle),
-      ).thenAnswer((_) => Future.value(Right(null)));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, success] when updateVehicle is successful',
+      build: () {
+        when(
+          () => updateVehicleUsecase(vehicle),
+        ).thenAnswer((_) => Future.value(Right(null)));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.updateVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.success('Vehicle updated successfully'),
-    ],
-    verify: (_) {
-      verify(() => updateVehicleUsecase(vehicle)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.updateVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.success('Vehicle updated successfully'),
+          ],
+      verify: (_) {
+        verify(() => updateVehicleUsecase(vehicle)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, error] when updateVehicle fails',
-    build: () {
-      when(
-        () => updateVehicleUsecase(vehicle),
-      ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, error] when updateVehicle fails',
+      build: () {
+        when(
+          () => updateVehicleUsecase(vehicle),
+        ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.updateVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.error(message: 'error'),
-    ],
-    verify: (_) {
-      verify(() => updateVehicleUsecase(vehicle)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.updateVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.error(message: 'error'),
+          ],
+      verify: (_) {
+        verify(() => updateVehicleUsecase(vehicle)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, success] when deleteVehicle is successful',
-    build: () {
-      when(
-        () => deleteVehicleUsecase(vehicle.id),
-      ).thenAnswer((_) => Future.value(Right(null)));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, success] when deleteVehicle is successful',
+      build: () {
+        when(
+          () => deleteVehicleUsecase(vehicle.id),
+        ).thenAnswer((_) => Future.value(Right(null)));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.deleteVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.success('Vehicle deleted successfully'),
-    ],
-    verify: (_) {
-      verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.deleteVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.success('Vehicle deleted successfully'),
+          ],
+      verify: (_) {
+        verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
+      },
+    );
 
-  blocTest<VehicleCubit, VehicleState>(
-    'emits [loading, error] when deleteVehicle is failed',
-    build: () {
-      when(
-        () => deleteVehicleUsecase(vehicle.id),
-      ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, error] when deleteVehicle is failed',
+      build: () {
+        when(
+          () => deleteVehicleUsecase(vehicle.id),
+        ).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
 
-      return vehicleCubit;
-    },
-    act: (bloc) => bloc.deleteVehicle(vehicle),
-    expect: () => [
-      const VehicleState.loading(),
-      VehicleState.error(message: 'error'),
-    ],
-    verify: (_) {
-      verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
-    },
-  );
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.deleteVehicle(vehicle),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.error(message: 'error'),
+          ],
+      verify: (_) {
+        verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
+      },
+    );
+  });
 }
