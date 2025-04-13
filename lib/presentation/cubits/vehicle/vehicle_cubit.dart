@@ -25,10 +25,10 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
   final IUpdateVehicleUsecase _update;
   final IDeleteVehicleUsecase _delete;
 
-  StreamSubscription<List<Vehicle>>? _vehicleStream;
-
   VehicleCubit(this._watchAll, this._add, this._update, this._delete)
     : super(const VehicleState.initial());
+
+  StreamSubscription<List<Vehicle>>? _vehicleStream;
 
   @override
   void fetchVehicles(String userId) {
