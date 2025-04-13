@@ -15,25 +15,25 @@ class MockRefuelRepository extends Mock implements RefuelRepository {}
 
 class MockVehicleRepository extends Mock implements VehicleRepository {}
 
-class MockWaWatchAllVehiclesByUserIdUsecase extends Mock
+class MockWatchAllVehiclesByUserIdUsecase extends Mock
     implements IWatchAllVehiclesByUserIdUsecase {}
 
-class MockWaAddVehicleUsecase extends Mock implements IAddVehicleUsecase {}
+class MockAddVehicleUsecase extends Mock implements IAddVehicleUsecase {}
 
-class MockWaUpdateVehicleUsecase extends Mock
+class MockUpdateVehicleUsecase extends Mock
     implements IUpdateVehicleUsecase {}
 
-class MockWaDeleteVehicleUsecase extends Mock
+class MockDeleteVehicleUsecase extends Mock
     implements IDeleteVehicleUsecase {}
 
-class MockWaFindRefuelByIdUsecase extends Mock
+class MockFindRefuelByIdUsecase extends Mock
     implements IFindRefuelByIdUsecase {}
 
-class MockWaWatchAllRefuelsByVehicleIdUsecase extends Mock
+class MocktchAllRefuelsByVehicleIdUsecase extends Mock
     implements IWatchAllRefuelsByVehicleIdUsecase {}
 
-class MockWaAddRefuelUsecase extends Mock implements IAddRefuelUsecase {}
+class MockAddRefuelUsecase extends Mock implements IAddRefuelUsecase {}
 
-class MockWaUpdateRefuelUsecase extends Mock implements IUpdateRefuelUsecase {}
+class MockUpdateRefuelUsecase extends Mock implements IUpdateRefuelUsecase {}
 
-class MockWaDeleteRefuelUsecase extends Mock implements IDeleteRefuelUsecase {}
+class MockDeleteRefuelUsecase extends Mock implements IDeleteRefuelUsecase {}
