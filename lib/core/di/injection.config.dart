@@ -10,12 +10,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:gasosa_app/data/local/refuel_dao.dart' as _i441;
+import 'package:gasosa_app/data/local/user_dao.dart' as _i36;
 import 'package:gasosa_app/data/local/vehicle_dao.dart' as _i208;
 import 'package:gasosa_app/data/repositories/refuel_repository_impl.dart'
     as _i146;
+import 'package:gasosa_app/data/repositories/user_repository_impl.dart' as _i57;
 import 'package:gasosa_app/data/repositories/vehicle_repository_impl.dart'
     as _i106;
 import 'package:gasosa_app/domain/repositories/refuel_repository.dart' as _i857;
+import 'package:gasosa_app/domain/repositories/user_repository.dart' as _i754;
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart' as _i35;
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart'
     as _i452;
@@ -27,6 +30,12 @@ import 'package:gasosa_app/domain/usecases/refuel/update_refuel_usecase.dart'
     as _i925;
 import 'package:gasosa_app/domain/usecases/refuel/watch_all_refuels_by_vehicle_id_usecase.dart'
     as _i353;
+import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart'
+    as _i188;
+import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart'
+    as _i984;
+import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart'
+    as _i43;
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart'
     as _i267;
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart'
@@ -39,6 +48,7 @@ import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id
     as _i868;
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart'
     as _i817;
+import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart' as _i34;
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart'
     as _i1070;
 import 'package:get_it/get_it.dart' as _i174;
@@ -67,6 +77,9 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i857.RefuelRepository>(
       () => _i146.RefuelRepositoryImpl(gh<_i441.RefuelDao>()),
     );
+    gh.lazySingleton<_i754.UserRepository>(
+      () => _i57.UserRepositoryImpl(gh<_i36.UserDao>()),
+    );
     gh.factory<_i793.IUpdateVehicleUsecase>(
       () => _i793.UpdateVehicleUsecase(
         vehicleRepository: gh<_i35.VehicleRepository>(),
@@ -81,6 +94,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i353.WatchAllRefuelsByVehicleIdUsecase(
         refuelRepository: gh<_i857.RefuelRepository>(),
       ),
+    );
+    gh.factory<_i984.ISaveUserUsecase>(
+      () => _i984.SaveUserUsecase(userRepository: gh<_i754.UserRepository>()),
     );
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
@@ -103,6 +119,12 @@ extension GetItInjectableX on _i174.GetIt {
         refuelRepository: gh<_i857.RefuelRepository>(),
       ),
     );
+    gh.factory<_i188.ILoadUserUsecase>(
+      () => _i188.LoadUserUsecase(userRepository: gh<_i754.UserRepository>()),
+    );
+    gh.factory<_i43.IUpdateUserUsecase>(
+      () => _i43.UpdateUserUsecase(userRepository: gh<_i754.UserRepository>()),
+    );
     gh.factory<_i146.IDeleteRefuelUsecase>(
       () => _i146.DeleteRefuelUsecase(
         refuelRepository: gh<_i857.RefuelRepository>(),
@@ -120,6 +142,13 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i586.IFindRefuelByIdUsecase>(),
         gh<_i925.IUpdateRefuelUsecase>(),
         gh<_i353.IWatchAllRefuelsByVehicleIdUsecase>(),
+      ),
+    );
+    gh.factory<_i34.IAuthCubit>(
+      () => _i34.AuthCubit(
+        gh<_i188.ILoadUserUsecase>(),
+        gh<_i984.ISaveUserUsecase>(),
+        gh<_i43.IUpdateUserUsecase>(),
       ),
     );
     return this;

@@ -1,5 +1,6 @@
 import 'package:gasosa_app/data/local/dabase.dart';
 import 'package:gasosa_app/data/local/refuel_dao.dart';
+import 'package:gasosa_app/data/local/user_dao.dart';
 import 'package:gasosa_app/data/local/vehicle_dao.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
@@ -20,4 +21,5 @@ void manualRegisterOverride() {
   final db = getIt<GasosaDatabase>();
   getIt.registerLazySingleton<RefuelDao>(() => RefuelDao(db));
   getIt.registerLazySingleton<VehicleDao>(() => VehicleDao(db));
+  getIt.registerLazySingleton<UserDao>(() => UserDao(db));
 }
