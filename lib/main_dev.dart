@@ -4,6 +4,6 @@ import 'package:gasosa_app/core/config/app_config.dart';
 import 'package:gasosa_app/core/config/env.dart';
 
 void main() {
-  AppConfig.setEnvironment(Env.dev);
+  AppConfig.setEnvironment(Env.development);
   runApp(GasosaApp());
 }
