@@ -7,13 +7,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 2), () {
-      return;
-      // context.go('/home');
+      // if (!context.mounted) return;
+
+      // context.go('/login');
     });
 
     return Scaffold(
       body: Center(
-        child: Text('Gasosa App', style: AppTypography.textLgRegular),
+        child: Text('Gasosa App Splash', style: AppTypography.textLgRegular),
       ),
     );
   }
