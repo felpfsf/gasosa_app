@@ -69,8 +69,8 @@ flutter:
   uses-material-design: true
 
   # Adicione aqui seus assets quando necessário
-  # assets:
-  #   - assets/images/
+  assets:
+    - assets/images/
   #   - assets/icons/
 
   # Para fontes personalizadas:
@@ -84,7 +84,7 @@ flutter:
 # ------------------------------
 flutter_launcher_icons:
   android: true
-  ios: false
+  ios: true
   image_path: "assets/icons/icon_prod.png"
   flavors:
     dev:
