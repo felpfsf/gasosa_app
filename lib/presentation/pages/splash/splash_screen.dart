@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen>
     Future.delayed(const Duration(seconds: 2), () {
       // return;
       if (!mounted) return;
-      context.go('/login');
+      context.go('/auth/login');
     });
   }
 
@@ -74,13 +74,13 @@ class _SplashScreenState extends State<SplashScreen>
               position: _logoAnimation,
               child: Hero(
                 tag: 'app-logo',
-                child: Image.asset('assets/images/app_logo.png'),
+                child: Image.asset('assets/images/app_logo_novo.png'),
               ),
             ),
-            FadeTransition(
-              opacity: _textAnimation,
-              child: Text('Gasosa App', style: AppTypography.titleLg),
-            ),
+            // FadeTransition(
+            //   opacity: _textAnimation,
+            //   child: Text('Gasosa App', style: AppTypography.titleLg),
+            // ),
           ],
         ),
       ),
