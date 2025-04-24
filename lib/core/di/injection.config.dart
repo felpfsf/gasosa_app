@@ -9,6 +9,10 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:firebase_auth/firebase_auth.dart' as _i59;
+import 'package:gasosa_app/core/di/database_module.dart' as _i36;
+import 'package:gasosa_app/core/di/firebase_module.dart' as _i827;
+import 'package:gasosa_app/data/local/dabase.dart' as _i848;
 import 'package:gasosa_app/data/local/refuel_dao.dart' as _i441;
 import 'package:gasosa_app/data/local/user_dao.dart' as _i36;
 import 'package:gasosa_app/data/local/vehicle_dao.dart' as _i208;
@@ -69,18 +73,12 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    gh.lazySingleton<_i435.AuthRepository>(
-      () => _i86.AuthRepositoryImpl(
-        firebaseAuthService: gh<_i40.FirebaseAuthService>(),
-      ),
-    );
-    gh.factory<_i462.ILogoutUsecase>(
-      () => _i462.LogoutUsecase(authRepository: gh<_i435.AuthRepository>()),
-    );
-    gh.factory<_i660.ILoginWithEmailUsecase>(
-      () => _i660.LoginWithEmailUsecase(
-        authRepository: gh<_i435.AuthRepository>(),
-      ),
+    final databaseModule = _$DatabaseModule();
+    final firebaseModule = _$FirebaseModule();
+    gh.lazySingleton<_i848.GasosaDatabase>(() => databaseModule.database);
+    gh.lazySingleton<_i59.FirebaseAuth>(() => firebaseModule.firebaseAuth);
+    gh.lazySingleton<_i40.FirebaseAuthService>(
+      () => firebaseModule.providerFirebaseAuthService(gh<_i59.FirebaseAuth>()),
     );
     gh.lazySingleton<_i35.VehicleRepository>(
       () => _i106.VehicleRepositoryImpl(gh<_i208.VehicleDao>()),
@@ -119,13 +117,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i984.ISaveUserUsecase>(
       () => _i984.SaveUserUsecase(userRepository: gh<_i754.UserRepository>()),
     );
-    gh.factory<_i630.ILoginWithEmailUsecase>(
-      () => _i630.LoginWithEmailUsecase(
+    gh.lazySingleton<_i435.AuthRepository>(
+      () => _i86.AuthRepositoryImpl(
+        firebaseAuthService: gh<_i40.FirebaseAuthService>(),
+      ),
+    );
+    gh.factory<_i630.IRegisterWithEmailUsecase>(
+      () => _i630.RegisterWithEmailUsecase(
         authRepository: gh<_i435.AuthRepository>(),
       ),
     );
+    gh.factory<_i462.ILogoutUsecase>(
+      () => _i462.LogoutUsecase(authRepository: gh<_i435.AuthRepository>()),
+    );
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
+    );
+    gh.factory<_i660.ILoginWithEmailUsecase>(
+      () => _i660.LoginWithEmailUsecase(
+        authRepository: gh<_i435.AuthRepository>(),
+      ),
     );
     gh.factory<_i1070.IVehicleCubit>(
       () => _i1070.VehicleCubit(
@@ -161,6 +172,16 @@ extension GetItInjectableX on _i174.GetIt {
         refuelRepository: gh<_i857.RefuelRepository>(),
       ),
     );
+    gh.factory<_i34.IAuthCubit>(
+      () => _i34.AuthCubit(
+        gh<_i188.ILoadUserUsecase>(),
+        gh<_i984.ISaveUserUsecase>(),
+        gh<_i43.IUpdateUserUsecase>(),
+        gh<_i660.ILoginWithEmailUsecase>(),
+        gh<_i462.ILogoutUsecase>(),
+        gh<_i630.IRegisterWithEmailUsecase>(),
+      ),
+    );
     gh.factory<_i817.IRefuelCubit>(
       () => _i817.RefuelCubit(
         gh<_i452.IAddRefuelUsecase>(),
@@ -170,13 +191,10 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i353.IWatchAllRefuelsByVehicleIdUsecase>(),
       ),
     );
-    gh.factory<_i34.IAuthCubit>(
-      () => _i34.AuthCubit(
-        gh<_i188.ILoadUserUsecase>(),
-        gh<_i984.ISaveUserUsecase>(),
-        gh<_i43.IUpdateUserUsecase>(),
-      ),
-    );
     return this;
   }
 }
+
+class _$DatabaseModule extends _i36.DatabaseModule {}
+
+class _$FirebaseModule extends _i827.FirebaseModule {}

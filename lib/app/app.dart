@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/app_router.dart';
 import 'package:gasosa_app/core/config/app_config.dart';
+import 'package:gasosa_app/core/di/injection.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_state.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:super_banners/super_banners.dart';
@@ -16,6 +20,18 @@ class GasosaApp extends StatelessWidget {
       theme: AppTheme.darkTheme,
       routerConfig: appRouter,
     );
+    app = MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => getIt<IAuthCubit>() as AuthCubit),
+      ],
+      child: BlocListener<AuthCubit, AuthState>(
+        listenWhen:
+            (previous, current) => current == const AuthState.unauthenticated(),
+        listener: (context, state) {},
+        child: app,
+      ),
+    );
+
     if (AppConfig.isDev) {
       // app = Directionality(
       //   textDirection: TextDirection.ltr,
