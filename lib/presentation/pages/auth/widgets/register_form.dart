@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gasosa_app/presentation/widgets/gasosa_password_field.dart';
 import 'package:gasosa_app/presentation/widgets/index.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
-import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -65,32 +65,21 @@ class _RegisterFormState extends State<RegisterForm> {
               Validatorless.email('E-mail inválido'),
             ]),
           ),
-          GasosaFormField(
+          GasosaPasswordField(
             label: 'Senha',
             controller: _passwordEC,
-            keyboardType: TextInputType.text,
-            obscureText: true,
-            validator: Validatorless.multiple([
-              Validatorless.required('Senha é obrigatória'),
-              Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
-            ]),
-            suffixIcon: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                _obscureText ? Icons.visibility_off : Icons.visibility,
-              ),
-              color: AppColors.text.withValues(alpha: .6),
-            ),
-          ),
-          GasosaFormField(
-            label: 'Confirmar senha',
-            controller: _passwordEC,
-            keyboardType: TextInputType.text,
-            obscureText: true,
             validator: Validatorless.multiple([
               Validatorless.required('Confirmar senha é obrigatória'),
               Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
+            ]),
+          ),
+          GasosaPasswordField(
+            label: 'Confirmar senha',
+            controller: _confirmPasswordEC,
+            validator: Validatorless.multiple([
+              Validatorless.required('Confirmar senha é obrigatória'),
               Validatorless.compare(_passwordEC, 'Senhas não coincidem'),
+              Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
             ]),
           ),
           AppSpacing.gap8,
