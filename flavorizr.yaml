@@ -1,8 +1,8 @@
 app:
   android:
     flavorDimensions: "app"
-  ios:
-    flavorDimensions: "app"
+  # ios:
+    # flavorDimensions: "app"
 
 flavors:
   dev:
@@ -12,8 +12,12 @@ flavors:
       icon: "assets/icons/icon_dev.png"
     android:
       applicationId: "com.gasosa.dev"
+      firebase:
+        config: "firebase/dev/google-services.json"
     ios:
       bundleId: "com.gasosa.dev"
+      # firebase:
+      #   config: "firebase/dev/GoogleService-Info.plist"
 
   prod:
     app:
@@ -22,13 +26,16 @@ flavors:
       icon: "assets/icons/icon_prod.png"
     android:
       applicationId: "com.gasosa"
+      firebase:
+        config: "firebase/prod/google-services.json"
     ios:
       bundleId: "com.gasosa"
+      # firebase:
+      #   config: "firebase/prod/GoogleService-Info.plist"
 
 instructions:
   - android
-  - ios
+  # - ios
   - flavors
   - app
   - launchericon
-  - google
