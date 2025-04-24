@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/domain/entities/user.dart';
+import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
@@ -12,6 +15,8 @@ abstract class IAuthCubit {
   Future<void> saveUser(User user);
   Future<void> updateUser(User user);
   void logout();
+  Future<void> register(User user, String password);
+  Future<void> login(String email, String password);
 }
 
 @Injectable(as: IAuthCubit)
@@ -19,11 +24,17 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   final ILoadUserUsecase _loadUserUsecase;
   final ISaveUserUsecase _saveUserUsecase;
   final IUpdateUserUsecase _updateUserUsecase;
+  final ILoginWithEmailUsecase _loginWithEmailUsecase;
+  final ILogoutUsecase _logoutUsecase;
+  final IRegisterWithEmailUsecase _registerWithEmailUsecase;
 
   AuthCubit(
     this._loadUserUsecase,
     this._saveUserUsecase,
     this._updateUserUsecase,
+    this._loginWithEmailUsecase,
+    this._logoutUsecase,
+    this._registerWithEmailUsecase,
   ) : super(AuthState.initial());
 
   @override
@@ -68,7 +79,40 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   }
 
   @override
-  void logout() {
+  void logout() async {
     emit(AuthState.unauthenticated());
+    final result = await _logoutUsecase();
+    result.fold(
+      (failure) => emit(AuthState.error(message: failure.message)),
+      (_) => emit(AuthState.unauthenticated()),
+    );
+  }
+
+  @override
+  Future<void> login(String email, String password) async {
+    final result = await _loginWithEmailUsecase(email, password);
+    result.fold(
+      (failure) => emit(AuthState.error(message: failure.message)),
+      (user) => emit(AuthState.authenticated(user)),
+    );
+  }
+
+  @override
+  Future<void> register(User user, String password) async {
+    final result = await _registerWithEmailUsecase(user, password);
+
+    await result.fold(
+      (failure) async {
+        emit(AuthState.error(message: failure.message));
+      },
+      (firebaseUser) async {
+        final saveResult = await _saveUserUsecase(user);
+
+        saveResult.fold(
+          (saveFailure) => emit(AuthState.error(message: saveFailure.message)),
+          (_) => emit(AuthState.authenticated(firebaseUser)),
+        );
+      },
+    );
   }
 }

@@ -12,14 +12,22 @@
 import 'package:gasosa_app/data/local/refuel_dao.dart' as _i441;
 import 'package:gasosa_app/data/local/user_dao.dart' as _i36;
 import 'package:gasosa_app/data/local/vehicle_dao.dart' as _i208;
+import 'package:gasosa_app/data/repositories/auth_repository_impl.dart' as _i86;
 import 'package:gasosa_app/data/repositories/refuel_repository_impl.dart'
     as _i146;
 import 'package:gasosa_app/data/repositories/user_repository_impl.dart' as _i57;
 import 'package:gasosa_app/data/repositories/vehicle_repository_impl.dart'
     as _i106;
+import 'package:gasosa_app/domain/repositories/auth_repository.dart' as _i435;
 import 'package:gasosa_app/domain/repositories/refuel_repository.dart' as _i857;
 import 'package:gasosa_app/domain/repositories/user_repository.dart' as _i754;
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart' as _i35;
+import 'package:gasosa_app/domain/services/firebase_auth_service.dart' as _i40;
+import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart'
+    as _i660;
+import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart' as _i462;
+import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart'
+    as _i630;
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart'
     as _i452;
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart'
@@ -61,6 +69,19 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
+    gh.lazySingleton<_i435.AuthRepository>(
+      () => _i86.AuthRepositoryImpl(
+        firebaseAuthService: gh<_i40.FirebaseAuthService>(),
+      ),
+    );
+    gh.factory<_i462.ILogoutUsecase>(
+      () => _i462.LogoutUsecase(authRepository: gh<_i435.AuthRepository>()),
+    );
+    gh.factory<_i660.ILoginWithEmailUsecase>(
+      () => _i660.LoginWithEmailUsecase(
+        authRepository: gh<_i435.AuthRepository>(),
+      ),
+    );
     gh.lazySingleton<_i35.VehicleRepository>(
       () => _i106.VehicleRepositoryImpl(gh<_i208.VehicleDao>()),
     );
@@ -97,6 +118,11 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i984.ISaveUserUsecase>(
       () => _i984.SaveUserUsecase(userRepository: gh<_i754.UserRepository>()),
+    );
+    gh.factory<_i630.ILoginWithEmailUsecase>(
+      () => _i630.LoginWithEmailUsecase(
+        authRepository: gh<_i435.AuthRepository>(),
+      ),
     );
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
