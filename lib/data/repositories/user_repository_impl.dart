@@ -42,4 +42,22 @@ class UserRepositoryImpl implements UserRepository {
       return Left(DatabaseFailure('Erro ao atualizar o usuário: $e'));
     }
   }
+  
+  @override
+  Future<Either<Failure, User>> loginWithEmail(String email, String password) {
+    // TODO: implement loginWithEmail
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Either<Failure, void>> logout() {
+    // TODO: implement logout
+    throw UnimplementedError();
+  }
+  
+  @override
+  Future<Either<Failure, User>> registerWithEmail(User user, String password) {
+    // TODO: implement registerWithEmail
+    throw UnimplementedError();
+  }
 }

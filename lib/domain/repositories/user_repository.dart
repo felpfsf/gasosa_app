@@ -6,4 +6,7 @@ abstract interface class UserRepository {
   Future<Either<Failure, User?>> findUserById(String userId);
   Future<Either<Failure, void>> saveUser(User user);
   Future<Either<Failure, void>> updateUser(User user);
+  Future<Either<Failure, void>> logout();
+  Future<Either<Failure, User>> registerWithEmail(User user, String password);
+  Future<Either<Failure, User>> loginWithEmail(String email, String password);
 }
