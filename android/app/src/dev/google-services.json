@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1095322359065",
+    "project_id": "gasosa-dev",
+    "storage_bucket": "gasosa-dev.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095322359065:android:d1c4546e6b3966cbbd2188",
+        "android_client_info": {
+          "package_name": "com.etherealcodes.gasosa_app.gasosa_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3yM6NEaUor0-b44rEwssKA8VnDVR46Ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095322359065:android:56cd6e7f382a668fbd2188",
+        "android_client_info": {
+          "package_name": "com.gasosa.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3yM6NEaUor0-b44rEwssKA8VnDVR46Ow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,8 +37,26 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    // Flavors
+    flavorDimensions "env"
+    productFlavors {
+        dev {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        prod {
+            dimension = "env"
+            applicationIdSuffix = ".prod"
+            versionNameSuffix = "-prod"
+        }
+    }
 }
 
 flutter {
     source = "../.."
 }
+
+// Firebase plugin
+apply plugin: "com.google.gms.google-services"

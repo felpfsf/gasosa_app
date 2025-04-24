@@ -41,6 +41,8 @@ dependencies:
   go_router: ^15.1.0
   super_banners: ^0.0.1
   validatorless: ^1.2.4
+  firebase_core: ^3.13.0
+  firebase_auth: ^5.5.2
 
 # ------------------------
 # DEPENDÊNCIAS DE DESENVOLVIMENTO
