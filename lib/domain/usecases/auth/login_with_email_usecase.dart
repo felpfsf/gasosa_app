@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/user.dart';
-import 'package:gasosa_app/domain/repositories/user_repository.dart';
+import 'package:gasosa_app/domain/repositories/auth_repository.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ILoginWithEmailUsecase {
@@ -10,13 +10,13 @@ abstract class ILoginWithEmailUsecase {
 
 @Injectable(as: ILoginWithEmailUsecase)
 class LoginWithEmailUsecase implements ILoginWithEmailUsecase {
-  final UserRepository _userRepository;
+  final AuthRepository _authRepository;
 
-  LoginWithEmailUsecase({required UserRepository userRepository})
-    : _userRepository = userRepository;
+  LoginWithEmailUsecase({required AuthRepository authRepository})
+    : _authRepository = authRepository;
 
   @override
   Future<Either<Failure, User>> call(String email, String password) async {
-    return await _userRepository.loginWithEmail(email, password);
+    return await _authRepository.loginWithEmail(email, password);
   }
 }

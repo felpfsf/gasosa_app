@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
-import 'package:gasosa_app/domain/repositories/user_repository.dart';
+import 'package:gasosa_app/domain/repositories/auth_repository.dart';
 import 'package:injectable/injectable.dart';
 
 abstract class ILogoutUsecase {
@@ -9,13 +9,13 @@ abstract class ILogoutUsecase {
 
 @Injectable(as: ILogoutUsecase)
 class LogoutUsecase implements ILogoutUsecase {
-  final UserRepository _userRepository;
+  final AuthRepository _authRepository;
 
-  LogoutUsecase({required UserRepository userRepository})
-    : _userRepository = userRepository;
+  LogoutUsecase({required AuthRepository authRepository})
+    : _authRepository = authRepository;
 
   @override
   Future<Either<Failure, void>> call() async {
-    return await _userRepository.logout();
+    return await _authRepository.logout();
   }
 }
