@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasosa_app/presentation/widgets/index.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
+import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:validatorless/validatorless.dart';
 
 class LoginForm extends StatefulWidget {
@@ -16,6 +17,8 @@ class _LoginFormState extends State<LoginForm> {
   final formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
+
+  bool _obscureText = true;
 
   void _onSubmit() {
     if (formKey.currentState?.validate() ?? false) {
@@ -50,11 +53,22 @@ class _LoginFormState extends State<LoginForm> {
             label: 'Senha',
             controller: _passwordEC,
             keyboardType: TextInputType.text,
-            obscureText: true,
+            obscureText: _obscureText,
             validator: Validatorless.multiple([
               Validatorless.required('Senha é obrigatória'),
               Validatorless.min(6, 'Senha deve ter no mínimo 6 caracteres'),
             ]),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility_off : Icons.visibility,
+              ),
+              color: AppColors.text.withValues(alpha: .6),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+            ),
           ),
 
           AppSpacing.gap8,
