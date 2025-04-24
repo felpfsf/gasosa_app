@@ -20,7 +20,6 @@ class _RegisterFormState extends State<RegisterForm> {
   final _passwordEC = TextEditingController();
   final _confirmPasswordEC = TextEditingController();
 
-  final bool _obscureText = true;
 
   void _onSubmit() {
     if (formKey.currentState?.validate() ?? false) {
