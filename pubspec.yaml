@@ -51,9 +51,6 @@ dependencies:
   freezed: ^2.5.2
   # freezed: ^3.0.6
 
-  # Flavor Management
-  flutter_flavorizr: ^2.4.0
-
 # ------------------------
 # DEPENDÊNCIAS DE DESENVOLVIMENTO
 # ------------------------
@@ -75,6 +72,9 @@ dev_dependencies:
 
   # Ícones de Launcher
   flutter_launcher_icons: ^0.14.3
+
+  # Flavor Management
+  flutter_flavorizr: ^2.4.0
 
 # ------------------------
 # CONFIGURAÇÕES DO FLUTTER
