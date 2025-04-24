@@ -11,5 +11,5 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   AppConfig.setEnvironment(Env.production);
-  runApp(GasosaApp());
+  runApp(const GasosaApp());
 }

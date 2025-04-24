@@ -5,11 +5,11 @@ import 'package:gasosa_app/core/config/app_config.dart';
 import 'package:gasosa_app/core/config/env.dart';
 import 'package:gasosa_app/core/di/injection.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureDependencies();
   await Firebase.initializeApp();
   
   AppConfig.setEnvironment(Env.development);
-  runApp(GasosaApp());
+  runApp(const GasosaApp());
 }

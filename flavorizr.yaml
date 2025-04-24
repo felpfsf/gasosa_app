@@ -1,0 +1,34 @@
+app:
+  android:
+    flavorDimensions: "app"
+  ios:
+    flavorDimensions: "app"
+
+flavors:
+  dev:
+    app:
+      name: "Gasosa Dev"
+      bundleId: "com.gasosa.dev"
+      icon: "assets/icons/icon_dev.png"
+    android:
+      applicationId: "com.gasosa.dev"
+    ios:
+      bundleId: "com.gasosa.dev"
+
+  prod:
+    app:
+      name: "Gasosa"
+      bundleId: "com.gasosa"
+      icon: "assets/icons/icon_prod.png"
+    android:
+      applicationId: "com.gasosa"
+    ios:
+      bundleId: "com.gasosa"
+
+instructions:
+  - android
+  - ios
+  - flavors
+  - app
+  - launchericon
+  - google

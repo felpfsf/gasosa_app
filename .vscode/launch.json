@@ -2,35 +2,35 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Gasosa App (DEV)",
+      "name": "🐛 Dev (debug)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
       "flutterMode": "debug"
     },
     {
-      "name": "Gasosa App (PROD)",
+      "name": "🐛 Prod (debug)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_prod.dart",
       "flutterMode": "debug"
     },
     {
-      "name": "Gasosa App (DEV - profile)",
+      "name": "🚀 Dev (profile)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_dev.dart",
       "flutterMode": "profile"
     },
     {
-      "name": "Gasosa App (PROD - profile)",
+      "name": "🚀 Prod (profile)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_prod.dart",
       "flutterMode": "profile"
     },
     {
-      "name": "Gasosa App (PROD - release)",
+      "name": "📦 Prod (release)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_prod.dart",
