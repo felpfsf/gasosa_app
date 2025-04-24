@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gasosa_app/presentation/pages/auth/widgets/auth_google_button.dart';
 import 'package:gasosa_app/presentation/pages/auth/widgets/login_form.dart';
+import 'package:gasosa_app/presentation/widgets/logo_hero.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
@@ -23,14 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
-                Hero(
-                  tag: 'app-logo',
-                  child: Image.asset(
-                    'assets/images/app_logo_novo.png',
-                    width: 120,
-                    height: 120,
-                  ),
-                ),
+                LogoHero(size: 200),
                 AppSpacing.gap24,
                 Text('Entrar no Gasosa', style: AppTypography.titleLg),
                 AppSpacing.gap24,
