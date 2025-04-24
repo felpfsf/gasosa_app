@@ -15,3 +15,7 @@ class UnexpectedFailure extends Failure {
 class NetworkFailure extends Failure {
   NetworkFailure(super.message);
 }
+
+class AuthFailure extends Failure {
+  AuthFailure(super.message);
+}
