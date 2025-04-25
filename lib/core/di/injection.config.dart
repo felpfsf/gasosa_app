@@ -74,11 +74,11 @@ extension GetItInjectableX on _i174.GetIt {
     _i526.EnvironmentFilter? environmentFilter,
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
-    final databaseModule = _$DatabaseModule();
     final firebaseModule = _$FirebaseModule();
+    final databaseModule = _$DatabaseModule();
     final daoModule = _$DaoModule();
-    gh.lazySingleton<_i848.GasosaDatabase>(() => databaseModule.database);
     gh.lazySingleton<_i59.FirebaseAuth>(() => firebaseModule.firebaseAuth);
+    gh.lazySingleton<_i848.GasosaDatabase>(() => databaseModule.database);
     gh.lazySingleton<_i40.FirebaseAuthService>(
       () => firebaseModule.providerFirebaseAuthService(gh<_i59.FirebaseAuth>()),
     );
@@ -206,8 +206,8 @@ extension GetItInjectableX on _i174.GetIt {
   }
 }
 
-class _$DatabaseModule extends _i36.DatabaseModule {}
-
 class _$FirebaseModule extends _i827.FirebaseModule {}
+
+class _$DatabaseModule extends _i36.DatabaseModule {}
 
 class _$DaoModule extends _i180.DaoModule {}

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_state.dart';
 import 'package:gasosa_app/presentation/pages/auth/widgets/register_form.dart';
+import 'package:gasosa_app/presentation/widgets/custom_loader.dart';
 import 'package:gasosa_app/presentation/widgets/index.dart';
+import 'package:gasosa_app/presentation/widgets/messages.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:go_router/go_router.dart';
@@ -16,11 +18,11 @@ class RegisterScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         state.whenOrNull(
-          authenticated: (user) => context.go('/auth/login'),
-          error:
-              (message) => ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(message))),
+          authenticated: (user) {
+            Messages.showSuccess(context, 'Usuário criado com sucesso!');
+            context.go('/vehicles');
+          },
+          error: (message) => Messages.showError(context, message),
         );
       },
       builder: (context, state) {
@@ -48,8 +50,16 @@ class RegisterScreen extends StatelessWidget {
                     AppSpacing.gap24,
                     Text('Crie sua conta', style: AppTypography.titleLg),
                     AppSpacing.gap24,
-                    RegisterForm(onSubmit: (name, email, password) => {}),
-                    AppSpacing.gap16,
+                    RegisterForm(),
+                    CustomLoader<AuthCubit, AuthState>(
+                      selector:
+                          (state) => state.maybeWhen(
+                            loading: () => true,
+                            orElse: () => false,
+                          ),
+                      isOverlay: true,
+                      size: 48,
+                    ),
                   ],
                 ),
               ),

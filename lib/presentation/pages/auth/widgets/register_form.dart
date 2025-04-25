@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/domain/entities/user.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_password_field.dart';
 import 'package:gasosa_app/presentation/widgets/index.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
+import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
 class RegisterForm extends StatefulWidget {
-  final void Function(String name, String email, String password) onSubmit;
+  final bool isLoading;
 
-  const RegisterForm({super.key, required this.onSubmit});
+  const RegisterForm({super.key, this.isLoading = false});
 
   @override
   State<RegisterForm> createState() => _RegisterFormState();
@@ -20,14 +24,20 @@ class _RegisterFormState extends State<RegisterForm> {
   final _passwordEC = TextEditingController();
   final _confirmPasswordEC = TextEditingController();
 
-
   void _onSubmit() {
     if (formKey.currentState?.validate() ?? false) {
       final name = _nameEC.text.trim();
       final email = _emailEC.text.trim();
       final password = _passwordEC.text.trim();
 
-      widget.onSubmit(name, email, password);
+      final user = User(
+        id: const Uuid().v4(),
+        name: name,
+        email: email,
+        createdAt: DateTime.now(),
+      );
+
+      context.read<AuthCubit>().register(user, password);
     }
   }
 
@@ -82,7 +92,12 @@ class _RegisterFormState extends State<RegisterForm> {
             ]),
           ),
           AppSpacing.gap8,
-          GasosaButton(label: 'Entrar', onPressed: _onSubmit),
+          GasosaButton(
+            label: 'Entrar',
+            onPressed: _onSubmit,
+            isDisabled: widget.isLoading,
+            
+          ),
         ],
       ),
     );

@@ -56,7 +56,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
 
           AppSpacing.gap8,
-          GasosaButton(label: 'Cadastrar', onPressed: _onSubmit),
+          GasosaButton(label: 'Entrar', onPressed: _onSubmit),
         ],
       ),
     );

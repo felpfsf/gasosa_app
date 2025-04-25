@@ -14,7 +14,7 @@ Future<void> configureDependencies({
   String enviroment = Environment.dev,
 }) async {
   getIt.init(environment: enviroment);
-  manualRegisterOverride();
+  // manualRegisterOverride();
 }
 
 void manualRegisterOverride() {
