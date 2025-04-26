@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_password_field.dart';
 import 'package:gasosa_app/presentation/widgets/index.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:validatorless/validatorless.dart';
 
 class LoginForm extends StatefulWidget {
-  final void Function(String email, String password) onSubmit;
-
-  const LoginForm({super.key, required this.onSubmit});
+  const LoginForm({super.key});
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -20,7 +20,10 @@ class _LoginFormState extends State<LoginForm> {
 
   void _onSubmit() {
     if (formKey.currentState?.validate() ?? false) {
-      widget.onSubmit(_emailEC.text.trim(), _passwordEC.text.trim());
+      final email = _emailEC.text.trim();
+      final password = _passwordEC.text.trim();
+
+      context.read<AuthCubit>().login(email, password);
     }
   }
 

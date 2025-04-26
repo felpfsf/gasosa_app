@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
@@ -20,9 +22,12 @@ class RegisterScreen extends StatelessWidget {
         state.whenOrNull(
           authenticated: (user) {
             Messages.showSuccess(context, 'Usuário criado com sucesso!');
-            context.go('/vehicles');
+            context.go('/dashboard');
           },
-          error: (message) => Messages.showError(context, message),
+          error: (message) {
+            Messages.showError(context, 'Erro ao criar usuário');
+            log('❌ Erro ao criar usuário: $message');
+          },
         );
       },
       builder: (context, state) {
