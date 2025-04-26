@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,10 +49,21 @@ class _SplashScreenState extends State<SplashScreen>
     });
 
     Future.delayed(const Duration(seconds: 2), () {
-      // return;
-      if (!mounted) return;
-      context.go('/auth/login');
+      checkAuthStatus();
     });
+  }
+
+  Future<void> checkAuthStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('userId');
+
+    if (!mounted) return;
+
+    if (userId != null) {
+      context.go('/dashboard');
+    } else {
+      context.go('/auth/login');
+    }
   }
 
   @override
