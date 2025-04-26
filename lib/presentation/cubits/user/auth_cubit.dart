@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/core/helpers/shared_preferences_helper.dart';
 import 'package:gasosa_app/domain/entities/user.dart';
 import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
@@ -91,10 +92,13 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   @override
   Future<void> login(String email, String password) async {
     final result = await _loginWithEmailUsecase(email, password);
-    result.fold(
-      (failure) => emit(AuthState.error(message: failure.message)),
-      (user) => emit(AuthState.authenticated(user)),
-    );
+    
+    result.fold((failure) => emit(AuthState.error(message: failure.message)), (
+      user,
+    ) async {
+      await persistUserId(user.id);
+      emit(AuthState.authenticated(user));
+    });
   }
 
   @override
@@ -107,6 +111,8 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
       },
       (firebaseUser) async {
         final saveResult = await _saveUserUsecase(user);
+
+        await persistUserId(firebaseUser.id);
 
         saveResult.fold(
           (saveFailure) => emit(AuthState.error(message: saveFailure.message)),
