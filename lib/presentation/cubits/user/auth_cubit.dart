@@ -8,6 +8,7 @@ import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
 import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth_state.dart';
 
@@ -18,6 +19,7 @@ abstract class IAuthCubit {
   void logout();
   Future<void> register(User user, String password);
   Future<void> login(String email, String password);
+  Future<void> checkLogionStatus();
 }
 
 @Injectable(as: IAuthCubit)
@@ -92,7 +94,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   @override
   Future<void> login(String email, String password) async {
     final result = await _loginWithEmailUsecase(email, password);
-    
+
     result.fold((failure) => emit(AuthState.error(message: failure.message)), (
       user,
     ) async {
@@ -120,5 +122,17 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
         );
       },
     );
+  }
+
+  @override
+  Future<void> checkLogionStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('userId');
+
+    if (userId != null) {
+      await loadUser(userId);
+    } else {
+      emit(AuthState.unauthenticated());
+    }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
+import 'package:gasosa_app/presentation/cubits/user/auth_state.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -43,58 +45,55 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _logoController.forward();
-
     Future.delayed(const Duration(milliseconds: 600), () {
       _textController.forward();
     });
 
+    // Chamar o checkLoginStatus do cubit
     Future.delayed(const Duration(seconds: 2), () {
-      checkAuthStatus();
+      if (!mounted) return;
+      context.read<AuthCubit>().checkLogionStatus();
     });
-  }
-
-  Future<void> checkAuthStatus() async {
-    final prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString('userId');
-
-    if (!mounted) return;
-
-    if (userId != null) {
-      context.go('/dashboard');
-    } else {
-      context.go('/auth/login');
-    }
   }
 
   @override
   void dispose() {
-    super.dispose();
     _textController.dispose();
     _logoController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          spacing: 24,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SlideTransition(
-              position: _logoAnimation,
-              child: Hero(
-                tag: 'app-logo',
-                child: Image.asset('assets/images/app_logo_novo.png'),
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        state.whenOrNull(
+          authenticated: (_) => context.go('/dashboard'),
+          unauthenticated: () => context.go('/auth/login'),
+        );
+      },
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            spacing: 24,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SlideTransition(
+                position: _logoAnimation,
+                child: Hero(
+                  tag: 'app-logo',
+                  child: Image.asset('assets/images/app_logo_novo.png'),
+                ),
               ),
-            ),
-            // FadeTransition(
-            //   opacity: _textAnimation,
-            //   child: Text('Gasosa App', style: AppTypography.titleLg),
-            // ),
-          ],
+              // FadeTransition(
+              //   opacity: _textAnimation,
+              //   child: Text('Gasosa App', style: AppTypography.titleLg),
+              // ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
