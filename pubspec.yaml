@@ -50,6 +50,7 @@ dependencies:
   # freezed_annotation: ^3.0.0
   freezed: ^2.5.2
   top_snackbar_flutter: ^3.2.0
+  shared_preferences: ^2.5.3
   # freezed: ^3.0.6
 
 # ------------------------
