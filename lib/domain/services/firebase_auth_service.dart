@@ -6,7 +6,10 @@ class FirebaseAuthService {
   FirebaseAuthService({required firebase.FirebaseAuth? instance})
     : _auth = instance ?? firebase.FirebaseAuth.instance;
 
-  Future<firebase.User?> signInWithEmailAndPassword(String email, String password) async {
+  Future<firebase.User?> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     final credentials = await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,
@@ -15,13 +18,28 @@ class FirebaseAuthService {
     return credentials.user;
   }
 
-  Future<firebase.User?> registerWithEmailAndPassword(String email, String password) async {
+  Future<firebase.User?> registerWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     final credentials = await _auth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     return credentials.user;
+  }
+
+  Future<void> updateUserProfile({
+    String? displayName,
+    String? photoURL,
+  }) async {
+    final user = _auth.currentUser;
+
+    if (user != null) {
+      await user.updateProfile(displayName: displayName, photoURL: photoURL);
+      // await user.reload();
+    }
   }
 
   Future<firebase.User?> signInWithGoogle() async {}
