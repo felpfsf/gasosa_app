@@ -49,7 +49,6 @@ class _SplashScreenState extends State<SplashScreen>
       _textController.forward();
     });
 
-    // Chamar o checkLoginStatus do cubit
     Future.delayed(const Duration(seconds: 2), () {
       if (!mounted) return;
       context.read<AuthCubit>().checkLogionStatus();

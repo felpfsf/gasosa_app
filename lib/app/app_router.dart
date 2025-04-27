@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
 import 'package:gasosa_app/presentation/pages/auth/register_screen.dart';
+import 'package:gasosa_app/presentation/pages/dashboard/dashboard_screen.dart';
 import 'package:gasosa_app/presentation/pages/splash/splash_screen.dart';
-import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -30,19 +29,3 @@ final appRouter = GoRouter(
     ),
   ],
 );
-
-class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text(
-          'Dashboard',
-          style: AppTypography.titleLg,
-        ),
-      ),
-    );
-  }
-}
