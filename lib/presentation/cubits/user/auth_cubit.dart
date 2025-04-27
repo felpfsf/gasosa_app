@@ -85,6 +85,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   void logout() async {
     emit(AuthState.unauthenticated());
     final result = await _logoutUsecase();
+    await removeUserId();
     result.fold(
       (failure) => emit(AuthState.error(message: failure.message)),
       (_) => emit(AuthState.unauthenticated()),
@@ -112,13 +113,21 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
         emit(AuthState.error(message: failure.message));
       },
       (firebaseUser) async {
-        final saveResult = await _saveUserUsecase(user);
+        final userEntity = User(
+          id: firebaseUser.id,
+          name: firebaseUser.name,
+          email: firebaseUser.email,
+          photoUrl: firebaseUser.photoUrl,
+          createdAt: DateTime.now(),
+        );
+
+        final saveResult = await _saveUserUsecase(userEntity);
 
         await persistUserId(firebaseUser.id);
 
         saveResult.fold(
           (saveFailure) => emit(AuthState.error(message: saveFailure.message)),
-          (_) => emit(AuthState.authenticated(firebaseUser)),
+          (_) => emit(AuthState.authenticated(userEntity)),
         );
       },
     );

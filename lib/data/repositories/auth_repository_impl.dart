@@ -64,13 +64,20 @@ class AuthRepositoryImpl implements AuthRepository {
         return Left(AuthFailure('Falha ao criar usuário'));
       }
 
+      await _firebaseAuthService.updateUserProfile(displayName: user.name);
+
+      final updatedUser = _firebaseAuthService.currentUser;
+      if (updatedUser == null) {
+        return Left(AuthFailure('Falha ao atualizar usuário'));
+      }
+
       return Right(
         domain.User(
-          id: createdUser.uid,
-          name: createdUser.displayName ?? '',
-          email: createdUser.email ?? '',
-          photoUrl: createdUser.photoURL ?? '',
-          createdAt: createdUser.metadata.creationTime ?? DateTime.now(),
+          id: updatedUser.uid,
+          name: updatedUser.displayName ?? '',
+          email: updatedUser.email ?? '',
+          photoUrl: updatedUser.photoURL ?? '',
+          createdAt: updatedUser.metadata.creationTime ?? DateTime.now(),
         ),
       );
     } on Exception catch (e) {
