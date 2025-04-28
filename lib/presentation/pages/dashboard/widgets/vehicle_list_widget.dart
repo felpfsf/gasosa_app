@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gasosa_app/domain/entities/vehicle.dart';
+import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/widgets/vehicle_card_widget.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 
 class VehicleListWidget extends StatelessWidget {
-  final List<Vehicle> vehicles;
+  final List<VehicleWithLastRefuel> vehicles;
 
   const VehicleListWidget({super.key, required this.vehicles});
 
