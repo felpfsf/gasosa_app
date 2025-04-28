@@ -29,10 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final authState = context.watch<AuthCubit>().state;
 
-    String username = authState.maybeWhen(
-      authenticated: (user) => user.name,
-      orElse: () => 'Usuário',
-    );
+    String username = authState.maybeWhen(authenticated: (user) => user.name, orElse: () => 'Usuário');
 
     Future<void> logout() async {
       await context.read<AuthCubit>().logout();
@@ -41,10 +38,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Bem vindo, $username'),
-        centerTitle: true,
-        actions: [
-          IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout)),
-        ],
+        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+        actions: [IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout))],
       ),
       body: BlocBuilder<VehicleCubit, VehicleState>(
         builder: (context, state) {
@@ -52,11 +47,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             initial: () => const SizedBox.shrink(),
             loading:
                 () => CustomLoader<VehicleCubit, VehicleState>(
-                  selector:
-                      (state) => state.maybeWhen(
-                        loading: () => true,
-                        orElse: () => false,
-                      ),
+                  selector: (state) => state.maybeWhen(loading: () => true, orElse: () => false),
                   isOverlay: true,
                   size: 48,
                 ),

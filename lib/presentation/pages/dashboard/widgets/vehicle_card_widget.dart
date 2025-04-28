@@ -22,31 +22,44 @@ class VehicleCardWidget extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: AppSpacing.md,
+              spacing: AppSpacing.sm,
               children: [
-                Row(
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   spacing: AppSpacing.sm,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(vehicle.name, style: AppTypography.titleSm.copyWith(color: AppColors.border)),
+                    Text(
+                      vehicle.name,
+                      style: AppTypography.titleSm.copyWith(color: AppColors.border),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     if (vehicle.plate != null)
-                      Text('• ${vehicle.plate!}', style: AppTypography.textSmRegular.copyWith(color: AppColors.border)),
+                      Text(
+                        '• ${vehicle.plate!}',
+                        style: AppTypography.textSmRegular.copyWith(color: AppColors.border),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const Icon(Icons.local_gas_station, color: AppColors.border, size: 18),
+                    // Text(
+                    //   vehicle.fuelType,
+                    //   style: AppTypography.textMdRegular.copyWith(color: AppColors.border),
+                    //   overflow: TextOverflow.ellipsis,
+                    // ),
+                    FuelTypeBadge(fuelType: vehicle.fuelType),
                   ],
                 ),
                 Row(
-                  spacing: AppSpacing.sm,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.local_gas_station, color: AppColors.border),
-                    Text(vehicle.fuelType, style: AppTypography.textMdRegular.copyWith(color: AppColors.border)),
-                  ],
-                ),
-                Row(
                   spacing: AppSpacing.sm,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Icon(Icons.calendar_month, color: AppColors.border, size: 16),
-                    Expanded(
+                    const Icon(Icons.calendar_month, color: AppColors.border, size: 18),
+                    Flexible(
                       child: RichText(
                         text: TextSpan(
                           style: AppTypography.textSmRegular.copyWith(color: AppColors.border),
@@ -69,6 +82,21 @@ class VehicleCardWidget extends StatelessWidget {
           Icon(Icons.arrow_forward_ios_rounded, color: AppColors.border),
         ],
       ),
+    );
+  }
+}
+
+class FuelTypeBadge extends StatelessWidget {
+  final String fuelType;
+
+  const FuelTypeBadge({super.key, required this.fuelType});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+      decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: .1), borderRadius: AppSpacing.radiusMd),
+      child: Text(fuelType, style: AppTypography.textSmBold.copyWith(color: AppColors.primary)),
     );
   }
 }
