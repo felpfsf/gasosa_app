@@ -5,6 +5,7 @@ import 'package:gasosa_app/core/config/app_config.dart';
 import 'package:gasosa_app/core/di/injection.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_state.dart';
+import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:super_banners/super_banners.dart';
@@ -23,6 +24,9 @@ class GasosaApp extends StatelessWidget {
     app = MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<IAuthCubit>() as AuthCubit),
+        BlocProvider(
+          create: (context) => getIt<IVehicleCubit>() as VehicleCubit,
+        ),
       ],
       child: BlocListener<AuthCubit, AuthState>(
         listenWhen:
