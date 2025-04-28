@@ -82,7 +82,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   }
 
   @override
-  void logout() async {
+  Future<void> logout() async {
     emit(AuthState.unauthenticated());
     final result = await _logoutUsecase();
     await removeUserId();

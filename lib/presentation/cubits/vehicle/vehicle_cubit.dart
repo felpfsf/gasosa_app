@@ -16,6 +16,7 @@ abstract class IVehicleCubit {
   Future<void> updateVehicle(Vehicle vehicle);
   Future<void> deleteVehicle(Vehicle vehicle);
   Future<void> close();
+  void fetchVehiclesMock();
 }
 
 @Injectable(as: IVehicleCubit)
@@ -84,5 +85,41 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
   Future<void> close() async {
     _vehicleStream?.cancel();
     await super.close();
-  } 
+  }
+
+  @override
+  void fetchVehiclesMock() {
+    emit(VehicleState.loading());
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      emit(
+        VehicleState.loaded([
+          Vehicle(
+            id: '1',
+            name: 'Corolla XRS 2015',
+            plate: 'ABC-1234',
+            fuelType: 'Flex',
+            createdAt: DateTime.now(),
+            userId: 'mock-user',
+          ),
+          Vehicle(
+            id: '2',
+            name: 'Civic 2020',
+            plate: 'XYZ-5678',
+            fuelType: 'Gasoline',
+            createdAt: DateTime.now(),
+            userId: 'mock-user',
+          ),
+          Vehicle(
+            id: '3',
+            name: 'Fusca 1970',
+            plate: 'OLD-1234',
+            fuelType: 'Gasoline',
+            createdAt: DateTime.now(),
+            userId: 'mock-user',
+          ),
+        ]),
+      );
+    });
+  }
 }
