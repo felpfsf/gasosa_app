@@ -21,7 +21,7 @@ mixin _$VehicleState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
@@ -29,7 +29,7 @@ mixin _$VehicleState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ mixin _$VehicleState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -136,7 +136,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -148,7 +148,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -160,7 +160,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -261,7 +261,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -273,7 +273,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -285,7 +285,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -348,7 +348,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
     $Res Function(_$LoadedImpl) then,
   ) = __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Vehicle> vehicles});
+  $Res call({List<VehicleWithLastRefuel> vehicles});
 }
 
 /// @nodoc
@@ -370,7 +370,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
         null == vehicles
             ? _value._vehicles
             : vehicles // ignore: cast_nullable_to_non_nullable
-                as List<Vehicle>,
+                as List<VehicleWithLastRefuel>,
       ),
     );
   }
@@ -379,11 +379,12 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl(final List<Vehicle> vehicles) : _vehicles = vehicles;
+  const _$LoadedImpl(final List<VehicleWithLastRefuel> vehicles)
+    : _vehicles = vehicles;
 
-  final List<Vehicle> _vehicles;
+  final List<VehicleWithLastRefuel> _vehicles;
   @override
-  List<Vehicle> get vehicles {
+  List<VehicleWithLastRefuel> get vehicles {
     if (_vehicles is EqualUnmodifiableListView) return _vehicles;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_vehicles);
@@ -419,7 +420,7 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -431,7 +432,7 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -443,7 +444,7 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -496,9 +497,10 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements VehicleState {
-  const factory _Loaded(final List<Vehicle> vehicles) = _$LoadedImpl;
+  const factory _Loaded(final List<VehicleWithLastRefuel> vehicles) =
+      _$LoadedImpl;
 
-  List<Vehicle> get vehicles;
+  List<VehicleWithLastRefuel> get vehicles;
 
   /// Create a copy of VehicleState
   /// with the given fields replaced by the non-null parameter values.
@@ -579,7 +581,7 @@ class _$SuccessImpl implements _Success {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -591,7 +593,7 @@ class _$SuccessImpl implements _Success {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -603,7 +605,7 @@ class _$SuccessImpl implements _Success {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -740,7 +742,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Vehicle> vehicles) loaded,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -752,7 +754,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Vehicle> vehicles)? loaded,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -764,7 +766,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Vehicle> vehicles)? loaded,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),

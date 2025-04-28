@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
+import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart';
@@ -26,8 +27,7 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
   final IUpdateVehicleUsecase _update;
   final IDeleteVehicleUsecase _delete;
 
-  VehicleCubit(this._watchAll, this._add, this._update, this._delete)
-    : super(const VehicleState.initial());
+  VehicleCubit(this._watchAll, this._add, this._update, this._delete) : super(const VehicleState.initial());
 
   StreamSubscription<List<Vehicle>>? _vehicleStream;
 
@@ -38,10 +38,17 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     // _vehicleStream = _watchAll(userId);
     _vehicleStream?.cancel();
 
-    _vehicleStream = _watchAll(userId).listen(
-      (vehicles) => emit(VehicleState.loaded(vehicles)),
-      onError: (error) => emit(VehicleState.error(message: error.toString())),
-    );
+    _vehicleStream = _watchAll(userId).listen((vehicles) {
+      final vehiclesWithLastRefuel =
+          vehicles.map((vehicle) {
+            return VehicleWithLastRefuel(
+              vehicle: vehicle,
+              lastRefuelDate: null, // todo: get last refuel date
+            );
+          }).toList();
+
+      emit(VehicleState.loaded(vehiclesWithLastRefuel));
+    }, onError: (error) => emit(VehicleState.error(message: error.toString())));
   }
 
   @override
@@ -94,30 +101,63 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     Future.delayed(const Duration(milliseconds: 800), () {
       emit(
         VehicleState.loaded([
-          Vehicle(
-            id: '1',
-            name: 'Corolla XRS 2015',
-            plate: 'ABC-1234',
-            fuelType: 'Flex',
-            createdAt: DateTime.now(),
-            userId: 'mock-user',
+          VehicleWithLastRefuel(
+            vehicle: Vehicle(
+              id: '1',
+              name: 'Corolla XRS 2015',
+              plate: 'ABC-1234',
+              fuelType: 'Flex',
+              createdAt: DateTime.now(),
+              userId: 'mock-user',
+            ),
+            lastRefuelDate: DateTime.now().subtract(const Duration(days: 10)),
           ),
-          Vehicle(
-            id: '2',
-            name: 'Civic 2020',
-            plate: 'XYZ-5678',
-            fuelType: 'Gasoline',
-            createdAt: DateTime.now(),
-            userId: 'mock-user',
+          VehicleWithLastRefuel(
+            vehicle: Vehicle(
+              id: '2',
+              name: 'Civic 2020',
+              plate: 'XYZ-5678',
+              fuelType: 'Gasoline',
+              createdAt: DateTime.now(),
+              userId: 'mock-user',
+            ),
+            lastRefuelDate: DateTime.now().subtract(const Duration(days: 5)),
           ),
-          Vehicle(
-            id: '3',
-            name: 'Fusca 1970',
-            plate: 'OLD-1234',
-            fuelType: 'Gasoline',
-            createdAt: DateTime.now(),
-            userId: 'mock-user',
+          VehicleWithLastRefuel(
+            vehicle: Vehicle(
+              id: '3',
+              name: 'Fusca 1970',
+              plate: 'OLD-1234',
+              fuelType: 'Gasoline',
+              createdAt: DateTime.now(),
+              userId: 'mock-user',
+            ),
+            lastRefuelDate: DateTime.now().subtract(const Duration(days: 20)),
           ),
+          // Vehicle(
+          //   id: '1',
+          //   name: 'Corolla XRS 2015',
+          //   plate: 'ABC-1234',
+          //   fuelType: 'Flex',
+          //   createdAt: DateTime.now(),
+          //   userId: 'mock-user',
+          // ),
+          // Vehicle(
+          //   id: '2',
+          //   name: 'Civic 2020',
+          //   plate: 'XYZ-5678',
+          //   fuelType: 'Gasoline',
+          //   createdAt: DateTime.now(),
+          //   userId: 'mock-user',
+          // ),
+          // Vehicle(
+          //   id: '3',
+          //   name: 'Fusca 1970',
+          //   plate: 'OLD-1234',
+          //   fuelType: 'Gasoline',
+          //   createdAt: DateTime.now(),
+          //   userId: 'mock-user',
+          // ),
         ]),
       );
     });
