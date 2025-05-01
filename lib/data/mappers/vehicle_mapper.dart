@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/data/local/dabase.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart' as domain;
 
@@ -8,7 +9,7 @@ extension VehicleMapper on domain.Vehicle {
       id: Value(id),
       name: Value(name),
       plate: Value(plate),
-      fuelType: Value(fuelType),
+      fuelType: Value(fuelType.name),
       userId: Value(userId),
       createdAt: Value(createdAt),
       updatedBy: Value(updatedBy),
@@ -23,7 +24,7 @@ extension VehicleDataTodomain on Vehicle {
       id: id,
       name: name,
       plate: plate,
-      fuelType: fuelType,
+      fuelType: FuelTypeExtension.fromString(fuelType),
       userId: userId,
       createdAt: createdAt,
       updatedBy: updatedBy,

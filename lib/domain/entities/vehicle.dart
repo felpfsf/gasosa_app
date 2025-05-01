@@ -1,8 +1,10 @@
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
+
 class Vehicle {
   final String id;
   final String name;
   final String? plate;
-  final String fuelType;
+  final FuelType fuelType;
   final String userId;
   final DateTime createdAt;
   final String? updatedBy;
@@ -22,7 +24,7 @@ class Vehicle {
   Vehicle copyWith({
     String? name,
     String? plate,
-    String? fuelType,
+    FuelType? fuelType,
     DateTime? updatedAt,
     String? updatedBy,
   }) {

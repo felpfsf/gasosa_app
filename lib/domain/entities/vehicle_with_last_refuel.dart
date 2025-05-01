@@ -1,4 +1,5 @@
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart' as domain;
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 
 class VehicleWithLastRefuel {
@@ -10,7 +11,7 @@ class VehicleWithLastRefuel {
   String get id => vehicle.id;
   String get name => vehicle.name;
   String? get plate => vehicle.plate;
-  String get fuelType => vehicle.fuelType;
+  domain.FuelType get fuelType => vehicle.fuelType;
   String get userId => vehicle.userId;
   DateTime get createdAt => vehicle.createdAt;
 

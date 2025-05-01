@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
@@ -106,7 +107,7 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
               id: '1',
               name: 'Corolla XRS 2015',
               plate: 'ABC-1234',
-              fuelType: 'Flex',
+              fuelType: FuelType.gasoline,
               createdAt: DateTime.now(),
               userId: 'mock-user',
             ),
@@ -117,7 +118,7 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
               id: '2',
               name: 'Civic 2020',
               plate: 'XYZ-5678',
-              fuelType: 'Gasoline',
+              fuelType: FuelType.ethanol,
               createdAt: DateTime.now(),
               userId: 'mock-user',
             ),
@@ -128,7 +129,7 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
               id: '3',
               name: 'Fusca 1970',
               plate: 'OLD-1234',
-              fuelType: 'Gasoline',
+              fuelType: FuelType.gasoline,
               createdAt: DateTime.now(),
               userId: 'mock-user',
             ),

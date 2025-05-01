@@ -1,9 +1,11 @@
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
+
 class Refuel {
   final String id;
   final String vehicleId;
   final DateTime date;
   final double odometer;
-  final String fuelType;
+  final FuelType fuelType;
   final double liters;
   final double totalValue;
   final double? pricePerLiter;
@@ -37,7 +39,7 @@ class Refuel {
     DateTime? date,
     double? odometer,
     double? liters,
-    String? fuelType,
+    FuelType? fuelType,
     double? pricePerLiter,
     double? coldStartLitters,
     double? totalValue,

@@ -1,4 +1,5 @@
 import 'package:drift/drift.dart';
+import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/data/local/dabase.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart' as domain;
 
@@ -9,7 +10,7 @@ extension RefuelMapper on domain.Refuel {
       vehicleId: Value(vehicleId),
       date: Value(date),
       odometer: Value(odometer),
-      fuelType: Value(fuelType),
+      fuelType: Value(fuelType.name),
       liters: Value(liters),
       totalValue: Value(totalValue),
       pricePerLiter: Value(pricePerLiter),
@@ -31,7 +32,7 @@ extension RefuelDataTodomain on Refuel {
       vehicleId: vehicleId,
       date: date,
       odometer: odometer,
-      fuelType: fuelType,
+      fuelType: FuelTypeExtension.fromString(fuelType),
       liters: liters,
       totalValue: totalValue,
       pricePerLiter: pricePerLiter,
