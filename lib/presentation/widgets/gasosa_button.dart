@@ -9,6 +9,7 @@ class GasosaButton extends StatelessWidget {
   final bool isExpanded;
   final bool isDisabled;
   final Color? backgroundColor;
+  final Color? textColor;
 
   const GasosaButton({
     super.key,
@@ -17,6 +18,7 @@ class GasosaButton extends StatelessWidget {
     this.isExpanded = true,
     this.isDisabled = false,
     this.backgroundColor,
+    this.textColor,
   });
 
   @override
@@ -25,7 +27,7 @@ class GasosaButton extends StatelessWidget {
       onPressed: isDisabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
-        foregroundColor: AppColors.text,
+        foregroundColor: textColor ?? AppColors.text,
         textStyle: AppTypography.textSmBold,
         shape: RoundedRectangleBorder(borderRadius: AppSpacing.radiusMd),
         padding: const EdgeInsets.symmetric(
