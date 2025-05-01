@@ -3,6 +3,9 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/user.dart';
+import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
@@ -19,6 +22,9 @@ void main() {
   late ISaveUserUsecase saveUserUsecase;
   late ILoadUserUsecase loadUserUsecase;
   late IUpdateUserUsecase updateUserUsecase;
+  late ILogoutUsecase logoutUsecase;
+  late ILoginWithEmailUsecase loginWithEmailUsecase;
+  late IRegisterWithEmailUsecase registerWithEmailUsecase;
 
   final userId = const Uuid().v4();
 
@@ -38,17 +44,25 @@ void main() {
     saveUserUsecase = MockSaveUserUsecase();
     loadUserUsecase = MockLoadUserUsecase();
     updateUserUsecase = MockUpdateUserUsecase();
+    logoutUsecase = MockLogoutUsecase();
+    loginWithEmailUsecase = MockLoginWithEmailUsecase();
+    registerWithEmailUsecase = MockRegisterWithEmailUsecase();
 
-    authCubit = AuthCubit(loadUserUsecase, saveUserUsecase, updateUserUsecase);
+    authCubit = AuthCubit(
+      loadUserUsecase,
+      saveUserUsecase,
+      updateUserUsecase,
+      loginWithEmailUsecase,
+      logoutUsecase,
+      registerWithEmailUsecase,
+    );
   });
 
   group('AuthCubit', () {
     blocTest<AuthCubit, AuthState>(
       'emits [loading, authenticated] when loadUser returns a user',
       build: () {
-        when(
-          () => loadUserUsecase(userId),
-        ).thenAnswer((_) async => Right(user));
+        when(() => loadUserUsecase(userId)).thenAnswer((_) async => Right(user));
 
         return authCubit;
       },
@@ -59,9 +73,7 @@ void main() {
     blocTest<AuthCubit, AuthState>(
       'emits [loading, unauthenticated] when loadUser returns null',
       build: () {
-        when(
-          () => loadUserUsecase(userId),
-        ).thenAnswer((_) async => Right(null));
+        when(() => loadUserUsecase(userId)).thenAnswer((_) async => Right(null));
 
         return authCubit;
       },
@@ -72,15 +84,12 @@ void main() {
     blocTest<AuthCubit, AuthState>(
       'emits [loading, error] when loadUser fails',
       build: () {
-        when(
-          () => loadUserUsecase(userId),
-        ).thenAnswer((_) async => Left(DatabaseFailure('error')));
+        when(() => loadUserUsecase(userId)).thenAnswer((_) async => Left(DatabaseFailure('error')));
 
         return authCubit;
       },
       act: (cubit) => cubit.loadUser(userId),
-      expect:
-          () => [const AuthState.loading(), AuthState.error(message: 'error')],
+      expect: () => [const AuthState.loading(), AuthState.error(message: 'error')],
     );
 
     blocTest<AuthCubit, AuthState>(
@@ -91,56 +100,40 @@ void main() {
         return authCubit;
       },
       act: (cubit) => cubit.saveUser(user),
-      expect:
-          () => [
-            const AuthState.loading(),
-            AuthState.success('Successfully saved user'),
-          ],
+      expect: () => [const AuthState.loading(), AuthState.success('Successfully saved user')],
     );
 
     blocTest<AuthCubit, AuthState>(
       'emits [loading, error] when saveUser fails',
       build: () {
-        when(
-          () => saveUserUsecase(user),
-        ).thenAnswer((_) async => Left(DatabaseFailure('error')));
+        when(() => saveUserUsecase(user)).thenAnswer((_) async => Left(DatabaseFailure('error')));
 
         return authCubit;
       },
       act: (cubit) => cubit.saveUser(user),
-      expect:
-          () => [const AuthState.loading(), AuthState.error(message: 'error')],
+      expect: () => [const AuthState.loading(), AuthState.error(message: 'error')],
     );
 
     blocTest<AuthCubit, AuthState>(
       'emits [loading, success] when updateUser is successful',
       build: () {
-        when(
-          () => updateUserUsecase(user),
-        ).thenAnswer((_) async => Right(null));
+        when(() => updateUserUsecase(user)).thenAnswer((_) async => Right(null));
 
         return authCubit;
       },
       act: (cubit) => cubit.updateUser(user),
-      expect:
-          () => [
-            const AuthState.loading(),
-            AuthState.success('Successfully updated user'),
-          ],
+      expect: () => [const AuthState.loading(), AuthState.success('Successfully updated user')],
     );
 
     blocTest<AuthCubit, AuthState>(
       'emits [loading, error] when updateUser fails',
       build: () {
-        when(
-          () => updateUserUsecase(user),
-        ).thenAnswer((_) async => Left(DatabaseFailure('error')));
+        when(() => updateUserUsecase(user)).thenAnswer((_) async => Left(DatabaseFailure('error')));
 
         return authCubit;
       },
       act: (cubit) => cubit.updateUser(user),
-      expect:
-          () => [const AuthState.loading(), AuthState.error(message: 'error')],
+      expect: () => [const AuthState.loading(), AuthState.error(message: 'error')],
     );
 
     blocTest<AuthCubit, AuthState>(

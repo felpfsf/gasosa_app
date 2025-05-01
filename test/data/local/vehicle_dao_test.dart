@@ -2,6 +2,7 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/data/local/dabase.dart';
 import 'package:gasosa_app/data/mappers/vehicle_mapper.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart' as domain;
 import 'package:uuid/uuid.dart';
 
@@ -25,7 +26,7 @@ void main() {
       userId: 'user-1',
       name: 'GOL G4',
       plate: 'ABC1234',
-      fuelType: 'gasoline',
+      fuelType: FuelType.gasoline,
       createdAt: now,
     );
 

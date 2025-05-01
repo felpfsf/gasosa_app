@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart' as domain;
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:mocktail/mocktail.dart';
@@ -28,7 +29,7 @@ void main() {
       id: '1',
       name: 'car-1',
       plate: 'ABC1234',
-      fuelType: 'gasoline',
+      fuelType: FuelType.gasoline,
       createdAt: DateTime.now(),
       userId: 'user-1',
     );
@@ -48,7 +49,7 @@ void main() {
       id: '1',
       name: 'car-1',
       plate: 'ABC1234',
-      fuelType: 'gasoline',
+      fuelType: FuelType.gasoline,
       createdAt: DateTime.now(),
       userId: 'user-1',
     );

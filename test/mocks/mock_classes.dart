@@ -1,6 +1,9 @@
 import 'package:gasosa_app/domain/repositories/refuel_repository.dart';
 import 'package:gasosa_app/domain/repositories/user_repository.dart';
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart';
+import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/find_refuel_by_id_usecase.dart';
@@ -21,14 +24,23 @@ class MockRefuelRepository extends Mock implements RefuelRepository {}
 
 class MockVehicleRepository extends Mock implements VehicleRepository {}
 
+/* Auth */
+
 class MockLoadUserUsecase extends Mock implements ILoadUserUsecase {}
 
 class MockSaveUserUsecase extends Mock implements ISaveUserUsecase {}
 
 class MockUpdateUserUsecase extends Mock implements IUpdateUserUsecase {}
 
-class MockWatchAllVehiclesByUserIdUsecase extends Mock
-    implements IWatchAllVehiclesByUserIdUsecase {}
+class MockLoginWithEmailUsecase extends Mock implements ILoginWithEmailUsecase {}
+
+class MockLogoutUsecase extends Mock implements ILogoutUsecase {}
+
+class MockRegisterWithEmailUsecase extends Mock implements IRegisterWithEmailUsecase {}
+
+/* Vehicle */
+
+class MockWatchAllVehiclesByUserIdUsecase extends Mock implements IWatchAllVehiclesByUserIdUsecase {}
 
 class MockAddVehicleUsecase extends Mock implements IAddVehicleUsecase {}
 
@@ -36,11 +48,11 @@ class MockUpdateVehicleUsecase extends Mock implements IUpdateVehicleUsecase {}
 
 class MockDeleteVehicleUsecase extends Mock implements IDeleteVehicleUsecase {}
 
-class MockFindRefuelByIdUsecase extends Mock
-    implements IFindRefuelByIdUsecase {}
+/* Refuel */
 
-class MocktchAllRefuelsByVehicleIdUsecase extends Mock
-    implements IWatchAllRefuelsByVehicleIdUsecase {}
+class MockFindRefuelByIdUsecase extends Mock implements IFindRefuelByIdUsecase {}
+
+class MocktchAllRefuelsByVehicleIdUsecase extends Mock implements IWatchAllRefuelsByVehicleIdUsecase {}
 
 class MockAddRefuelUsecase extends Mock implements IAddRefuelUsecase {}
 

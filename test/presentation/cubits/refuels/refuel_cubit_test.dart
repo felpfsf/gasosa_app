@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart';
@@ -29,7 +30,7 @@ void main() {
     id: const Uuid().v4(),
     vehicleId: vehicleId,
     date: DateTime.now(),
-    fuelType: 'gasoline',
+    fuelType: FuelType.gasoline,
     odometer: 100,
     liters: 100,
     totalValue: 100,

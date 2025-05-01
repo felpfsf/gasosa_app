@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/domain/usecases/refuel/watch_all_refuels_by_vehicle_id_usecase.dart';
 import 'package:mocktail/mocktail.dart';
@@ -28,7 +29,7 @@ void main() {
       vehicleId: 'car-1',
       date: DateTime.now(),
       odometer: 12000,
-      fuelType: 'gasoline',
+      fuelType: FuelType.gasoline,
       liters: 40.0,
       totalValue: 240.0,
       pricePerLiter: 6.0,
