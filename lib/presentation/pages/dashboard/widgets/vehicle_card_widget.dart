@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
@@ -87,7 +89,7 @@ class VehicleCardWidget extends StatelessWidget {
 }
 
 class FuelTypeBadge extends StatelessWidget {
-  final String fuelType;
+  final FuelType fuelType;
 
   const FuelTypeBadge({super.key, required this.fuelType});
 
@@ -96,7 +98,7 @@ class FuelTypeBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
       decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: .1), borderRadius: AppSpacing.radiusMd),
-      child: Text(fuelType, style: AppTypography.textSmBold.copyWith(color: AppColors.primary)),
+      child: Text(fuelType.label, style: AppTypography.textSmBold.copyWith(color: AppColors.primary)),
     );
   }
 }
