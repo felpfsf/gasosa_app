@@ -22,7 +22,12 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
-    context.read<VehicleCubit>().fetchVehiclesMock();
+    final user = context.read<AuthCubit>().state.maybeWhen(authenticated: (user) => user, orElse: () => null);
+
+    if (user != null) {
+      context.read<VehicleCubit>().fetchVehicles(user.id);
+    }
+    // context.read<VehicleCubit>().fetchVehiclesMock();
     super.initState();
   }
 
