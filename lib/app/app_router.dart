@@ -2,6 +2,7 @@ import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
 import 'package:gasosa_app/presentation/pages/auth/register_screen.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/dashboard_screen.dart';
 import 'package:gasosa_app/presentation/pages/splash/splash_screen.dart';
+import 'package:gasosa_app/presentation/pages/vehicles/register_vehicle_screen.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(
@@ -26,6 +27,11 @@ final appRouter = GoRouter(
       path: '/dashboard',
       name: 'dashboard',
       builder: (context, state) => const DashboardScreen(),
+    ),
+    GoRoute(
+      path: '/vehicles/register',
+      name: 'register_vehicle',
+      builder: (context, state) => const RegisterVehicleScreen(),
     ),
   ],
 );
