@@ -16,7 +16,7 @@ class WatchAllVehiclesByUserIdUsecase
   }) : _vehicleRepository = vehicleRepository;
 
   @override
-  Stream<List<Vehicle>> call(String userId) {
-    return _vehicleRepository.watchAllVehiclesByUserId(userId);
+  Stream<List<Vehicle>> call(String userId) async* {
+    yield* await _vehicleRepository.watchAllVehiclesByUserId(userId);
   }
 }

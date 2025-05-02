@@ -80,8 +80,9 @@ class VehicleRepositoryImpl implements VehicleRepository {
   }
 
   @override
-  Stream<List<domain.Vehicle>> watchAllVehiclesByUserId(String userId) {
-    return _vehicleDao
+  Stream<List<domain.Vehicle>> watchAllVehiclesByUserId(String userId) async* {
+    await Future.delayed(const Duration(milliseconds: 800));
+    yield* _vehicleDao
         .watchAllVehiclesByUserId(userId)
         .map(
           (vehicles) => vehicles.map((vehicle) => vehicle.toDomain()).toList(),
