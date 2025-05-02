@@ -22,13 +22,18 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
+    _loadVehicles();
+    super.initState();
+  }
+
+  void _loadVehicles() {
     final user = context.read<AuthCubit>().state.maybeWhen(authenticated: (user) => user, orElse: () => null);
 
     if (user != null) {
       context.read<VehicleCubit>().fetchVehicles(user.id);
     }
+
     // context.read<VehicleCubit>().fetchVehiclesMock();
-    super.initState();
   }
 
   @override
@@ -41,12 +46,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       await context.read<AuthCubit>().logout();
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bem vindo, $username'),
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        actions: [IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout))],
+    AppBar appBar = AppBar(
+      title: RichText(
+        text: TextSpan(
+          text: 'Bem vindo, ',
+          style: AppTypography.titleSm,
+          children: [TextSpan(text: username, style: AppTypography.titleSm.copyWith(color: AppColors.primary))],
+        ),
       ),
+      leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
+      actions: [IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout))],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: BlocBuilder<VehicleCubit, VehicleState>(
         builder: (context, state) {
           return state.when(
@@ -86,6 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onPressed: () {
           context.push('/vehicles/register');
         },
+        tooltip: 'Adicionar veículo',
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
         child: Icon(Icons.add, color: AppColors.text),
       ),
