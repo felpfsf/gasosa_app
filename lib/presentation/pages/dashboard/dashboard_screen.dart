@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/app_router.dart';
+import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_state.dart';
@@ -60,8 +61,9 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
 
     String username = authState.maybeWhen(authenticated: (user) => user.name, orElse: () => 'Usuário');
 
-    Future<void> logout() async {
-      await context.read<AuthCubit>().logout();
+    void logout() {
+      context.read<AuthCubit>().logout();
+      context.go(RoutePaths.login);
     }
 
     return Scaffold(
