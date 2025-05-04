@@ -149,14 +149,6 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),
     );
-    gh.factory<_i1070.IVehicleCubit>(
-      () => _i1070.VehicleCubit(
-        gh<_i868.IWatchAllVehiclesByUserIdUsecase>(),
-        gh<_i267.IAddVehicleUsecase>(),
-        gh<_i793.IUpdateVehicleUsecase>(),
-        gh<_i766.IDeleteVehicleUsecase>(),
-      ),
-    );
     gh.factory<_i406.IFindVehicleByIdUsecase>(
       () => _i406.FindVehicleByIdUsecase(
         vehicleRepository: gh<_i35.VehicleRepository>(),
@@ -191,6 +183,15 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i660.ILoginWithEmailUsecase>(),
         gh<_i462.ILogoutUsecase>(),
         gh<_i630.IRegisterWithEmailUsecase>(),
+      ),
+    );
+    gh.factory<_i1070.IVehicleCubit>(
+      () => _i1070.VehicleCubit(
+        gh<_i868.IWatchAllVehiclesByUserIdUsecase>(),
+        gh<_i267.IAddVehicleUsecase>(),
+        gh<_i793.IUpdateVehicleUsecase>(),
+        gh<_i766.IDeleteVehicleUsecase>(),
+        gh<_i406.IFindVehicleByIdUsecase>(),
       ),
     );
     gh.factory<_i817.IRefuelCubit>(
