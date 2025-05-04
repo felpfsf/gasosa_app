@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart';
@@ -18,6 +19,8 @@ abstract class IRefuelCubit {
   Future<void> deleteRefuel(Refuel refuel);
   Future<Refuel?> findRefuelById(String id);
   Future<void> close();
+
+  void fetchRefuelsMock();
 }
 
 @Injectable(as: IRefuelCubit)
@@ -28,13 +31,8 @@ class RefuelCubit extends Cubit<RefuelState> implements IRefuelCubit {
   final IFindRefuelByIdUsecase _findRefuelById;
   final IUpdateRefuelUsecase _update;
 
-  RefuelCubit(
-    this._add,
-    this._delete,
-    this._findRefuelById,
-    this._update,
-    this._watchAll,
-  ) : super(const RefuelState.initial());
+  RefuelCubit(this._add, this._delete, this._findRefuelById, this._update, this._watchAll)
+    : super(const RefuelState.initial());
 
   StreamSubscription<List<Refuel>>? _refuelStream;
 
@@ -90,8 +88,84 @@ class RefuelCubit extends Cubit<RefuelState> implements IRefuelCubit {
   Future<Refuel?> findRefuelById(String id) {
     emit(const RefuelState.loading());
 
-    return _findRefuelById(
-      id,
-    ).then((refuel) => refuel.fold((failure) => null, (refuel) => refuel));
+    return _findRefuelById(id).then((refuel) => refuel.fold((failure) => null, (refuel) => refuel));
+  }
+
+  @override
+  void fetchRefuelsMock() {
+    emit(RefuelState.loading());
+
+    Future.delayed(const Duration(milliseconds: 800), () {
+      emit(
+        RefuelState.loaded([
+          Refuel(
+            id: '1',
+            vehicleId: '1',
+            date: DateTime.now().subtract(const Duration(days: 10)),
+            fuelType: FuelType.gasoline,
+            odometer: 10000,
+            liters: 50,
+            totalValue: 250,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+          Refuel(
+            id: '2',
+            vehicleId: '1',
+            date: DateTime.now().subtract(const Duration(days: 5)),
+            fuelType: FuelType.ethanol,
+            odometer: 10100,
+            liters: 40,
+            totalValue: 200,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+          Refuel(
+            id: '3',
+            vehicleId: '2',
+            date: DateTime.now().subtract(const Duration(days: 2)),
+            fuelType: FuelType.diesel,
+            odometer: 10200,
+            liters: 60,
+            totalValue: 300,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+          Refuel(
+            id: '4',
+            vehicleId: '2',
+            date: DateTime.now(),
+            fuelType: FuelType.gasoline,
+            odometer: 10300,
+            liters: 70,
+            totalValue: 350,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+          Refuel(
+            id: '5',
+            vehicleId: '3',
+            date: DateTime.now().subtract(const Duration(days: 10)),
+            fuelType: FuelType.gasoline,
+            odometer: 10400,
+            liters: 80,
+            totalValue: 400,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+          Refuel(
+            id: '6',
+            vehicleId: '3',
+            date: DateTime.now().subtract(const Duration(days: 5)),
+            fuelType: FuelType.ethanol,
+            odometer: 10500,
+            liters: 90,
+            totalValue: 450,
+            createdBy: 'mock-user',
+            createdAt: DateTime.now(),
+          ),
+        ]),
+      );
+    });
   }
 }

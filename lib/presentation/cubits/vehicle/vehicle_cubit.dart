@@ -6,6 +6,7 @@ import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart';
+import 'package:gasosa_app/domain/usecases/vehicle/find_vehicle_by_id_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart';
 import 'package:injectable/injectable.dart';
@@ -19,6 +20,7 @@ abstract class IVehicleCubit {
   Future<void> deleteVehicle(Vehicle vehicle);
   Future<void> close();
   void fetchVehiclesMock();
+  Future<void> fetchVehicleById(String id);
 }
 
 @Injectable(as: IVehicleCubit)
@@ -27,8 +29,10 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
   final IAddVehicleUsecase _add;
   final IUpdateVehicleUsecase _update;
   final IDeleteVehicleUsecase _delete;
+  final IFindVehicleByIdUsecase _findVehicleById;
 
-  VehicleCubit(this._watchAll, this._add, this._update, this._delete) : super(const VehicleState.initial());
+  VehicleCubit(this._watchAll, this._add, this._update, this._delete, this._findVehicleById)
+    : super(const VehicleState.initial());
 
   StreamSubscription<List<Vehicle>>? _vehicleStream;
 
@@ -160,6 +164,20 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
           //   userId: 'mock-user',
           // ),
         ]),
+      );
+    });
+  }
+
+  @override
+  Future<void> fetchVehicleById(String id) async {
+    emit(const VehicleState.loading());
+
+    final result = _findVehicleById(id);
+
+    result.then((value) {
+      value.fold(
+        (failure) => emit(VehicleState.error(message: failure.message)),
+        (vehicle) => emit(VehicleState.detail(VehicleWithLastRefuel(vehicle: vehicle, lastRefuelDate: null))),
       );
     });
   }

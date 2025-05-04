@@ -22,6 +22,7 @@ mixin _$VehicleState {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) => throw _privateConstructorUsedError;
@@ -30,6 +31,7 @@ mixin _$VehicleState {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) => throw _privateConstructorUsedError;
@@ -38,6 +40,7 @@ mixin _$VehicleState {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -47,6 +50,7 @@ mixin _$VehicleState {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) => throw _privateConstructorUsedError;
@@ -55,6 +59,7 @@ mixin _$VehicleState {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) => throw _privateConstructorUsedError;
@@ -63,6 +68,7 @@ mixin _$VehicleState {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -137,6 +143,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -149,6 +156,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -161,6 +169,7 @@ class _$InitialImpl implements _Initial {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -177,6 +186,7 @@ class _$InitialImpl implements _Initial {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -189,6 +199,7 @@ class _$InitialImpl implements _Initial {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -201,6 +212,7 @@ class _$InitialImpl implements _Initial {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -262,6 +274,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -274,6 +287,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -286,6 +300,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -302,6 +317,7 @@ class _$LoadingImpl implements _Loading {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -314,6 +330,7 @@ class _$LoadingImpl implements _Loading {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -326,6 +343,7 @@ class _$LoadingImpl implements _Loading {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -421,6 +439,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -433,6 +452,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -445,6 +465,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -461,6 +482,7 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -473,6 +495,7 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -485,6 +508,7 @@ class _$LoadedImpl implements _Loaded {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -506,6 +530,172 @@ abstract class _Loaded implements VehicleState {
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DetailImplCopyWith<$Res> {
+  factory _$$DetailImplCopyWith(
+    _$DetailImpl value,
+    $Res Function(_$DetailImpl) then,
+  ) = __$$DetailImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({VehicleWithLastRefuel vehicle});
+}
+
+/// @nodoc
+class __$$DetailImplCopyWithImpl<$Res>
+    extends _$VehicleStateCopyWithImpl<$Res, _$DetailImpl>
+    implements _$$DetailImplCopyWith<$Res> {
+  __$$DetailImplCopyWithImpl(
+    _$DetailImpl _value,
+    $Res Function(_$DetailImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of VehicleState
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? vehicle = null}) {
+    return _then(
+      _$DetailImpl(
+        null == vehicle
+            ? _value.vehicle
+            : vehicle // ignore: cast_nullable_to_non_nullable
+                as VehicleWithLastRefuel,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$DetailImpl implements _Detail {
+  const _$DetailImpl(this.vehicle);
+
+  @override
+  final VehicleWithLastRefuel vehicle;
+
+  @override
+  String toString() {
+    return 'VehicleState.detail(vehicle: $vehicle)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DetailImpl &&
+            (identical(other.vehicle, vehicle) || other.vehicle == vehicle));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, vehicle);
+
+  /// Create a copy of VehicleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DetailImplCopyWith<_$DetailImpl> get copyWith =>
+      __$$DetailImplCopyWithImpl<_$DetailImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function() initial,
+    required TResult Function() loading,
+    required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
+    required TResult Function(String message) success,
+    required TResult Function(String message) error,
+  }) {
+    return detail(vehicle);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function()? initial,
+    TResult? Function()? loading,
+    TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
+    TResult? Function(String message)? success,
+    TResult? Function(String message)? error,
+  }) {
+    return detail?.call(vehicle);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? initial,
+    TResult Function()? loading,
+    TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
+    TResult Function(String message)? success,
+    TResult Function(String message)? error,
+    required TResult orElse(),
+  }) {
+    if (detail != null) {
+      return detail(vehicle);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(_Initial value) initial,
+    required TResult Function(_Loading value) loading,
+    required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
+    required TResult Function(_Success value) success,
+    required TResult Function(_Error value) error,
+  }) {
+    return detail(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(_Initial value)? initial,
+    TResult? Function(_Loading value)? loading,
+    TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
+    TResult? Function(_Success value)? success,
+    TResult? Function(_Error value)? error,
+  }) {
+    return detail?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(_Initial value)? initial,
+    TResult Function(_Loading value)? loading,
+    TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
+    TResult Function(_Success value)? success,
+    TResult Function(_Error value)? error,
+    required TResult orElse(),
+  }) {
+    if (detail != null) {
+      return detail(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _Detail implements VehicleState {
+  const factory _Detail(final VehicleWithLastRefuel vehicle) = _$DetailImpl;
+
+  VehicleWithLastRefuel get vehicle;
+
+  /// Create a copy of VehicleState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DetailImplCopyWith<_$DetailImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -582,6 +772,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -594,6 +785,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -606,6 +798,7 @@ class _$SuccessImpl implements _Success {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -622,6 +815,7 @@ class _$SuccessImpl implements _Success {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -634,6 +828,7 @@ class _$SuccessImpl implements _Success {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -646,6 +841,7 @@ class _$SuccessImpl implements _Success {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
@@ -743,6 +939,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function() initial,
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
+    required TResult Function(VehicleWithLastRefuel vehicle) detail,
     required TResult Function(String message) success,
     required TResult Function(String message) error,
   }) {
@@ -755,6 +952,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? initial,
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult? Function(VehicleWithLastRefuel vehicle)? detail,
     TResult? Function(String message)? success,
     TResult? Function(String message)? error,
   }) {
@@ -767,6 +965,7 @@ class _$ErrorImpl implements _Error {
     TResult Function()? initial,
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
+    TResult Function(VehicleWithLastRefuel vehicle)? detail,
     TResult Function(String message)? success,
     TResult Function(String message)? error,
     required TResult orElse(),
@@ -783,6 +982,7 @@ class _$ErrorImpl implements _Error {
     required TResult Function(_Initial value) initial,
     required TResult Function(_Loading value) loading,
     required TResult Function(_Loaded value) loaded,
+    required TResult Function(_Detail value) detail,
     required TResult Function(_Success value) success,
     required TResult Function(_Error value) error,
   }) {
@@ -795,6 +995,7 @@ class _$ErrorImpl implements _Error {
     TResult? Function(_Initial value)? initial,
     TResult? Function(_Loading value)? loading,
     TResult? Function(_Loaded value)? loaded,
+    TResult? Function(_Detail value)? detail,
     TResult? Function(_Success value)? success,
     TResult? Function(_Error value)? error,
   }) {
@@ -807,6 +1008,7 @@ class _$ErrorImpl implements _Error {
     TResult Function(_Initial value)? initial,
     TResult Function(_Loading value)? loading,
     TResult Function(_Loaded value)? loaded,
+    TResult Function(_Detail value)? detail,
     TResult Function(_Success value)? success,
     TResult Function(_Error value)? error,
     required TResult orElse(),
