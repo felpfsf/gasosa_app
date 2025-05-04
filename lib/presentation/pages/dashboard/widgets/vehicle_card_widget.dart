@@ -6,6 +6,7 @@ import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
+import 'package:go_router/go_router.dart';
 
 class VehicleCardWidget extends StatelessWidget {
   final VehicleWithLastRefuel vehicle;
@@ -15,7 +16,9 @@ class VehicleCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GasosaCard(
-      onTap: () {},
+      onTap: () async {
+        context.push('/vehicles/detail/${vehicle.id}');
+      },
       color: Colors.white,
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
