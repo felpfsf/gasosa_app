@@ -17,6 +17,6 @@ class WatchAllVehiclesByUserIdUsecase
 
   @override
   Stream<List<Vehicle>> call(String userId) async* {
-    yield* await _vehicleRepository.watchAllVehiclesByUserId(userId);
+    yield* _vehicleRepository.watchAllVehiclesByUserId(userId);
   }
 }

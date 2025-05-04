@@ -42,7 +42,9 @@ class FirebaseAuthService {
     }
   }
 
-  Future<firebase.User?> signInWithGoogle() async {}
+  Future<firebase.User?> signInWithGoogle() async {
+    return null; // todo implement
+  }
 
   Future<void> signOut() async {
     await _auth.signOut();

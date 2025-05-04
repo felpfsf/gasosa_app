@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _logoController;
   late Animation<Offset> _logoAnimation;
   late AnimationController _textController;
-  late Animation<double> _textAnimation;
+  // late Animation<double> _textAnimation;
 
   @override
   void initState() {
@@ -39,10 +39,10 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 800),
     );
 
-    _textAnimation = CurvedAnimation(
-      parent: _textController,
-      curve: Curves.easeIn,
-    );
+    // _textAnimation = CurvedAnimation(
+    //   parent: _textController,
+    //   curve: Curves.easeIn,
+    // );
 
     _logoController.forward();
     Future.delayed(const Duration(milliseconds: 600), () {
