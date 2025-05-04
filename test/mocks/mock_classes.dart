@@ -14,6 +14,7 @@ import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart';
+import 'package:gasosa_app/domain/usecases/vehicle/find_vehicle_by_id_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart';
 import 'package:mocktail/mocktail.dart';
@@ -47,6 +48,8 @@ class MockAddVehicleUsecase extends Mock implements IAddVehicleUsecase {}
 class MockUpdateVehicleUsecase extends Mock implements IUpdateVehicleUsecase {}
 
 class MockDeleteVehicleUsecase extends Mock implements IDeleteVehicleUsecase {}
+
+class MockFindVehicleByIdUsecase extends Mock implements IFindVehicleByIdUsecase {}
 
 /* Refuel */
 

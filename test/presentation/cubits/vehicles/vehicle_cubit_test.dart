@@ -7,6 +7,7 @@ import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/add_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/delete_vehicle_usecase.dart';
+import 'package:gasosa_app/domain/usecases/vehicle/find_vehicle_by_id_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/update_vehicle_usecase.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
@@ -22,6 +23,7 @@ void main() {
   late IAddVehicleUsecase addVehicleUsecase;
   late IUpdateVehicleUsecase updateVehicleUsecase;
   late IDeleteVehicleUsecase deleteVehicleUsecase;
+  late IFindVehicleByIdUsecase findVehicleByIdUsecase;
 
   const userId = 'userId';
   final vehicle = Vehicle(
@@ -42,12 +44,14 @@ void main() {
     addVehicleUsecase = MockAddVehicleUsecase();
     updateVehicleUsecase = MockUpdateVehicleUsecase();
     deleteVehicleUsecase = MockDeleteVehicleUsecase();
+    findVehicleByIdUsecase = MockFindVehicleByIdUsecase();
 
     vehicleCubit = VehicleCubit(
       watchAllVehiclesByUserIdUsecase,
       addVehicleUsecase,
       updateVehicleUsecase,
       deleteVehicleUsecase,
+      findVehicleByIdUsecase,
     );
   });
 
@@ -151,6 +155,38 @@ void main() {
       expect: () => [const VehicleState.loading(), VehicleState.error(message: 'error')],
       verify: (_) {
         verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
+      },
+    );
+
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, success] when findVehicleById is successful',
+      build: () {
+        when(() => findVehicleByIdUsecase(vehicle.id)).thenAnswer((_) => Future.value(Right(vehicle)));
+
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.fetchVehicleById(vehicle.id),
+      expect:
+          () => [
+            const VehicleState.loading(),
+            VehicleState.detail(VehicleWithLastRefuel(vehicle: vehicle, lastRefuelDate: null)),
+          ],
+      verify: (_) {
+        verify(() => findVehicleByIdUsecase(vehicle.id)).called(1);
+      },
+    );
+
+    blocTest<VehicleCubit, VehicleState>(
+      'emits [loading, error] when findVehicleById fails',
+      build: () {
+        when(() => findVehicleByIdUsecase(vehicle.id)).thenAnswer((_) => Future.value(Left(DatabaseFailure('error'))));
+
+        return vehicleCubit;
+      },
+      act: (bloc) => bloc.fetchVehicleById(vehicle.id),
+      expect: () => [const VehicleState.loading(), VehicleState.error(message: 'error')],
+      verify: (_) {
+        verify(() => findVehicleByIdUsecase(vehicle.id)).called(1);
       },
     );
   });
