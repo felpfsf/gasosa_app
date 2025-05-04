@@ -9,8 +9,10 @@ import 'package:gasosa_app/presentation/pages/vehicles/register_vehicle_screen.d
 import 'package:gasosa_app/presentation/pages/vehicles/vehicle_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
+
 final appRouter = GoRouter(
-  observers: [],
+  observers: [routeObserver],
   initialLocation: RoutePaths.splash,
   routes: [
     GoRoute(path: RoutePaths.splash, name: RouteNames.splash, builder: (context, state) => const SplashScreen()),
