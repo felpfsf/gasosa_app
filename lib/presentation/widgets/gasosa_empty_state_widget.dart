@@ -5,18 +5,18 @@ import 'package:gasosa_app/theme/app_typography.dart';
 
 class GaososaEmptyStateWidget extends StatelessWidget {
   final String title;
-  final String message;
+  final String? message;
   final String? imagePath;
   final VoidCallback? onPressed;
-  final String actionLabel;
+  final String? actionLabel;
 
   const GaososaEmptyStateWidget({
     super.key,
     required this.title,
-    required this.message,
+    this.message,
     this.imagePath,
     this.onPressed,
-    required this.actionLabel,
+    this.actionLabel,
   });
 
   @override
@@ -35,19 +35,12 @@ class GaososaEmptyStateWidget extends StatelessWidget {
             //     height: 120,
             //     fit: BoxFit.contain,
             //   ),
-            const Icon(Icons.hourglass_bottom, color: AppColors.border, size: 44,),
-            Text(
-              title,
-              style: AppTypography.titleMd,
-              textAlign: TextAlign.center,
-            ),
-            Text(
-              message,
-              style: AppTypography.textMdRegular,
-              textAlign: TextAlign.center,
-            ),
-            if (onPressed != null)
-              ElevatedButton(onPressed: onPressed, child: Text(actionLabel)),
+            const Icon(Icons.find_in_page_rounded, color: AppColors.border, size: 96),
+            Text(title, style: AppTypography.titleMd, textAlign: TextAlign.center),
+
+            if (message != null) Text(message!, style: AppTypography.textMdRegular, textAlign: TextAlign.center),
+
+            if (onPressed != null) ElevatedButton(onPressed: onPressed, child: Text(actionLabel!)),
           ],
         ),
       ),

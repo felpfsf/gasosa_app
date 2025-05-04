@@ -31,11 +31,13 @@ class CustomLoader<B extends StateStreamable<S>, S> extends StatelessWidget {
         );
 
         if (isOverlay) {
-          return Stack(
-            children: [
-              Positioned.fill(child: ColoredBox(color: overlayColor)),
-              Positioned.fill(child: loader),
-            ],
+          return SizedBox.expand(
+            child: Stack(
+              children: [
+                Positioned.fill(child: ColoredBox(color: overlayColor)),
+                Positioned.fill(child: loader),
+              ],
+            ),
           );
         }
 

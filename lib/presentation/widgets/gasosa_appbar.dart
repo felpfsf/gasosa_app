@@ -20,7 +20,7 @@ class GasosaAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text(title, style: AppTypography.titleSm),
+      title: Text(title, style: AppTypography.textSmBold),
       centerTitle: centerTitle,
       leading: showBackButton ? leading ?? BackButton(onPressed: () => Navigator.of(context).pop) : null,
       actions: actions,
