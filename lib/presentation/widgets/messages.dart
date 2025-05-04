@@ -7,6 +7,7 @@ sealed class Messages {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.error(message: message),
+      displayDuration: Duration(milliseconds: 800),
     );
   }
 
@@ -14,10 +15,16 @@ sealed class Messages {
     showTopSnackBar(
       Overlay.of(context),
       CustomSnackBar.success(message: message),
+      displayDuration: Duration(milliseconds: 800),
+      animationDuration: Duration(milliseconds: 800),
     );
   }
 
   static void showInfo(BuildContext context, String message) {
-    showTopSnackBar(Overlay.of(context), CustomSnackBar.info(message: message));
+    showTopSnackBar(
+      Overlay.of(context),
+      CustomSnackBar.info(message: message),
+      displayDuration: Duration(milliseconds: 800),
+    );
   }
 }

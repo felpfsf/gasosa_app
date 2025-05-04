@@ -24,6 +24,7 @@ class RegisterVehicleScreen extends StatelessWidget {
           success: (_) {
             context.pop();
             Messages.showSuccess(context, 'Veículo criado com sucesso!');
+            log('✅ Veículo criado com sucesso!');
           },
         );
       },
