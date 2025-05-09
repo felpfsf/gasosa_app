@@ -81,6 +81,8 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
       fuelType: fuelType,
       userId: userId,
       createdAt: widget.initialVehicle?.createdAt ?? DateTime.now(),
+      updatedAt: isEditing ? DateTime.now() : null,
+      updatedBy: isEditing ? userId : null,
     );
 
     if (isEditing) {

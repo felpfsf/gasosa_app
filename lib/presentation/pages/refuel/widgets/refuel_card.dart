@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
+import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class RefuelCard extends StatelessWidget {
@@ -23,10 +27,12 @@ class RefuelCard extends StatelessWidget {
     final totalRefueledValue = currency.format(refuel.totalValue);
 
     void onEditPressed() {
-      
+      context.push(RoutePaths.manageRefuel(refuel.vehicleId), extra: refuel);
     }
 
-    void onDeletePressed() {}
+    void onDeletePressed() {
+      context.read<RefuelCubit>().deleteRefuel(refuel);
+    }
 
     return GasosaCard(
       enableSwipeActions: true,
