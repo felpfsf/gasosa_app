@@ -17,6 +17,7 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
+// TODO: REFATORAR PARA RECEBER O INITIAL REFUEL
 class ManagerRefuelForm extends StatefulWidget {
   final String vehicleId;
 
@@ -48,6 +49,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
 
     if (!isValid) {
       Messages.showError(context, 'Preencha todos os campos corretamente');
+      return;
     }
 
     final liters = parseMaskedLiters(_litersEC.text);
