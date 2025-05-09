@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
@@ -15,6 +16,7 @@ class GasosaFormField extends StatelessWidget {
   final int? maxLength;
   final bool enabled;
   final String? Function(String?)? validator;
+  final List<TextInputFormatter>? inputFormatters;
 
   const GasosaFormField({
     super.key,
@@ -29,6 +31,7 @@ class GasosaFormField extends StatelessWidget {
     this.maxLength,
     this.enabled = true,
     this.validator,
+    this.inputFormatters,
   });
 
   @override
@@ -47,13 +50,12 @@ class GasosaFormField extends StatelessWidget {
           maxLength: maxLength,
           enabled: enabled,
           validator: validator,
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             hintText: hint,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
-            hintStyle: AppTypography.textSmRegular.copyWith(
-              color: AppColors.text.withValues(alpha: .6),
-            ),
+            hintStyle: AppTypography.textSmRegular.copyWith(color: AppColors.text.withValues(alpha: .6)),
           ),
         ),
       ],
