@@ -17,7 +17,6 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
-// TODO: REFATORAR PARA RECEBER O INITIAL REFUEL
 class ManagerRefuelForm extends StatefulWidget {
   final String vehicleId;
   final Refuel? initialRefuel;
@@ -39,8 +38,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
   @override
   void initState() {
     if (widget.initialRefuel != null) {
-      _litersEC.text = widget.initialRefuel!.liters.toString();
-      _totalValueEC.text = widget.initialRefuel!.totalValue.toString();
+      _litersEC.text = formatMaskedLiters(widget.initialRefuel!.liters).toString();
+      _totalValueEC.text = formatMaskedCurrency(widget.initialRefuel!.totalValue).toString();
       _odometerEC.text = widget.initialRefuel!.odometer.toString();
       _selectedFuelType = widget.initialRefuel!.fuelType;
       _selectedDate = widget.initialRefuel!.date;
@@ -103,7 +102,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       odometer: odometer,
       date: date!,
       fuelType: fuelType!,
-      createdAt: DateTime.now(),
+      createdAt: isEditing ? widget.initialRefuel!.createdAt : DateTime.now(),
       createdBy: userId,
       updatedAt: isEditing ? DateTime.now() : null,
       updatedBy: isEditing ? userId : null,
