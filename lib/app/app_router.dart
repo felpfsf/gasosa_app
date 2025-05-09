@@ -4,13 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/routes/route_names.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
+import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
 import 'package:gasosa_app/presentation/pages/auth/register_screen.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/dashboard_screen.dart';
 import 'package:gasosa_app/presentation/pages/refuel/manage_refuel_screen.dart';
 import 'package:gasosa_app/presentation/pages/splash/splash_screen.dart';
-import 'package:gasosa_app/presentation/pages/vehicles/register_vehicle_screen.dart';
+import 'package:gasosa_app/presentation/pages/vehicles/manage_vehicle_screen.dart';
 import 'package:gasosa_app/presentation/pages/vehicles/vehicle_detail_screen.dart';
 import 'package:go_router/go_router.dart';
 
@@ -50,9 +51,12 @@ GoRouter createGoRouter(BuildContext context) {
         builder: (context, state) => const DashboardScreen(),
       ),
       GoRoute(
-        path: RoutePaths.registerVehicle,
-        name: RouteNames.registerVehicle,
-        builder: (context, state) => const RegisterVehicleScreen(),
+        path: RoutePaths.manageVehicle,
+        name: RouteNames.manageVehicle,
+        builder: (context, state) {
+          final vehicle = state.extra as Vehicle?;
+          return ManageVehicleScreen(vehicle: vehicle);
+        },
       ),
       GoRoute(
         path: RoutePaths.vehicleDetail(':vehicleId'),
@@ -63,8 +67,8 @@ GoRouter createGoRouter(BuildContext context) {
         },
       ),
       GoRoute(
-        path: RoutePaths.registerRefuel(':vehicleId'),
-        name: RouteNames.registerRefuel,
+        path: RoutePaths.manageRefuel(':vehicleId'),
+        name: RouteNames.manageRefuel,
         builder: (context, state) {
           final vehicleId = state.pathParameters['vehicleId']!;
           return ManageRefuelScreen(vehicleId: vehicleId);

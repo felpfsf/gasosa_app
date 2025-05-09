@@ -4,8 +4,8 @@ abstract class RouteNames {
   static const register = 'register';
   static const dashboard = 'dashboard';
 
-  static const registerVehicle = 'register_vehicle';
+  static const manageVehicle = 'manage_vehicle';
   static const vehicleDetail = 'vehicle_detail';
 
-  static const registerRefuel = 'register_refuel';
+  static const manageRefuel = 'manage_refuel';
 }

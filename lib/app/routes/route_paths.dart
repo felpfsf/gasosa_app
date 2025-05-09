@@ -4,8 +4,8 @@ abstract class RoutePaths {
   static const register = '/auth/register';
   static const dashboard = '/dashboard';
 
-  static const registerVehicle = '/vehicles/register';
+  static const manageVehicle = '/vehicles/manage';
   static String vehicleDetail(String vehicleId) => '/vehicles/detail/$vehicleId';
 
-  static String registerRefuel(String vehicleId) => '/refuel/register/$vehicleId';
+  static String manageRefuel(String vehicleId) => '/refuel/register/$vehicleId';
 }
