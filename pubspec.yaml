@@ -52,6 +52,8 @@ dependencies:
   top_snackbar_flutter: ^3.2.0
   shared_preferences: ^2.5.3
   dropdown_button2: ^2.3.9
+  flutter_slidable: ^4.0.0
+  flutter_multi_formatter: ^2.13.7
   # freezed: ^3.0.6
 
 # ------------------------
