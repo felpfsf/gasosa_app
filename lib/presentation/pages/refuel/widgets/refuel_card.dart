@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
+import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
 import 'package:intl/intl.dart';
 
@@ -20,7 +22,28 @@ class RefuelCard extends StatelessWidget {
     final liters = refuel.liters.toStringAsFixed(2);
     final totalRefueledValue = currency.format(refuel.totalValue);
 
+    void onEditPressed() {
+      
+    }
+
+    void onDeletePressed() {}
+
     return GasosaCard(
+      enableSwipeActions: true,
+      slideActions: [
+        SlidableAction(
+          label: 'Editar',
+          icon: Icons.edit,
+          backgroundColor: AppColors.primary,
+          onPressed: (_) => onEditPressed(),
+        ),
+        SlidableAction(
+          label: 'Excluir',
+          icon: Icons.delete,
+          backgroundColor: AppColors.error,
+          onPressed: (_) => onDeletePressed(),
+        ),
+      ],
       padding: EdgeInsets.all(AppSpacing.md),
       child: Column(
         spacing: AppSpacing.sm,
