@@ -27,7 +27,7 @@ GoRouter createGoRouter(BuildContext context) {
       final isOnLogin = state.matchedLocation == RoutePaths.login || state.matchedLocation == RoutePaths.register;
 
       if (!isAuthenticated && !isOnLogin) {
-        return RoutePaths.login;
+        return RoutePaths.splash;
       }
 
       if (isAuthenticated && isOnLogin) {
