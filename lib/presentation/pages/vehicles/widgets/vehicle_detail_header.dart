@@ -11,7 +11,6 @@ class VehicleDetailHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('[DEBUG] Rebuilding header for: ${vehicle.name} (${vehicle.id})');
     return GasosaCard(
       padding: EdgeInsets.all(AppSpacing.md),
       child: Column(
