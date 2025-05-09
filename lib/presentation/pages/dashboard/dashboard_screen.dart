@@ -63,7 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
 
     void logout() {
       context.read<AuthCubit>().logout();
-      context.go(RoutePaths.login);
+      // context.go(RoutePaths.login);
     }
 
     return Scaffold(
@@ -108,7 +108,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/vehicles/register');
+          context.push(RoutePaths.manageVehicle);
         },
         tooltip: 'Adicionar veículo',
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
