@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/routes/route_names.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
+import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
@@ -71,7 +72,8 @@ GoRouter createGoRouter(BuildContext context) {
         name: RouteNames.manageRefuel,
         builder: (context, state) {
           final vehicleId = state.pathParameters['vehicleId']!;
-          return ManageRefuelScreen(vehicleId: vehicleId);
+          final refuel = state.extra as Refuel?;
+          return ManageRefuelScreen(vehicleId: vehicleId, refuel: refuel);
         },
       ),
     ],

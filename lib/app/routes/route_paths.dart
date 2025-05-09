@@ -7,5 +7,5 @@ abstract class RoutePaths {
   static const manageVehicle = '/vehicles/manage';
   static String vehicleDetail(String vehicleId) => '/vehicles/detail/$vehicleId';
 
-  static String manageRefuel(String vehicleId) => '/refuel/register/$vehicleId';
+  static String manageRefuel(String vehicleId) => '/refuel/manage/$vehicleId';
 }
