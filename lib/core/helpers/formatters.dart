@@ -13,9 +13,12 @@ final currencyInputFormatter = CurrencyInputFormatter(
 );
 
 double parseMaskedCurrency(String value) {
-  final cleaned = value.replaceAll(RegExp(r'[ˆ\d,]'), '').replaceAll(',', '.');
+  final cleaned = value
+      .replaceAll('R\$', '')
+      .replaceAll(',', '.')
+      .replaceAll(RegExp(r'[^\d.]'), '');
 
-  return double.tryParse(cleaned) ?? 0.00;
+  return double.tryParse(cleaned) ?? 0.0;
 }
 
 double parseMaskedLiters(String value) {
