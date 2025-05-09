@@ -32,7 +32,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
   final _totalValueEC = TextEditingController();
   final _odometerEC = TextEditingController();
   FuelType? _selectedFuelType;
-  DateTime? _selectedDate;
+  DateTime? _selectedDate = DateTime.now();
 
   @override
   void dispose() {
