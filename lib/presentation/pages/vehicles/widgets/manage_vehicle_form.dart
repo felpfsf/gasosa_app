@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
+import 'package:gasosa_app/core/helpers/auth_helper.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
-import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_button.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_dropdown_field.dart';
@@ -15,18 +15,30 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:validatorless/validatorless.dart';
 
-class RegisterVehicleForm extends StatefulWidget {
-  const RegisterVehicleForm({super.key});
+class ManageVehicleForm extends StatefulWidget {
+  final Vehicle? initialVehicle;
+
+  const ManageVehicleForm({super.key, this.initialVehicle});
 
   @override
-  State<RegisterVehicleForm> createState() => _RegisterVehicleFormState();
+  State<ManageVehicleForm> createState() => _ManageVehicleFormState();
 }
 
-class _RegisterVehicleFormState extends State<RegisterVehicleForm> {
+class _ManageVehicleFormState extends State<ManageVehicleForm> {
   final _formKey = GlobalKey<FormState>();
   final _vehicleNameEC = TextEditingController();
   final _plateEC = TextEditingController();
   FuelType? _selectedFuelType;
+
+  @override
+  void initState() {
+    if (widget.initialVehicle != null) {
+      _vehicleNameEC.text = widget.initialVehicle!.name;
+      _plateEC.text = widget.initialVehicle?.plate ?? '';
+      _selectedFuelType = widget.initialVehicle!.fuelType;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -36,32 +48,45 @@ class _RegisterVehicleFormState extends State<RegisterVehicleForm> {
   }
 
   Future<void> _onSubmit() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final vehicleName = _vehicleNameEC.text;
-      final plate = _plateEC.text;
-      final fuelType = _selectedFuelType;
-      final userId = context.read<AuthCubit>().state.maybeWhen(authenticated: (user) => user.id, orElse: () => null);
+    final isValid = _formKey.currentState?.validate() ?? false;
 
-      if (fuelType == null) {
-        Messages.showError(context, 'Selecione o tipo de combustível');
-        return;
-      }
+    if (!isValid) {
+      Messages.showError(context, 'Preencha todos os campos corretamente');
+      return;
+    }
 
-      if (userId == null) {
-        Messages.showError(context, 'Usuário não encontrado');
-        return;
-      }
+    final vehicleName = _vehicleNameEC.text;
+    final plate = _plateEC.text;
+    final fuelType = _selectedFuelType;
 
-      context.read<VehicleCubit>().addVehicle(
-        Vehicle(
-          id: const Uuid().v4(),
-          name: vehicleName,
-          plate: plate,
-          fuelType: fuelType,
-          userId: userId,
-          createdAt: DateTime.now(),
-        ),
-      );
+    if (fuelType == null) {
+      Messages.showError(context, 'Selecione o tipo de combustível');
+      return;
+    }
+
+    final userId = AuthHelper.getCurrentUserId(context);
+
+    if (userId == null) {
+      Messages.showError(context, 'Usuário não encontrado');
+      return;
+    }
+
+    final isEditing = widget.initialVehicle != null;
+    final vehicleId = widget.initialVehicle?.id ?? const Uuid().v4();
+
+    final vehicle = Vehicle(
+      id: vehicleId,
+      name: vehicleName,
+      plate: plate,
+      fuelType: fuelType,
+      userId: userId,
+      createdAt: widget.initialVehicle?.createdAt ?? DateTime.now(),
+    );
+
+    if (isEditing) {
+      context.read<VehicleCubit>().updateVehicle(vehicle);
+    } else {
+      context.read<VehicleCubit>().addVehicle(vehicle);
     }
   }
 
@@ -102,7 +127,7 @@ class _RegisterVehicleFormState extends State<RegisterVehicleForm> {
             },
           ),
           AppSpacing.gap8,
-          GasosaButton(label: 'Registrar', onPressed: _onSubmit),
+          GasosaButton(label: widget.initialVehicle != null ? 'Editar' : 'Registrar', onPressed: _onSubmit),
           GasosaButton(
             label: 'Cancelar',
             onPressed: () {
