@@ -7,5 +7,5 @@ abstract class RouteNames {
   static const registerVehicle = 'register_vehicle';
   static const vehicleDetail = 'vehicle_detail';
 
-  static const refuelRegister = 'refuel_register';
+  static const registerRefuel = 'register_refuel';
 }

@@ -8,6 +8,7 @@ import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
 import 'package:gasosa_app/presentation/pages/auth/register_screen.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/dashboard_screen.dart';
+import 'package:gasosa_app/presentation/pages/refuel/manage_refuel_screen.dart';
 import 'package:gasosa_app/presentation/pages/splash/splash_screen.dart';
 import 'package:gasosa_app/presentation/pages/vehicles/register_vehicle_screen.dart';
 import 'package:gasosa_app/presentation/pages/vehicles/vehicle_detail_screen.dart';
@@ -62,6 +63,14 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final vehicleId = state.pathParameters['vehicleId']!;
         return VehicleDetailScreen(vehicleId: vehicleId);
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.registerRefuel(':vehicleId'),
+      name: RouteNames.registerRefuel,
+      builder: (context, state) {
+        final vehicleId = state.pathParameters['vehicleId']!;
+        return ManageRefuelScreen(vehicleId: vehicleId);
       },
     ),
   ],
