@@ -9,61 +9,58 @@ import 'package:gasosa_app/presentation/cubits/user/auth_state.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
+import 'package:go_router/go_router.dart';
 import 'package:super_banners/super_banners.dart';
-
-final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
 class GasosaApp extends StatelessWidget {
   const GasosaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Widget app = MaterialApp.router(
-      title: 'Gasosa App',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.darkTheme,
-      routerConfig: appRouter,
-    );
-    app = MultiBlocProvider(
+    return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => getIt<IAuthCubit>() as AuthCubit),
         BlocProvider(create: (context) => getIt<IVehicleCubit>() as VehicleCubit),
         BlocProvider(create: (context) => getIt<IRefuelCubit>() as RefuelCubit),
       ],
-      child: BlocListener<AuthCubit, AuthState>(
-        listenWhen: (previous, current) => current == const AuthState.unauthenticated(),
-        listener: (context, state) {},
-        child: app,
+      child: Builder(
+        builder: (context) {
+          final GoRouter router = createGoRouter(context); // agora funciona
+
+          Widget app = MaterialApp.router(
+            title: 'Gasosa App',
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.darkTheme,
+            routerConfig: router,
+          );
+
+          app = BlocListener<AuthCubit, AuthState>(
+            listenWhen: (previous, current) => current == const AuthState.unauthenticated(),
+            listener: (context, state) {
+              // você pode adicionar lógica extra aqui se quiser
+            },
+            child: app,
+          );
+
+          if (AppConfig.isDev) {
+            app = Directionality(
+              textDirection: TextDirection.ltr,
+              child: Stack(
+                children: [
+                  app,
+                  CornerBanner(
+                    bannerColor: AppColors.primary,
+                    bannerPosition: CornerBannerPosition.topLeft,
+                    child: Text('DEV MODE', style: AppTypography.textSmRegular),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return app;
+        },
       ),
     );
-
-    if (AppConfig.isDev) {
-      // app = Directionality(
-      //   textDirection: TextDirection.ltr,
-      //   child: Banner(
-      //     message: 'DEV MODE',
-      //     location: BannerLocation.topStart,
-      //     color: AppColors.primary,
-      //     textStyle: AppTypography.textSmRegular,
-      //     child: app,
-      //   ),
-      // );
-
-      app = Directionality(
-        textDirection: TextDirection.ltr,
-        child: Stack(
-          children: [
-            app,
-            CornerBanner(
-              bannerColor: AppColors.primary,
-              bannerPosition: CornerBannerPosition.topLeft,
-              child: Text('DEV MODE', style: AppTypography.textSmRegular),
-            ),
-          ],
-        ),
-      );
-    }
-
-    return app;
   }
 }

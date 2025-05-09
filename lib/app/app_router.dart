@@ -16,75 +16,71 @@ import 'package:go_router/go_router.dart';
 
 final RouteObserver<ModalRoute<void>> routeObserver = RouteObserver<ModalRoute<void>>();
 
-final appRouter = GoRouter(
-  observers: [routeObserver],
-  initialLocation: RoutePaths.splash,
-  // refreshListenable: GoRouterRefreshStream(getIt<AuthCubit>().stream),
-  redirect: (context, state) {
-    final authState = context.read<AuthCubit>().state;
-    if (authState.maybeWhen(unauthenticated: () => true, orElse: () => false)) {
-      return RoutePaths.login;
-    }
+GoRouter createGoRouter(BuildContext context) {
+  return GoRouter(
+    observers: [routeObserver],
+    initialLocation: RoutePaths.splash,
+    refreshListenable: GoRouterRefreshStream(context.read<AuthCubit>().stream),
+    redirect: (context, state) {
+      final authState = context.read<AuthCubit>().state;
+      final isAuthenticated = authState.maybeWhen(authenticated: (_) => true, orElse: () => false);
+      final isOnLogin = state.matchedLocation == RoutePaths.login || state.matchedLocation == RoutePaths.register;
 
-    return null;
+      if (!isAuthenticated && !isOnLogin) {
+        return RoutePaths.login;
+      }
 
-    // final authCubit = getIt<AuthCubit>();
-    // final authState = authCubit.state;
+      if (isAuthenticated && isOnLogin) {
+        return RoutePaths.dashboard;
+      }
 
-    // final isLoggingIn = state.uri.toString() == RoutePaths.login || state.uri.toString() == RoutePaths.register;
-
-    // if (authState.maybeWhen(unauthenticated: () => true, orElse: () => false)) {
-    //   return isLoggingIn ? null : RoutePaths.login;
-    // }
-
-    // if (authState.maybeWhen(authenticated: (_) => true, orElse: () => false)) {
-    //   return isLoggingIn ? RoutePaths.dashboard : null;
-    // }
-
-    // return null;
-  },
-  routes: [
-    GoRoute(path: RoutePaths.splash, name: RouteNames.splash, builder: (context, state) => const SplashScreen()),
-    GoRoute(path: RoutePaths.login, name: RouteNames.login, builder: (context, state) => const LoginScreen()),
-    GoRoute(path: RoutePaths.register, name: RouteNames.register, builder: (context, state) => const RegisterScreen()),
-    GoRoute(
-      path: RoutePaths.dashboard,
-      name: RouteNames.dashboard,
-      builder: (context, state) => const DashboardScreen(),
-    ),
-    GoRoute(
-      path: RoutePaths.registerVehicle,
-      name: RouteNames.registerVehicle,
-      builder: (context, state) => const RegisterVehicleScreen(),
-    ),
-    GoRoute(
-      path: RoutePaths.vehicleDetail(':vehicleId'),
-      name: RouteNames.vehicleDetail,
-      builder: (context, state) {
-        final vehicleId = state.pathParameters['vehicleId']!;
-        return VehicleDetailScreen(vehicleId: vehicleId);
-      },
-    ),
-    GoRoute(
-      path: RoutePaths.registerRefuel(':vehicleId'),
-      name: RouteNames.registerRefuel,
-      builder: (context, state) {
-        final vehicleId = state.pathParameters['vehicleId']!;
-        return ManageRefuelScreen(vehicleId: vehicleId);
-      },
-    ),
-  ],
-);
+      return null;
+    },
+    routes: [
+      GoRoute(path: RoutePaths.splash, name: RouteNames.splash, builder: (context, state) => const SplashScreen()),
+      GoRoute(path: RoutePaths.login, name: RouteNames.login, builder: (context, state) => const LoginScreen()),
+      GoRoute(
+        path: RoutePaths.register,
+        name: RouteNames.register,
+        builder: (context, state) => const RegisterScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.dashboard,
+        name: RouteNames.dashboard,
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.registerVehicle,
+        name: RouteNames.registerVehicle,
+        builder: (context, state) => const RegisterVehicleScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.vehicleDetail(':vehicleId'),
+        name: RouteNames.vehicleDetail,
+        builder: (context, state) {
+          final vehicleId = state.pathParameters['vehicleId']!;
+          return VehicleDetailScreen(vehicleId: vehicleId);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.registerRefuel(':vehicleId'),
+        name: RouteNames.registerRefuel,
+        builder: (context, state) {
+          final vehicleId = state.pathParameters['vehicleId']!;
+          return ManageRefuelScreen(vehicleId: vehicleId);
+        },
+      ),
+    ],
+  );
+}
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
     notifyListeners();
-    _subscription = stream.asBroadcastStream().listen((_) {
-      notifyListeners();
-    });
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
   }
 
-  late final StreamSubscription<dynamic> _subscription;
+  late final StreamSubscription _subscription;
 
   @override
   void dispose() {
