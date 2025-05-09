@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/app/app_router.dart';
+import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_state.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
@@ -22,27 +24,66 @@ class VehicleDetailScreen extends StatefulWidget {
   State<VehicleDetailScreen> createState() => _VehicleDetailScreenState();
 }
 
-class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
+class _VehicleDetailScreenState extends State<VehicleDetailScreen> with RouteAware {
   @override
   void initState() {
-    final vehicle = context.read<VehicleCubit>();
-    final refuelCubit = context.read<RefuelCubit>();
-
-    vehicle.fetchVehicleById(widget.vehicleId);
-    refuelCubit.watchRefuels(widget.vehicleId);
     // refuelCubit.fetchRefuelsMock();
+    _loadVehicle();
 
     super.initState();
   }
 
   @override
+  void didPopNext() {
+    _loadVehicle();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  void _loadVehicle() {
+    final vehicle = context.read<VehicleCubit>();
+    final refuelCubit = context.read<RefuelCubit>();
+
+    vehicle.fetchVehicleById(widget.vehicleId);
+    refuelCubit.watchRefuels(widget.vehicleId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: GasosaAppbar(
-        title: 'Detalhes do veículo',
-        showBackButton: true,
-        leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit))],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: BlocBuilder<VehicleCubit, VehicleState>(
+          builder: (context, state) {
+            return GasosaAppbar(
+              title: 'Detalhes do veículo',
+              showBackButton: true,
+              leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
+              actions: [
+                state.maybeWhen(
+                  detail:
+                      (item) => IconButton(
+                        onPressed: () {
+                          context.push(RoutePaths.manageVehicle, extra: item.vehicle);
+                        },
+                        icon: Icon(Icons.edit),
+                      ),
+                  orElse: () => const SizedBox.shrink(),
+                ),
+              ],
+            );
+          },
+        ),
       ),
       body: Column(
         spacing: AppSpacing.md,
@@ -50,10 +91,11 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
           BlocBuilder<VehicleCubit, VehicleState>(
             builder: (context, state) {
               return state.maybeWhen(
-                detail: (vehicle) => VehicleDetailHeader(vehicle: vehicle),
-                orElse:
-                    // () => CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
-                    () => CircularProgressIndicator(),
+                detail: (vehicle) => VehicleDetailHeader(key: ValueKey(vehicle.id + vehicle.name), vehicle: vehicle),
+                orElse: () {
+                  // CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
+                  return const CircularProgressIndicator();
+                },
               );
             },
           ),
@@ -70,7 +112,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                         title: 'Nenhum abastecimento encontrado',
                         actionLabel: 'Registrar abastecimento',
                         onPressed: () {
-                          context.push('/refuel/register/${widget.vehicleId}');
+                          context.push(RoutePaths.manageRefuel(widget.vehicleId));
                         },
                       );
                     }
@@ -96,7 +138,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push('/refuel/register/${widget.vehicleId}');
+          context.push(RoutePaths.manageRefuel(widget.vehicleId));
         },
         tooltip: 'Registrar abastecimento',
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
