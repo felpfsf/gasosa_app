@@ -76,7 +76,10 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     result.fold(
       (failure) => emit(VehicleState.error(message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
-      (_) => emit(VehicleState.success('Vehicle updated successfully')),
+      (_) async {
+        await fetchVehicleById(vehicle.id);
+        emit(VehicleState.success('Vehicle updated successfully'));
+      },
     );
   }
 
