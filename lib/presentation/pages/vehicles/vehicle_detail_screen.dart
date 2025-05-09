@@ -29,8 +29,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
     final refuelCubit = context.read<RefuelCubit>();
 
     vehicle.fetchVehicleById(widget.vehicleId);
-    // refuelCubit.watchRefuels(widget.vehicleId);
-    refuelCubit.fetchRefuelsMock();
+    refuelCubit.watchRefuels(widget.vehicleId);
+    // refuelCubit.fetchRefuelsMock();
 
     super.initState();
   }
@@ -69,7 +69,9 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
                       return GaososaEmptyStateWidget(
                         title: 'Nenhum abastecimento encontrado',
                         actionLabel: 'Registrar abastecimento',
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push('/refuel/register/${widget.vehicleId}');
+                        },
                       );
                     }
 
