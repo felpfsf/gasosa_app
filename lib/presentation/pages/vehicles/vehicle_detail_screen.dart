@@ -4,13 +4,14 @@ import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_state.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_state.dart';
-import 'package:gasosa_app/presentation/pages/vehicles/widgets/refuel_card.dart';
+import 'package:gasosa_app/presentation/pages/refuel/widgets/refuel_card.dart';
 import 'package:gasosa_app/presentation/pages/vehicles/widgets/vehicle_detail_header.dart';
 import 'package:gasosa_app/presentation/widgets/custom_loader.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_appbar.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_empty_state_widget.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_error_widget.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
+import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
@@ -74,9 +75,8 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
 
                     return ListView.separated(
                       itemCount: refuels.length,
-                      separatorBuilder: (_, __) => AppSpacing.gap4,
+                      separatorBuilder: (_, __) => AppSpacing.gap16,
                       shrinkWrap: true,
-                      // physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (_, index) {
                         final refuel = refuels[index];
                         return RefuelCard(refuel: refuel);
@@ -91,6 +91,14 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/refuel/register/${widget.vehicleId}');
+        },
+        tooltip: 'Registrar abastecimento',
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        child: Icon(Icons.add, color: AppColors.text),
       ),
     );
   }
