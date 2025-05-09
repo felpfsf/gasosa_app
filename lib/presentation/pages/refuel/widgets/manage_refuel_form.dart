@@ -20,8 +20,9 @@ import 'package:validatorless/validatorless.dart';
 // TODO: REFATORAR PARA RECEBER O INITIAL REFUEL
 class ManagerRefuelForm extends StatefulWidget {
   final String vehicleId;
+  final Refuel? initialRefuel;
 
-  const ManagerRefuelForm({super.key, required this.vehicleId});
+  const ManagerRefuelForm({super.key, required this.vehicleId, this.initialRefuel});
 
   @override
   State<ManagerRefuelForm> createState() => _ManagerRefuelFormState();
@@ -34,6 +35,18 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
   final _odometerEC = TextEditingController();
   FuelType? _selectedFuelType;
   DateTime? _selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    if (widget.initialRefuel != null) {
+      _litersEC.text = widget.initialRefuel!.liters.toString();
+      _totalValueEC.text = widget.initialRefuel!.totalValue.toString();
+      _odometerEC.text = widget.initialRefuel!.odometer.toString();
+      _selectedFuelType = widget.initialRefuel!.fuelType;
+      _selectedDate = widget.initialRefuel!.date;
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -79,8 +92,11 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       return;
     }
 
+    final isEditing = widget.initialRefuel != null;
+    final refuelId = widget.initialRefuel?.id ?? const Uuid().v4();
+
     final refuel = Refuel(
-      id: const Uuid().v4(),
+      id: refuelId,
       vehicleId: widget.vehicleId,
       liters: liters,
       totalValue: totalValue,
@@ -89,13 +105,20 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       fuelType: fuelType!,
       createdAt: DateTime.now(),
       createdBy: userId,
+      updatedAt: isEditing ? DateTime.now() : null,
+      updatedBy: isEditing ? userId : null,
     );
 
-    context.read<RefuelCubit>().addRefuel(refuel);
+    if (isEditing) {
+      context.read<RefuelCubit>().updateRefuel(refuel);
+    } else {
+      context.read<RefuelCubit>().addRefuel(refuel);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final buttonLabel = widget.initialRefuel != null ? 'Editar' : 'Registrar';
     return Form(
       key: _formKey,
       child: Column(
@@ -164,7 +187,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
             },
           ),
           AppSpacing.gap8,
-          GasosaButton(label: 'Registrar abastecimento', onPressed: _onSubmit),
+          GasosaButton(label: buttonLabel, onPressed: _onSubmit),
           GasosaButton(
             label: 'Cancelar',
             onPressed: () => context.pop(),

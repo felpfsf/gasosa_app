@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_state.dart';
 import 'package:gasosa_app/presentation/pages/refuel/widgets/manage_refuel_form.dart';
@@ -10,8 +13,9 @@ import 'package:go_router/go_router.dart';
 
 class ManageRefuelScreen extends StatelessWidget {
   final String vehicleId;
+  final Refuel? refuel;
 
-  const ManageRefuelScreen({super.key, required this.vehicleId});
+  const ManageRefuelScreen({super.key, required this.vehicleId, this.refuel});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +24,23 @@ class ManageRefuelScreen extends StatelessWidget {
         state.whenOrNull(
           success: (_) {
             context.pop();
-            Messages.showSuccess(context, 'Abastecimento registrado com sucesso!');
+            final message =
+                refuel != null ? 'Abastecimento editado com sucesso!' : 'Abastecimento registrado com sucesso!';
+            Messages.showSuccess(context, message);
+            log('✅ $message');
           },
-          error: (message) => Messages.showError(context, 'Erro ao registrar abastecimento'),
+          error: (error) {
+            final message = refuel != null ? 'Erro ao editar abastecimento' : 'Erro ao registrar abastecimento';
+            Messages.showError(context, message);
+            log('❌ $message: $error');
+          },
         );
       },
       builder: (context, state) {
+        final appBarTitle = refuel != null ? 'Editar abastecimento' : 'Registrar abastecimento';
         return Scaffold(
           appBar: GasosaAppbar(
-            title: 'Registrar abastecimento',
+            title: appBarTitle,
             showBackButton: true,
             centerTitle: true,
             leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
@@ -37,7 +49,7 @@ class ManageRefuelScreen extends StatelessWidget {
             child: Center(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(horizontal: AppSpacing.md),
-                child: ManagerRefuelForm(vehicleId: vehicleId),
+                child: ManagerRefuelForm(vehicleId: vehicleId, initialRefuel: refuel),
               ),
             ),
           ),
