@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/auth_helper.dart';
+import 'package:gasosa_app/core/helpers/dialog_helper.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
@@ -47,48 +48,77 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
     super.dispose();
   }
 
-  Future<void> _onSubmit() async {
+  ({String vehicleName, String plate, FuelType fuelType, String userId})? _validateAndParseForm() {
     final isValid = _formKey.currentState?.validate() ?? false;
 
     if (!isValid) {
       Messages.showError(context, 'Preencha todos os campos corretamente');
-      return;
+      return null;
     }
-
-    final vehicleName = _vehicleNameEC.text;
-    final plate = _plateEC.text;
+    final vehicleName = _vehicleNameEC.text.trim();
+    final plate = _plateEC.text.trim().toUpperCase();
     final fuelType = _selectedFuelType;
 
     if (fuelType == null) {
       Messages.showError(context, 'Selecione o tipo de combustível');
-      return;
+      return null;
     }
 
     final userId = AuthHelper.getCurrentUserId(context);
 
     if (userId == null) {
       Messages.showError(context, 'Usuário não encontrado');
-      return;
+      return null;
     }
 
+    return (vehicleName: vehicleName, plate: plate, fuelType: fuelType, userId: userId);
+  }
+
+  Vehicle _buildVehicleFromData(({String vehicleName, String plate, FuelType fuelType, String userId}) data) {
     final isEditing = widget.initialVehicle != null;
     final vehicleId = widget.initialVehicle?.id ?? const Uuid().v4();
 
-    final vehicle = Vehicle(
+    return Vehicle(
       id: vehicleId,
-      name: vehicleName,
-      plate: plate,
-      fuelType: fuelType,
-      userId: userId,
-      createdAt: widget.initialVehicle?.createdAt ?? DateTime.now(),
+      name: data.vehicleName,
+      plate: data.plate,
+      fuelType: data.fuelType,
+      userId: data.userId,
+      createdAt: DateTime.now(),
       updatedAt: isEditing ? DateTime.now() : null,
-      updatedBy: isEditing ? userId : null,
+      updatedBy: isEditing ? data.userId : null,
     );
+  }
 
+  void _handleSubmit(Vehicle vehicle, {required bool isEditing}) {
     if (isEditing) {
       context.read<VehicleCubit>().updateVehicle(vehicle);
     } else {
       context.read<VehicleCubit>().addVehicle(vehicle);
+    }
+  }
+
+  Future<void> _onSubmit() async {
+    final validation = _validateAndParseForm();
+    if (validation == null) return;
+
+    final vehicle = _buildVehicleFromData(validation);
+
+    _handleSubmit(vehicle, isEditing: widget.initialVehicle != null);
+  }
+
+  Future<void> _onDeleteVehicle() async {
+    final confirmed = await showGasosaConfirmDialog(
+      context: context,
+      title: 'Excluir veículo ${widget.initialVehicle!.name}?',
+      message: 'Essa ação apagará também todos os abastecimentos vinculados e não poderá ser desfeita.',
+      confirmText: 'Excluir',
+      cancelText: 'Cancelar',
+    );
+
+    if (confirmed) {
+      if (!mounted) return;
+      context.read<VehicleCubit>().deleteVehicle(widget.initialVehicle!);
     }
   }
 
@@ -129,6 +159,8 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
             },
           ),
           AppSpacing.gap8,
+          if (widget.initialVehicle != null)
+            GasosaButton(label: 'Apagar veículo', onPressed: _onDeleteVehicle, backgroundColor: AppColors.error),
           GasosaButton(label: widget.initialVehicle != null ? 'Editar' : 'Registrar', onPressed: _onSubmit),
           GasosaButton(
             label: 'Cancelar',
