@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/core/helpers/crud_action_messages.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_state.dart';
@@ -22,22 +23,13 @@ class ManageVehicleScreen extends StatelessWidget {
       listener: (context, state) {
         state.whenOrNull(
           error: (action, message) {
-            final verb = switch (action) {
-              VehicleAction.created => 'criado',
-              VehicleAction.updated => 'editado',
-              VehicleAction.deleted => 'excluído',
-              null => 'carregar',
-            };
+            final verb = crudActionErrorVerb(action);
             Messages.showError(context, 'Erro ao  $verb  veículo');
             log('❌ Erro ao $verb veículo: $message');
           },
           success: (action) {
             context.pop();
-            final verb = switch (action) {
-              VehicleAction.created => 'criado',
-              VehicleAction.updated => 'editado',
-              VehicleAction.deleted => 'excluído',
-            };
+            final verb = crudActionSuccessVerb(action);
 
             Messages.showSuccess(context, 'Veículo $verb com sucesso!');
             log('✅ Veículo $verb com sucesso!');

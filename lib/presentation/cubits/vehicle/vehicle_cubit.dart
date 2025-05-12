@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/core/enums/crud_action.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
@@ -12,9 +13,6 @@ import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id
 import 'package:injectable/injectable.dart';
 
 import 'vehicle_state.dart';
-
-enum VehicleAction { created, updated, deleted }
-
 abstract class IVehicleCubit {
   void fetchVehicles(String userId);
   Future<void> addVehicle(Vehicle vehicle);
@@ -64,9 +62,9 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _add(vehicle);
 
     result.fold(
-      (failure) => emit(VehicleState.error(action: VehicleAction.created, message: failure.message)),
+      (failure) => emit(VehicleState.error(action: CrudAction.created, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
-      (_) => emit(VehicleState.success(action: VehicleAction.created)),
+      (_) => emit(VehicleState.success(action: CrudAction.created)),
     );
   }
 
@@ -76,11 +74,11 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _update(vehicle);
 
     result.fold(
-      (failure) => emit(VehicleState.error(action: VehicleAction.updated, message: failure.message)),
+      (failure) => emit(VehicleState.error(action: CrudAction.updated, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
       (_) async {
         await fetchVehicleById(vehicle.id);
-        emit(VehicleState.success(action: VehicleAction.updated));
+        emit(VehicleState.success(action: CrudAction.updated));
       },
     );
   }
@@ -92,11 +90,11 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _delete(vehicle.id);
 
     result.fold(
-      (failure) => emit(VehicleState.error(action: VehicleAction.deleted, message: failure.message)),
+      (failure) => emit(VehicleState.error(action: CrudAction.deleted, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
       (_) async {
         fetchVehicles(vehicle.userId);
-        emit(VehicleState.success(action: VehicleAction.deleted));
+        emit(VehicleState.success(action: CrudAction.deleted));
       },
     );
   }
