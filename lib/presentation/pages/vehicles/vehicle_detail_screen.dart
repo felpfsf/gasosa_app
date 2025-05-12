@@ -129,7 +129,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> with RouteAwa
                   },
 
                   success: (_) => const SizedBox.shrink(),
-                  error: (message) => GasosaErrorWidget(message: 'Erro ao carregar abastecimentos: $message'),
+                  error: (_, message) => GasosaErrorWidget(message: 'Erro ao carregar abastecimentos: $message'),
                 );
               },
             ),
