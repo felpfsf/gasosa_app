@@ -56,20 +56,13 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     super.dispose();
   }
 
-  void _onSubmit() {
-    final isValid = _formKey.currentState?.validate() ?? false;
-
-    if (!isValid) {
-      Messages.showError(context, 'Preencha todos os campos corretamente');
-      return;
-    }
-
-    final liters = parseMaskedLiters(_litersEC.text);
-    final totalValue = parseMaskedCurrency(_totalValueEC.text);
-    final odometer = parseMaskedCurrency(_odometerEC.text);
-    final date = _selectedDate;
-    final fuelType = _selectedFuelType;
-
+  List<String> _validateRefuelFields({
+    required double liters,
+    required double totalValue,
+    required double odometer,
+    required DateTime? date,
+    required FuelType? fuelType,
+  }) {
     final validationErrors = <String>[];
 
     if (liters <= 0) validationErrors.add('Valor do litro é obrigatório');
@@ -78,41 +71,119 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     if (date == null) validationErrors.add('Data de abastecimento é obrigatório');
     if (fuelType == null) validationErrors.add('Tipo de combustível é obrigatório');
 
-    if (validationErrors.isNotEmpty) {
-      final message = 'Corrija os campos abaixo:\n${validationErrors.join('\n')}';
-      Messages.showError(context, message);
-      return;
+    return validationErrors;
+  }
+
+  ({
+    String vehicleId,
+    DateTime? date,
+    FuelType fuelType,
+    double liters,
+    double totalValue,
+    double odometer,
+    String userId,
+  })?
+  _validateAndParseForm() {
+    final isValid = _formKey.currentState?.validate() ?? false;
+
+    if (!isValid) {
+      Messages.showError(context, 'Preencha todos os campos corretamente');
+      return null;
+    }
+
+    final vehicleId = widget.vehicleId;
+    final date = _selectedDate;
+    final fuelType = _selectedFuelType;
+    final liters = parseMaskedLiters(_litersEC.text);
+    final totalValue = parseMaskedCurrency(_totalValueEC.text);
+    final odometer = parseMaskedCurrency(_odometerEC.text);
+
+    if (fuelType == null) {
+      Messages.showError(context, 'Selecione o tipo de combustível');
+      return null;
     }
 
     final userId = AuthHelper.getCurrentUserId(context);
 
     if (userId == null) {
       Messages.showError(context, 'Usuário não autenticado');
-      return;
+      return null;
     }
 
-    final isEditing = widget.initialRefuel != null;
-    final refuelId = widget.initialRefuel?.id ?? const Uuid().v4();
-
-    final refuel = Refuel(
-      id: refuelId,
-      vehicleId: widget.vehicleId,
+    return (
+      vehicleId: vehicleId,
+      date: date,
+      fuelType: fuelType,
       liters: liters,
       totalValue: totalValue,
       odometer: odometer,
-      date: date!,
-      fuelType: fuelType!,
-      createdAt: isEditing ? widget.initialRefuel!.createdAt : DateTime.now(),
-      createdBy: userId,
-      updatedAt: isEditing ? DateTime.now() : null,
-      updatedBy: isEditing ? userId : null,
+      userId: userId,
     );
+  }
 
+  Refuel _buildRefuelFromData(
+    ({
+      String vehicleId,
+      DateTime? date,
+      FuelType fuelType,
+      double liters,
+      double totalValue,
+      double odometer,
+      String userId,
+    })
+    data,
+  ) {
+    final isEditing = widget.initialRefuel != null;
+    final refuelId = widget.initialRefuel?.id ?? const Uuid().v4();
+    final createdAt = widget.initialRefuel?.createdAt ?? DateTime.now();
+    final updatedAt = isEditing ? DateTime.now() : null;
+    final updatedBy = isEditing ? data.userId : null;
+
+    return Refuel(
+      id: refuelId,
+      vehicleId: widget.vehicleId,
+      date: data.date!,
+      odometer: data.odometer,
+      fuelType: data.fuelType,
+      liters: data.liters,
+      totalValue: data.totalValue,
+      createdBy: data.userId,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      updatedBy: updatedBy,
+    );
+  }
+
+  void _handleSubmit(Refuel refuel, {required bool isEditing}) {
     if (isEditing) {
       context.read<RefuelCubit>().updateRefuel(refuel);
     } else {
       context.read<RefuelCubit>().addRefuel(refuel);
     }
+  }
+
+  void _onSubmit() {
+    final formData = _validateAndParseForm();
+
+    if (formData == null) return;
+
+    final validationErrors = _validateRefuelFields(
+      liters: formData.liters,
+      totalValue: formData.totalValue,
+      odometer: formData.odometer,
+      date: formData.date,
+      fuelType: formData.fuelType,
+    );
+
+    if (validationErrors.isNotEmpty) {
+      final message = 'Corrija os campos abaixo:\n${validationErrors.join('\n')}';
+      Messages.showError(context, message);
+      return;
+    }
+
+    final refuel = _buildRefuelFromData(formData);
+
+    _handleSubmit(refuel, isEditing: widget.initialRefuel != null);
   }
 
   @override
