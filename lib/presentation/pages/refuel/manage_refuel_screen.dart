@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/core/helpers/crud_action_messages.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_state.dart';
@@ -22,17 +23,16 @@ class ManageRefuelScreen extends StatelessWidget {
     return BlocConsumer<RefuelCubit, RefuelState>(
       listener: (context, state) {
         state.whenOrNull(
-          success: (_) {
+          success: (action) {
             context.pop();
-            final message =
-                refuel != null ? 'Abastecimento editado com sucesso!' : 'Abastecimento registrado com sucesso!';
-            Messages.showSuccess(context, message);
-            log('✅ $message');
+            final verb = crudActionSuccessVerb(action);
+            Messages.showSuccess(context, 'Abastecimento $verb com sucesso!');
+            log('✅ Abastecimento $verb com sucesso!');
           },
-          error: (error) {
-            final message = refuel != null ? 'Erro ao editar abastecimento' : 'Erro ao registrar abastecimento';
-            Messages.showError(context, message);
-            log('❌ $message: $error');
+          error: (action, error) {
+            final verb = crudActionErrorVerb(action);
+            Messages.showError(context, 'Erro ao $verb abastecimento');
+            log('❌ Erro ao $verb abastecimento: $error');
           },
         );
       },
