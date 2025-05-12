@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gasosa_app/core/enums/crud_action.dart';
 import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
-import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 
 part 'vehicle_state.freezed.dart';
 
