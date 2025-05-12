@@ -21,14 +21,26 @@ class ManageVehicleScreen extends StatelessWidget {
     return BlocConsumer<VehicleCubit, VehicleState>(
       listener: (context, state) {
         state.whenOrNull(
-          error: (message) {
-            Messages.showError(context, 'Erro ao  ${vehicle != null ? 'editar' : 'criar'}  veículo');
-            log('❌ Erro ao ${vehicle != null ? 'editar' : 'criar'} veículo: $message');
+          error: (action, message) {
+            final verb = switch (action) {
+              VehicleAction.created => 'criado',
+              VehicleAction.updated => 'editado',
+              VehicleAction.deleted => 'excluído',
+              null => 'carregar',
+            };
+            Messages.showError(context, 'Erro ao  $verb  veículo');
+            log('❌ Erro ao $verb veículo: $message');
           },
-          success: (_) {
+          success: (action) {
             context.pop();
-            Messages.showSuccess(context, 'Veículo ${vehicle != null ? 'editado' : 'criado'} com sucesso!');
-            log('✅ Veículo ${vehicle != null ? 'editado' : 'criado'} com sucesso!');
+            final verb = switch (action) {
+              VehicleAction.created => 'criado',
+              VehicleAction.updated => 'editado',
+              VehicleAction.deleted => 'excluído',
+            };
+
+            Messages.showSuccess(context, 'Veículo $verb com sucesso!');
+            log('✅ Veículo $verb com sucesso!');
           },
         );
       },
