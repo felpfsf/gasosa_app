@@ -13,6 +13,8 @@ import 'package:injectable/injectable.dart';
 
 import 'vehicle_state.dart';
 
+enum VehicleAction { created, updated, deleted }
+
 abstract class IVehicleCubit {
   void fetchVehicles(String userId);
   Future<void> addVehicle(Vehicle vehicle);
@@ -62,9 +64,9 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _add(vehicle);
 
     result.fold(
-      (failure) => emit(VehicleState.error(message: failure.message)),
+      (failure) => emit(VehicleState.error(action: VehicleAction.created, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
-      (_) => emit(VehicleState.success('Vehicle added successfully')),
+      (_) => emit(VehicleState.success(action: VehicleAction.created)),
     );
   }
 
@@ -74,11 +76,11 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _update(vehicle);
 
     result.fold(
-      (failure) => emit(VehicleState.error(message: failure.message)),
+      (failure) => emit(VehicleState.error(action: VehicleAction.updated, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
       (_) async {
         await fetchVehicleById(vehicle.id);
-        emit(VehicleState.success('Vehicle updated successfully'));
+        emit(VehicleState.success(action: VehicleAction.updated));
       },
     );
   }
@@ -90,11 +92,11 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
     final result = await _delete(vehicle.id);
 
     result.fold(
-      (failure) => emit(VehicleState.error(message: failure.message)),
+      (failure) => emit(VehicleState.error(action: VehicleAction.deleted, message: failure.message)),
       // (_) => fetchVehicles(vehicle.userId),
       (_) async {
         fetchVehicles(vehicle.userId);
-        emit(VehicleState.success('Vehicle deleted successfully'));
+        emit(VehicleState.success(action: VehicleAction.deleted));
       },
     );
   }

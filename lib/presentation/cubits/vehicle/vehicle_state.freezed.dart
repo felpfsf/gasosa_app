@@ -23,8 +23,8 @@ mixin _$VehicleState {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
@@ -32,8 +32,8 @@ mixin _$VehicleState {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
@@ -41,8 +41,8 @@ mixin _$VehicleState {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) => throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -144,8 +144,8 @@ class _$InitialImpl implements _Initial {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
     return initial();
   }
@@ -157,8 +157,8 @@ class _$InitialImpl implements _Initial {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
     return initial?.call();
   }
@@ -170,8 +170,8 @@ class _$InitialImpl implements _Initial {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -275,8 +275,8 @@ class _$LoadingImpl implements _Loading {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
     return loading();
   }
@@ -288,8 +288,8 @@ class _$LoadingImpl implements _Loading {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
     return loading?.call();
   }
@@ -301,8 +301,8 @@ class _$LoadingImpl implements _Loading {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -440,8 +440,8 @@ class _$LoadedImpl implements _Loaded {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
     return loaded(vehicles);
   }
@@ -453,8 +453,8 @@ class _$LoadedImpl implements _Loaded {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
     return loaded?.call(vehicles);
   }
@@ -466,8 +466,8 @@ class _$LoadedImpl implements _Loaded {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
@@ -607,8 +607,8 @@ class _$DetailImpl implements _Detail {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
     return detail(vehicle);
   }
@@ -620,8 +620,8 @@ class _$DetailImpl implements _Detail {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
     return detail?.call(vehicle);
   }
@@ -633,8 +633,8 @@ class _$DetailImpl implements _Detail {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (detail != null) {
@@ -706,7 +706,7 @@ abstract class _$$SuccessImplCopyWith<$Res> {
     $Res Function(_$SuccessImpl) then,
   ) = __$$SuccessImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({VehicleAction action});
 }
 
 /// @nodoc
@@ -722,13 +722,14 @@ class __$$SuccessImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? message = null}) {
+  $Res call({Object? action = null}) {
     return _then(
       _$SuccessImpl(
-        null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                as String,
+        action:
+            null == action
+                ? _value.action
+                : action // ignore: cast_nullable_to_non_nullable
+                    as VehicleAction,
       ),
     );
   }
@@ -737,14 +738,14 @@ class __$$SuccessImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SuccessImpl implements _Success {
-  const _$SuccessImpl(this.message);
+  const _$SuccessImpl({required this.action});
 
   @override
-  final String message;
+  final VehicleAction action;
 
   @override
   String toString() {
-    return 'VehicleState.success(message: $message)';
+    return 'VehicleState.success(action: $action)';
   }
 
   @override
@@ -752,11 +753,11 @@ class _$SuccessImpl implements _Success {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SuccessImpl &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.action, action) || other.action == action));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, action);
 
   /// Create a copy of VehicleState
   /// with the given fields replaced by the non-null parameter values.
@@ -773,10 +774,10 @@ class _$SuccessImpl implements _Success {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
-    return success(message);
+    return success(action);
   }
 
   @override
@@ -786,10 +787,10 @@ class _$SuccessImpl implements _Success {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
-    return success?.call(message);
+    return success?.call(action);
   }
 
   @override
@@ -799,12 +800,12 @@ class _$SuccessImpl implements _Success {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (success != null) {
-      return success(message);
+      return success(action);
     }
     return orElse();
   }
@@ -854,9 +855,9 @@ class _$SuccessImpl implements _Success {
 }
 
 abstract class _Success implements VehicleState {
-  const factory _Success(final String message) = _$SuccessImpl;
+  const factory _Success({required final VehicleAction action}) = _$SuccessImpl;
 
-  String get message;
+  VehicleAction get action;
 
   /// Create a copy of VehicleState
   /// with the given fields replaced by the non-null parameter values.
@@ -872,7 +873,7 @@ abstract class _$$ErrorImplCopyWith<$Res> {
     $Res Function(_$ErrorImpl) then,
   ) = __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call({VehicleAction? action, String message});
 }
 
 /// @nodoc
@@ -888,9 +889,14 @@ class __$$ErrorImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? message = null}) {
+  $Res call({Object? action = freezed, Object? message = null}) {
     return _then(
       _$ErrorImpl(
+        action:
+            freezed == action
+                ? _value.action
+                : action // ignore: cast_nullable_to_non_nullable
+                    as VehicleAction?,
         message:
             null == message
                 ? _value.message
@@ -904,14 +910,16 @@ class __$$ErrorImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ErrorImpl implements _Error {
-  const _$ErrorImpl({required this.message});
+  const _$ErrorImpl({this.action, required this.message});
 
+  @override
+  final VehicleAction? action;
   @override
   final String message;
 
   @override
   String toString() {
-    return 'VehicleState.error(message: $message)';
+    return 'VehicleState.error(action: $action, message: $message)';
   }
 
   @override
@@ -919,11 +927,12 @@ class _$ErrorImpl implements _Error {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ErrorImpl &&
+            (identical(other.action, action) || other.action == action) &&
             (identical(other.message, message) || other.message == message));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(runtimeType, action, message);
 
   /// Create a copy of VehicleState
   /// with the given fields replaced by the non-null parameter values.
@@ -940,10 +949,10 @@ class _$ErrorImpl implements _Error {
     required TResult Function() loading,
     required TResult Function(List<VehicleWithLastRefuel> vehicles) loaded,
     required TResult Function(VehicleWithLastRefuel vehicle) detail,
-    required TResult Function(String message) success,
-    required TResult Function(String message) error,
+    required TResult Function(VehicleAction action) success,
+    required TResult Function(VehicleAction? action, String message) error,
   }) {
-    return error(message);
+    return error(action, message);
   }
 
   @override
@@ -953,10 +962,10 @@ class _$ErrorImpl implements _Error {
     TResult? Function()? loading,
     TResult? Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult? Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult? Function(String message)? success,
-    TResult? Function(String message)? error,
+    TResult? Function(VehicleAction action)? success,
+    TResult? Function(VehicleAction? action, String message)? error,
   }) {
-    return error?.call(message);
+    return error?.call(action, message);
   }
 
   @override
@@ -966,12 +975,12 @@ class _$ErrorImpl implements _Error {
     TResult Function()? loading,
     TResult Function(List<VehicleWithLastRefuel> vehicles)? loaded,
     TResult Function(VehicleWithLastRefuel vehicle)? detail,
-    TResult Function(String message)? success,
-    TResult Function(String message)? error,
+    TResult Function(VehicleAction action)? success,
+    TResult Function(VehicleAction? action, String message)? error,
     required TResult orElse(),
   }) {
     if (error != null) {
-      return error(message);
+      return error(action, message);
     }
     return orElse();
   }
@@ -1021,8 +1030,12 @@ class _$ErrorImpl implements _Error {
 }
 
 abstract class _Error implements VehicleState {
-  const factory _Error({required final String message}) = _$ErrorImpl;
+  const factory _Error({
+    final VehicleAction? action,
+    required final String message,
+  }) = _$ErrorImpl;
 
+  VehicleAction? get action;
   String get message;
 
   /// Create a copy of VehicleState
