@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
+import 'package:gasosa_app/core/helpers/dialog_helper.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
@@ -30,8 +31,19 @@ class RefuelCard extends StatelessWidget {
       context.push(RoutePaths.manageRefuel(refuel.vehicleId), extra: refuel);
     }
 
-    void onDeletePressed() {
-      context.read<RefuelCubit>().deleteRefuel(refuel);
+    void onDeletePressed() async {
+      final confirm = await showGasosaConfirmDialog(
+        context: context,
+        title: 'Excluir abastecimento do dia ${refuel.date.formattedDate()}?',
+        message: 'Essa ação não poderá ser desfeita.',
+        confirmText: 'Excluir',
+        cancelText: 'Cancelar',
+      );
+
+      if (confirm) {
+        if (!context.mounted) return;
+        context.read<RefuelCubit>().deleteRefuel(refuel);
+      }
     }
 
     return GasosaCard(
