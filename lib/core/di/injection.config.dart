@@ -117,11 +117,6 @@ extension GetItInjectableX on _i174.GetIt {
         vehicleRepository: gh<_i35.VehicleRepository>(),
       ),
     );
-    gh.factory<_i766.IDeleteVehicleUsecase>(
-      () => _i766.DeleteVehicleUsecase(
-        vehicleRepository: gh<_i35.VehicleRepository>(),
-      ),
-    );
     gh.lazySingleton<_i857.RefuelRepository>(
       () => _i146.RefuelRepositoryImpl(gh<_i441.RefuelDao>()),
     );
@@ -145,6 +140,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i984.ISaveUserUsecase>(
       () => _i984.SaveUserUsecase(userRepository: gh<_i754.UserRepository>()),
+    );
+    gh.factory<_i766.IDeleteVehicleUsecase>(
+      () => _i766.DeleteVehicleUsecase(
+        vehicleRepository: gh<_i35.VehicleRepository>(),
+        refuelRepository: gh<_i857.RefuelRepository>(),
+      ),
     );
     gh.factory<_i452.IAddRefuelUsecase>(
       () => _i452.AddRefuelUsecase(repository: gh<_i857.RefuelRepository>()),

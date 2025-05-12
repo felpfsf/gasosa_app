@@ -79,4 +79,14 @@ class RefuelRepositoryImpl implements RefuelRepository {
         .watchRefuelByVehicleId(vehicleId)
         .map((refuels) => refuels.map((refuel) => refuel.toDomain()).toList());
   }
+
+  @override
+  Future<Either<Failure, void>> deleteRefuelsByVehicleId(String vehicleId) async {
+    try {
+      await _refuelDao.deleteRefuelsByVehicleId(vehicleId);
+      return Right(null);
+    } catch (e) {
+      return Left(DatabaseFailure('Erro ao deletar o abastecimento: $e'));
+    }
+  }
 }

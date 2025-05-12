@@ -32,4 +32,8 @@ class RefuelDao extends DatabaseAccessor<GasosaDatabase> with _$RefuelDaoMixin {
     return (select(refuels)
       ..where((refuel) => refuel.id.equals(id))).getSingleOrNull();
   }
+
+  Future<void> deleteRefuelsByVehicleId(String vehicleId) async {
+    await (delete(refuels)..where((refuel) => refuel.vehicleId.equals(vehicleId))).go();
+  }
 }
