@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gasosa_app/core/enums/crud_action.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart';
@@ -55,8 +56,8 @@ class RefuelCubit extends Cubit<RefuelState> implements IRefuelCubit {
     final result = await _add(refuel);
 
     result.fold(
-      (failure) => emit(RefuelState.error(message: failure.message)),
-      (_) => emit(RefuelState.success('Refuel added successfully')),
+      (failure) => emit(RefuelState.error(action: CrudAction.created, message: failure.message)),
+      (_) => emit(RefuelState.success(action: CrudAction.created)),
     );
   }
 
@@ -67,8 +68,8 @@ class RefuelCubit extends Cubit<RefuelState> implements IRefuelCubit {
     final result = await _delete(refuel.id);
 
     result.fold(
-      (failure) => emit(RefuelState.error(message: failure.message)),
-      (_) => emit(RefuelState.success('Refuel deleted successfully')),
+      (failure) => emit(RefuelState.error(action: CrudAction.deleted, message: failure.message)),
+      (_) => emit(RefuelState.success(action: CrudAction.deleted)),
     );
   }
 
@@ -79,8 +80,8 @@ class RefuelCubit extends Cubit<RefuelState> implements IRefuelCubit {
     final result = await _update(refuel);
 
     result.fold(
-      (failure) => emit(RefuelState.error(message: failure.message)),
-      (_) => emit(RefuelState.success('Refuel updated successfully')),
+      (failure) => emit(RefuelState.error(action: CrudAction.updated, message: failure.message)),
+      (_) => emit(RefuelState.success(action: CrudAction.updated)),
     );
   }
 
