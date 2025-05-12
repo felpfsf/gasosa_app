@@ -28,7 +28,7 @@ class GasosaButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor ?? AppColors.primary,
         foregroundColor: textColor ?? AppColors.text,
-        textStyle: AppTypography.textSmBold,
+        textStyle: AppTypography.textMdBold,
         shape: RoundedRectangleBorder(borderRadius: AppSpacing.radiusMd),
         padding: const EdgeInsets.symmetric(
           vertical: AppSpacing.md,
