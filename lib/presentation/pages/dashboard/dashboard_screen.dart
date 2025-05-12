@@ -80,7 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
             detail: (_) => const SizedBox.shrink(),
             initial: () => const SizedBox.shrink(),
             loading: () => CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
-            error: (message) => GasosaErrorWidget(message: message),
+            error: (_, message) => GasosaErrorWidget(message: message),
             success: (_) => const SizedBox.shrink(),
             loaded: (vehicles) {
               if (vehicles.isEmpty) {
