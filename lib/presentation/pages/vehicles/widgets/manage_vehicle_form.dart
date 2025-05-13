@@ -159,9 +159,9 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
             },
           ),
           AppSpacing.gap8,
+          GasosaButton(label: widget.initialVehicle != null ? 'Editar' : 'Registrar', onPressed: _onSubmit),
           if (widget.initialVehicle != null)
             GasosaButton(label: 'Apagar veículo', onPressed: _onDeleteVehicle, backgroundColor: AppColors.error),
-          GasosaButton(label: widget.initialVehicle != null ? 'Editar' : 'Registrar', onPressed: _onSubmit),
           GasosaButton(
             label: 'Cancelar',
             onPressed: () {
