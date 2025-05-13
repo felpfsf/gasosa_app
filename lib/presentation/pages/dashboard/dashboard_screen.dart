@@ -88,6 +88,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
                   title: 'Nenhum veículo encontrado',
                   message: 'Você ainda não possui nenhum veículo cadastrado.',
                   actionLabel: 'Adicionar veículo',
+                  onPressed: () => context.push(RoutePaths.manageVehicle),
                 );
               }
 
