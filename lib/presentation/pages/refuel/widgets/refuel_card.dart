@@ -5,7 +5,8 @@ import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/dialog_helper.dart';
-import 'package:gasosa_app/domain/entities/refuel.dart';
+import 'package:gasosa_app/domain/entities/fuel_type.dart';
+import 'package:gasosa_app/domain/entities/refuel_with_consumption.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
@@ -15,26 +16,28 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 class RefuelCard extends StatelessWidget {
-  final Refuel refuel;
+  final RefuelWithConsumption item;
 
-  const RefuelCard({super.key, required this.refuel});
+  const RefuelCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final currency = NumberFormat.currency(locale: 'pt_BR');
 
-    final pricePerLiter = refuel.pricePerLiter?.toStringAsFixed(2) ?? '';
-    final liters = refuel.liters.toStringAsFixed(2);
-    final totalRefueledValue = currency.format(refuel.totalValue);
+    final pricePerLiter = item.refuel.pricePerLiter?.toStringAsFixed(2) ?? '';
+    final liters = item.refuel.liters.toStringAsFixed(2);
+    final totalRefueledValue = currency.format(item.refuel.totalValue);
+    final unit = item.refuel.fuelType == FuelType.gnv ? 'm³' : 'L';
+    final consumptionLabel = 'Consumo: ${item.consumption?.toStringAsFixed(1)} km/$unit';
 
     void onEditPressed() {
-      context.push(RoutePaths.manageRefuel(refuel.vehicleId), extra: refuel);
+      context.push(RoutePaths.manageRefuel(item.refuel.vehicleId), extra: item.refuel);
     }
 
     void onDeletePressed() async {
       final confirm = await showGasosaConfirmDialog(
         context: context,
-        title: 'Excluir abastecimento do dia ${refuel.date.formattedDate()}?',
+        title: 'Excluir abastecimento do dia ${item.refuel.date.formattedDate()}?',
         message: 'Essa ação não poderá ser desfeita.',
         confirmText: 'Excluir',
         cancelText: 'Cancelar',
@@ -42,7 +45,7 @@ class RefuelCard extends StatelessWidget {
 
       if (confirm) {
         if (!context.mounted) return;
-        context.read<RefuelCubit>().deleteRefuel(refuel);
+        context.read<RefuelCubit>().deleteRefuel(item.refuel);
       }
     }
 
@@ -70,12 +73,12 @@ class RefuelCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(refuel.date.formattedDate(), style: AppTypography.textSmBold),
+              Text(item.refuel.date.formattedDate(), style: AppTypography.textSmBold),
               Row(
                 spacing: AppSpacing.xs,
                 children: [
                   Icon(Icons.local_gas_station),
-                  Text(refuel.fuelType.label, style: AppTypography.textSmRegular),
+                  Text(item.refuel.fuelType.label, style: AppTypography.textSmRegular),
                 ],
               ),
             ],
@@ -91,7 +94,18 @@ class RefuelCard extends StatelessWidget {
             ],
           ),
           AppSpacing.gap4,
-          Text('KM Atual: ${refuel.odometer} km', style: AppTypography.textSmRegular),
+          Text('KM Atual: ${item.refuel.odometer} km', style: AppTypography.textSmRegular),
+          if (item.consumption != null) ...[
+            Divider(height: AppSpacing.md),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('Distância Percorrida: ${item.distance} km', style: AppTypography.textSmRegular),
+                Row(children: [Icon(Icons.car_repair), Text(consumptionLabel, style: AppTypography.textSmRegular)]),
+              ],
+            ),
+          ],
         ],
       ),
     );

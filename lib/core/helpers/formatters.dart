@@ -7,11 +7,19 @@ final litersInputFormatter = MaskedInputFormatter('##.###', allowedCharMatcher: 
 
 final decimalInputFormatter = MaskedInputFormatter('###.###', allowedCharMatcher: RegExp(r'[0-9]'));
 
+final integerInputFormatter = MaskedInputFormatter('######', allowedCharMatcher: RegExp(r'[0-9]'));
+
 final currencyInputFormatter = CurrencyInputFormatter(
   leadingSymbol: 'R\$',
   thousandSeparator: ThousandSeparator.Comma,
   useSymbolPadding: true,
 );
+
+double parseMaskedInteger(String value) {
+  final cleaned = value.replaceAll(RegExp(r'[^\d.]'), '');
+
+  return double.tryParse(cleaned) ?? 0.0;
+}
 
 double parseMaskedCurrency(String value) {
   final cleaned = value.replaceAll('R\$', '').replaceAll(',', '.').replaceAll(RegExp(r'[^\d.]'), '');

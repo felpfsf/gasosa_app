@@ -96,7 +96,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     final fuelType = _selectedFuelType;
     final liters = parseMaskedLiters(_litersEC.text);
     final totalValue = parseMaskedCurrency(_totalValueEC.text);
-    final odometer = parseMaskedCurrency(_odometerEC.text);
+    final odometer = parseMaskedInteger(_odometerEC.text);
 
     if (fuelType == null) {
       Messages.showError(context, 'Selecione o tipo de combustível');
@@ -209,10 +209,10 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
           ),
           GasosaFormField(
             label: 'KM atual *',
-            hint: '100.00 KM',
+            hint: '100.000 KM',
             controller: _odometerEC,
             keyboardType: TextInputType.number,
-            inputFormatters: [decimalInputFormatter],
+            inputFormatters: [integerInputFormatter],
             validator: Validatorless.multiple([
               Validatorless.required('KM atual é obrigatório'),
               Validatorless.min(1, 'Valor inválido'),

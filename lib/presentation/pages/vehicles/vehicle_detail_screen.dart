@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/app_router.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
+import 'package:gasosa_app/data/mappers/refuel_consumption_mapper.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_state.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
@@ -117,13 +118,15 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> with RouteAwa
                       );
                     }
 
+                    final refuelsWithConsumption = mapToRefuelsWithConsumption(refuels);
+
                     return ListView.separated(
-                      itemCount: refuels.length,
+                      itemCount: refuelsWithConsumption.length,
                       separatorBuilder: (_, __) => AppSpacing.gap16,
                       shrinkWrap: true,
                       itemBuilder: (_, index) {
-                        final refuel = refuels[index];
-                        return RefuelCard(refuel: refuel);
+                        final refuel = refuelsWithConsumption[index];
+                        return RefuelCard(item: refuel);
                       },
                     );
                   },
