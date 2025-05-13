@@ -54,6 +54,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   flutter_slidable: ^4.0.0
   flutter_multi_formatter: ^2.13.7
+  collection: ^1.19.1
   # freezed: ^3.0.6
 
 # ------------------------
