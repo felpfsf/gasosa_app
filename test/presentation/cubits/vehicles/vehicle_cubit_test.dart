@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gasosa_app/core/enums/crud_action.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
@@ -26,6 +27,7 @@ void main() {
   late IFindVehicleByIdUsecase findVehicleByIdUsecase;
 
   const userId = 'userId';
+  final lastRefuelDate = DateTime.now();
   final vehicle = Vehicle(
     id: 'id',
     userId: userId,
@@ -34,6 +36,7 @@ void main() {
     fuelType: FuelType.gasoline,
     createdAt: DateTime.now(),
   );
+  final vehicleWithLastRefuel = VehicleWithLastRefuel(vehicle: vehicle, lastRefuelDate: lastRefuelDate);
 
   setUpAll(() {
     registerFallbacks();
@@ -59,7 +62,7 @@ void main() {
     blocTest<VehicleCubit, VehicleState>(
       'emit [loading, loaded] when watch stream emits vehicles',
       build: () {
-        when(() => watchAllVehiclesByUserIdUsecase(userId)).thenAnswer((_) => Stream.value([vehicle]));
+        when(() => watchAllVehiclesByUserIdUsecase(userId)).thenAnswer((_) => Stream.value([vehicleWithLastRefuel]));
 
         return vehicleCubit;
       },
@@ -82,7 +85,7 @@ void main() {
         return vehicleCubit;
       },
       act: (bloc) => bloc.addVehicle(vehicle),
-      expect: () => [const VehicleState.loading(), VehicleState.success('Vehicle added successfully')],
+      expect: () => [const VehicleState.loading(), VehicleState.success(action: CrudAction.created)],
       verify: (_) {
         verify(() => addVehicleUsecase(vehicle)).called(1);
       },
@@ -110,7 +113,7 @@ void main() {
         return vehicleCubit;
       },
       act: (bloc) => bloc.updateVehicle(vehicle),
-      expect: () => [const VehicleState.loading(), VehicleState.success('Vehicle updated successfully')],
+      expect: () => [const VehicleState.loading(), VehicleState.success(action: CrudAction.updated)],
       verify: (_) {
         verify(() => updateVehicleUsecase(vehicle)).called(1);
       },
@@ -138,7 +141,7 @@ void main() {
         return vehicleCubit;
       },
       act: (bloc) => bloc.deleteVehicle(vehicle),
-      expect: () => [const VehicleState.loading(), VehicleState.success('Vehicle deleted successfully')],
+      expect: () => [const VehicleState.loading(), VehicleState.success(action: CrudAction.deleted)],
       verify: (_) {
         verify(() => deleteVehicleUsecase(vehicle.id)).called(1);
       },
@@ -161,7 +164,7 @@ void main() {
     blocTest<VehicleCubit, VehicleState>(
       'emits [loading, success] when findVehicleById is successful',
       build: () {
-        when(() => findVehicleByIdUsecase(vehicle.id)).thenAnswer((_) => Future.value(Right(vehicle)));
+        when(() => findVehicleByIdUsecase(vehicle.id)).thenAnswer((_) => Future.value(Right(vehicleWithLastRefuel)));
 
         return vehicleCubit;
       },

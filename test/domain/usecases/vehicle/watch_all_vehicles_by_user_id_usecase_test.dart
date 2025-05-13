@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
+import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/watch_all_vehicles_by_user_id_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -22,6 +23,7 @@ void main() {
 
   test('should emit a list of vehicles from repository', () async {
     final userId = '1';
+    final lastRefuel = DateTime.now();
     final vehicle = Vehicle(
       id: '1',
       name: 'car-1',
@@ -30,8 +32,9 @@ void main() {
       createdAt: DateTime.now(),
       userId: 'user-1',
     );
+    final vehicleWithLastRefuel = VehicleWithLastRefuel(vehicle: vehicle, lastRefuelDate: lastRefuel);
 
-    when(() => mockVehicleRepository.watchAllVehiclesByUserId(userId)).thenAnswer((_) => Stream.value([vehicle]));
+    when(() => mockVehicleRepository.watchAllVehiclesByUserId(userId)).thenAnswer((_) => Stream.value([vehicleWithLastRefuel]));
 
     final result = watchAllVehiclesByUserIdUsecase(userId);
 

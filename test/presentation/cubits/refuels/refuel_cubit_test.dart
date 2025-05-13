@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:gasosa_app/core/enums/crud_action.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
@@ -93,7 +94,7 @@ void main() {
       expect:
           () => [
             const RefuelState.loading(),
-            RefuelState.success('Refuel added successfully'),
+            RefuelState.success(action: CrudAction.created),
           ],
       verify: (_) {
         verify(() => addRefuelUsecase(refuel)).called(1);
@@ -133,7 +134,7 @@ void main() {
       expect:
           () => [
             const RefuelState.loading(),
-            RefuelState.success('Refuel updated successfully'),
+            RefuelState.success(action: CrudAction.updated),
           ],
       verify: (_) {
         verify(() => updateRefuelUsecase(refuel)).called(1);
@@ -173,7 +174,7 @@ void main() {
       expect:
           () => [
             const RefuelState.loading(),
-            RefuelState.success('Refuel deleted successfully'),
+            RefuelState.success(action: CrudAction.deleted),
           ],
       verify: (_) {
         verify(() => deleteRefuelUsecase(refuel.id)).called(1);

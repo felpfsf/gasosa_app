@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
+import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/usecases/vehicle/find_vehicle_by_id_usecase.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -19,13 +20,12 @@ void main() {
 
   setUp(() {
     mockVehicleRepository = MockVehicleRepository();
-    findVehicleByIdUsecase = FindVehicleByIdUsecase(
-      vehicleRepository: mockVehicleRepository,
-    );
+    findVehicleByIdUsecase = FindVehicleByIdUsecase(vehicleRepository: mockVehicleRepository);
   });
 
   test('should return vehicle when find is successfull', () async {
     final id = '1';
+    final lastRefuel = DateTime.now();
     final vehicle = Vehicle(
       id: '1',
       name: 'car-1',
@@ -34,10 +34,9 @@ void main() {
       createdAt: DateTime.now(),
       userId: 'user-1',
     );
+    final vehicleWithLastRefuel = VehicleWithLastRefuel(vehicle: vehicle, lastRefuelDate: lastRefuel);
 
-    when(
-      () => mockVehicleRepository.findVehicleById(id),
-    ).thenAnswer((_) async => Right(vehicle));
+    when(() => mockVehicleRepository.findVehicleById(id)).thenAnswer((_) async => Right(vehicleWithLastRefuel));
 
     final result = await findVehicleByIdUsecase(id);
 
@@ -48,9 +47,7 @@ void main() {
   test('should return failure when find is failed', () async {
     final id = '1';
 
-    when(
-      () => mockVehicleRepository.findVehicleById(id),
-    ).thenAnswer((_) async => Left(DatabaseFailure('error')));
+    when(() => mockVehicleRepository.findVehicleById(id)).thenAnswer((_) async => Left(DatabaseFailure('error')));
 
     final result = await findVehicleByIdUsecase(id);
 
