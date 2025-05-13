@@ -6,4 +6,5 @@ part of 'vehicle_dao.dart';
 mixin _$VehicleDaoMixin on DatabaseAccessor<GasosaDatabase> {
   $UsersTable get users => attachedDatabase.users;
   $VehiclesTable get vehicles => attachedDatabase.vehicles;
+  $RefuelsTable get refuels => attachedDatabase.refuels;
 }

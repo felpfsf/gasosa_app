@@ -3,6 +3,7 @@ import 'package:gasosa_app/core/errors/failure.dart';
 import 'package:gasosa_app/data/local/vehicle_dao.dart';
 import 'package:gasosa_app/data/mappers/vehicle_mapper.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart' as domain;
+import 'package:gasosa_app/domain/entities/vehicle_with_last_refuel.dart';
 import 'package:gasosa_app/domain/repositories/vehicle_repository.dart';
 import 'package:injectable/injectable.dart';
 
@@ -13,9 +14,7 @@ class VehicleRepositoryImpl implements VehicleRepository {
   VehicleRepositoryImpl(this._vehicleDao);
 
   @override
-  Future<Either<Failure, domain.Vehicle>> addVehicle(
-    domain.Vehicle vehicle,
-  ) async {
+  Future<Either<Failure, domain.Vehicle>> addVehicle(domain.Vehicle vehicle) async {
     try {
       await _vehicleDao.insertVehicle(
         // VehiclesCompanion.insert(
@@ -35,14 +34,14 @@ class VehicleRepositoryImpl implements VehicleRepository {
   }
 
   @override
-  Future<Either<Failure, domain.Vehicle>> findVehicleById(String id) async {
+  Future<Either<Failure, VehicleWithLastRefuel>> findVehicleById(String id) async {
     try {
-      final vehicle = await _vehicleDao.findVehicleById(id);
-      if (vehicle == null) {
+      final result = await _vehicleDao.findVehicleById(id);
+      if (result == null) {
         return Left(DatabaseFailure('Veículo não encontrado'));
       }
 
-      return Right(vehicle.toDomain());
+      return Right(VehicleWithLastRefuel(vehicle: result.vehicle.toDomain(), lastRefuelDate: result.lastRefuelDate));
     } catch (e) {
       return Left(DatabaseFailure('Erro ao buscar o veículo: $e'));
     }
@@ -80,12 +79,13 @@ class VehicleRepositoryImpl implements VehicleRepository {
   }
 
   @override
-  Stream<List<domain.Vehicle>> watchAllVehiclesByUserId(String userId) async* {
-    await Future.delayed(const Duration(milliseconds: 800));
-    yield* _vehicleDao
-        .watchAllVehiclesByUserId(userId)
-        .map(
-          (vehicles) => vehicles.map((vehicle) => vehicle.toDomain()).toList(),
-        );
+  Stream<List<VehicleWithLastRefuel>> watchAllVehiclesByUserId(String userId) {
+    return _vehicleDao.watchAllVehiclesByUserId(userId).map((entries) {
+      return entries
+          .map(
+            (entry) => VehicleWithLastRefuel(vehicle: entry.vehicle.toDomain(), lastRefuelDate: entry.lastRefuelDate),
+          )
+          .toList();
+    });
   }
 }
