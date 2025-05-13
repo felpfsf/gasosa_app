@@ -42,3 +42,19 @@ String formatMaskedLiters(double value) {
   final liters = NumberFormat('#0.###', 'pt_BR').format(value);
   return liters;
 }
+
+String formatDistance(double? distance) {
+  if (distance == null) return '-';
+  if (distance < 1.0) {
+    final meters = (distance * 1000).round();
+    return '$meters m';
+  }
+
+  return '${distance.toStringAsFixed(0)} km';
+}
+
+String formatConsumption(double? consumption, String unit) {
+  if (consumption == null || consumption <= 0) return '-';
+
+  return '${consumption.toStringAsFixed(1)} km/$unit';
+}

@@ -5,6 +5,7 @@ import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/core/extensions/datetime_extensions.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/dialog_helper.dart';
+import 'package:gasosa_app/core/helpers/formatters.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel_with_consumption.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
@@ -27,8 +28,11 @@ class RefuelCard extends StatelessWidget {
     final pricePerLiter = item.refuel.pricePerLiter?.toStringAsFixed(2) ?? '';
     final liters = item.refuel.liters.toStringAsFixed(2);
     final totalRefueledValue = currency.format(item.refuel.totalValue);
+
     final unit = item.refuel.fuelType == FuelType.gnv ? 'm³' : 'L';
-    final consumptionLabel = 'Consumo: ${item.consumption?.toStringAsFixed(1)} km/$unit';
+    final consumptionLabel = formatConsumption(item.consumption, unit);
+
+    final distanceLabel = formatDistance(item.distance);
 
     void onEditPressed() {
       context.push(RoutePaths.manageRefuel(item.refuel.vehicleId), extra: item.refuel);
@@ -94,15 +98,29 @@ class RefuelCard extends StatelessWidget {
             ],
           ),
           AppSpacing.gap4,
-          Text('KM Atual: ${item.refuel.odometer} km', style: AppTypography.textSmRegular),
+          Text('Km Atual: ${item.refuel.odometer.toStringAsFixed(0)} km', style: AppTypography.textSmRegular),
           if (item.consumption != null) ...[
             Divider(height: AppSpacing.md),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: AppSpacing.xs,
               children: [
-                Text('Distância Percorrida: ${item.distance} km', style: AppTypography.textSmRegular),
-                Row(children: [Icon(Icons.car_repair), Text(consumptionLabel, style: AppTypography.textSmRegular)]),
+                Row(
+                  spacing: AppSpacing.xs,
+                  children: [
+                    Icon(Icons.route),
+                    Text('Distância Percorrida: $distanceLabel', style: AppTypography.textSmRegular),
+                  ],
+                ),
+                Row(
+                  spacing: AppSpacing.xs,
+                  children: [
+                    Icon(Icons.speed),
+                    Text('Consumo: $consumptionLabel', style: AppTypography.textSmRegular),
+                  ],
+                ),
               ],
             ),
           ],
