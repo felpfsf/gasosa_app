@@ -116,10 +116,7 @@ class RefuelCard extends StatelessWidget {
                 ),
                 Row(
                   spacing: AppSpacing.xs,
-                  children: [
-                    Icon(Icons.speed),
-                    Text('Consumo: $consumptionLabel', style: AppTypography.textSmRegular),
-                  ],
+                  children: [Icon(Icons.speed), Text('Consumo: $consumptionLabel', style: AppTypography.textSmRegular)],
                 ),
               ],
             ),

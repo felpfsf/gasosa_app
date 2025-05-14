@@ -37,12 +37,14 @@ Este documento acompanha as entregas concluídas para o MVP.
 - [x] Cadastro
 - [x] Edição
 - [x] Exclusão com confirmação
-- [ ] Cálculo de consumo
+- [x] Cálculo de consumo
 - [ ] Foto de nota fiscal
+- [ ] Adicionar abastecimento de reservatorio partida a frio.
 
 ### Usuário
 
 - [x] Autenticação Firebase
+- [ ] Autenticação com Google
 - [ ] Tela de perfil (opcional)
 
 ---

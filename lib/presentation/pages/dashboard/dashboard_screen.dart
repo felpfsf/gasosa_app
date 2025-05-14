@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/app_router.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
+import 'package:gasosa_app/core/helpers/auth_helper.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_state.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/widgets/vehicle_list_widget.dart';
 import 'package:gasosa_app/presentation/widgets/custom_loader.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_appbar.dart';
+import 'package:gasosa_app/presentation/widgets/gasosa_avatar.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_empty_state_widget.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_error_widget.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
@@ -57,9 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    final authState = context.watch<AuthCubit>().state;
-
-    String username = authState.maybeWhen(authenticated: (user) => user.name, orElse: () => 'Usuário');
+    final user = AuthHelper.getAuthenticatedUser(context);
 
     void logout() {
       context.read<AuthCubit>().logout();
@@ -68,10 +68,13 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
 
     return Scaffold(
       appBar: GasosaAppbar(
-        title: 'Bem vindo, $username',
+        title: 'Bem vindo, ${user.name}',
         centerTitle: true,
         showBackButton: true,
-        leading: IconButton(onPressed: () {}, icon: const Icon(Icons.menu)),
+        leading: GestureDetector(
+          onTap: () => context.push(RoutePaths.profile, extra: user),
+          child: GasosaAvatar(photoUrl: user.photoUrl),
+        ),
         actions: [IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout))],
       ),
       body: BlocBuilder<VehicleCubit, VehicleState>(
@@ -91,7 +94,6 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
                   onPressed: () => context.push(RoutePaths.manageVehicle),
                 );
               }
-
               return SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
