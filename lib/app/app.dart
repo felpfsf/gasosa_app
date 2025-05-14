@@ -25,7 +25,7 @@ class GasosaApp extends StatelessWidget {
       ],
       child: Builder(
         builder: (context) {
-          final GoRouter router = createGoRouter(context); // agora funciona
+          final GoRouter router = createGoRouter(context);
 
           Widget app = MaterialApp.router(
             title: 'Gasosa App',
@@ -36,9 +36,7 @@ class GasosaApp extends StatelessWidget {
 
           app = BlocListener<AuthCubit, AuthState>(
             listenWhen: (previous, current) => current == const AuthState.unauthenticated(),
-            listener: (context, state) {
-              // você pode adicionar lógica extra aqui se quiser
-            },
+            listener: (context, state) {},
             child: app,
           );
 
