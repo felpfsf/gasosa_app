@@ -10,12 +10,11 @@ class AuthHelper {
     return state.maybeWhen(authenticated: (user) => user.id, orElse: () => null);
   }
 
-  static User getAuthenticatedUser(BuildContext context) {
-  final state = context.read<AuthCubit>().state;
+  static User? getAuthenticatedUser(BuildContext context) {
+    final state = context.read<AuthCubit>().state;
 
-  return state.maybeWhen(
-    authenticated: (user) => user,
-    orElse: () => throw StateError('User is not authenticated'),
-  );
-}
+    final user = state.maybeWhen(authenticated: (user) => user, orElse: () => null);
+
+    return user;
+  }
 }
