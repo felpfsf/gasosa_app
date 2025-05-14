@@ -25,7 +25,7 @@ class GasosaAvatar extends StatelessWidget {
         child: CircleAvatar(
           backgroundColor: AppColors.text,
           backgroundImage:
-              photoUrl != null
+              photoUrl != null && photoUrl!.isNotEmpty
                   ? NetworkImage(photoUrl!)
                   : AssetImage('assets/images/avatar_placeholder.png') as ImageProvider,
           radius: radius,
