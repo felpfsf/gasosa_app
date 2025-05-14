@@ -50,7 +50,8 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
   }
 
   void _loadVehicles() {
-    final user = context.read<AuthCubit>().state.maybeWhen(authenticated: (user) => user, orElse: () => null);
+    // final user = context.read<AuthCubit>().state.maybeWhen(authenticated: (user) => user, orElse: () => null);
+    final user = AuthHelper.getAuthenticatedUser(context);
 
     if (user != null) {
       context.read<VehicleCubit>().fetchVehicles(user.id);
@@ -60,6 +61,8 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
   @override
   Widget build(BuildContext context) {
     final user = AuthHelper.getAuthenticatedUser(context);
+    final userName = user?.name ?? '';
+    final userPhotoUrl = user?.photoUrl ?? '';
 
     void logout() {
       context.read<AuthCubit>().logout();
@@ -68,12 +71,12 @@ class _DashboardScreenState extends State<DashboardScreen> with RouteAware {
 
     return Scaffold(
       appBar: GasosaAppbar(
-        title: 'Bem vindo, ${user.name}',
+        title: 'Bem vindo, $userName',
         centerTitle: true,
         showBackButton: true,
         leading: GestureDetector(
           onTap: () => context.push(RoutePaths.profile, extra: user),
-          child: GasosaAvatar(photoUrl: user.photoUrl),
+          child: GasosaAvatar(photoUrl: userPhotoUrl),
         ),
         actions: [IconButton(onPressed: () => logout(), icon: const Icon(Icons.logout))],
       ),
