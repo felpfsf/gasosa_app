@@ -8,4 +8,6 @@ abstract class RouteNames {
   static const vehicleDetail = 'vehicle_detail';
 
   static const manageRefuel = 'manage_refuel';
+
+  static const profile = 'profile';
 }

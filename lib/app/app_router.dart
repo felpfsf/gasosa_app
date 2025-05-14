@@ -5,11 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/app/routes/route_names.dart';
 import 'package:gasosa_app/app/routes/route_paths.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
+import 'package:gasosa_app/domain/entities/user.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/user/auth_cubit.dart';
 import 'package:gasosa_app/presentation/pages/auth/login_screen.dart';
 import 'package:gasosa_app/presentation/pages/auth/register_screen.dart';
 import 'package:gasosa_app/presentation/pages/dashboard/dashboard_screen.dart';
+import 'package:gasosa_app/presentation/pages/profile/user_profile_screen.dart';
 import 'package:gasosa_app/presentation/pages/refuel/manage_refuel_screen.dart';
 import 'package:gasosa_app/presentation/pages/splash/splash_screen.dart';
 import 'package:gasosa_app/presentation/pages/vehicles/manage_vehicle_screen.dart';
@@ -74,6 +76,14 @@ GoRouter createGoRouter(BuildContext context) {
           final vehicleId = state.pathParameters['vehicleId']!;
           final refuel = state.extra as Refuel?;
           return ManageRefuelScreen(vehicleId: vehicleId, refuel: refuel);
+        },
+      ),
+      GoRoute(
+        path: RoutePaths.profile,
+        name: RouteNames.profile,
+        builder: (context, state) {
+          final user = state.extra as User;
+          return UserProfileScreen(user: user);
         },
       ),
     ],

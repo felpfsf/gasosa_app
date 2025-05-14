@@ -8,4 +8,6 @@ abstract class RoutePaths {
   static String vehicleDetail(String vehicleId) => '/vehicles/detail/$vehicleId';
 
   static String manageRefuel(String vehicleId) => '/refuel/manage/$vehicleId';
+
+  static String profile = '/profile';
 }
