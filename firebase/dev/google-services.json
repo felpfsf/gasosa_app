@@ -12,7 +12,12 @@
           "package_name": "com.etherealcodes.gasosa_app.gasosa_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1095322359065-957na16smajv00hj1tp2697j06t8ck3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA3yM6NEaUor0-b44rEwssKA8VnDVR46Ow"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095322359065-957na16smajv00hj1tp2697j06t8ck3n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095322359065-i8vodrq61c70l9o3sqpots4ics7c8m3c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.etherealcodes.gasosaapp.gasosaApp"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +48,20 @@
           "package_name": "com.gasosa.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1095322359065-irc9cf7hffcbd21t5ria4j6jbto2k44s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gasosa.dev",
+            "certificate_hash": "6b0bd0ee8fd1e86b01df23f51fe11e99f0413109"
+          }
+        },
+        {
+          "client_id": "1095322359065-957na16smajv00hj1tp2697j06t8ck3n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA3yM6NEaUor0-b44rEwssKA8VnDVR46Ow"
@@ -39,7 +69,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095322359065-957na16smajv00hj1tp2697j06t8ck3n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095322359065-i8vodrq61c70l9o3sqpots4ics7c8m3c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.etherealcodes.gasosaapp.gasosaApp"
+              }
+            }
+          ]
         }
       }
     }
