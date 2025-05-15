@@ -9,6 +9,7 @@ import 'package:gasosa_app/core/helpers/formatters.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel_with_consumption.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
+import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
@@ -50,6 +51,7 @@ class RefuelCard extends StatelessWidget {
       if (confirm) {
         if (!context.mounted) return;
         context.read<RefuelCubit>().deleteRefuel(item.refuel);
+        context.read<VehicleCubit>().fetchVehicleById(item.refuel.vehicleId);
       }
     }
 
