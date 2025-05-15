@@ -33,6 +33,8 @@ import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart'
 import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart' as _i462;
 import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart'
     as _i630;
+import 'package:gasosa_app/domain/usecases/auth/sign_in_with_google_usecase.dart'
+    as _i990;
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart'
     as _i452;
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart'
@@ -141,6 +143,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i984.ISaveUserUsecase>(
       () => _i984.SaveUserUsecase(userRepository: gh<_i754.UserRepository>()),
     );
+    gh.factory<_i990.ISignInWithGoogleUsecase>(
+      () => _i990.SignInWithGoogleUsecase(
+        authRepository: gh<_i435.AuthRepository>(),
+      ),
+    );
     gh.factory<_i766.IDeleteVehicleUsecase>(
       () => _i766.DeleteVehicleUsecase(
         vehicleRepository: gh<_i35.VehicleRepository>(),
@@ -176,6 +183,15 @@ extension GetItInjectableX on _i174.GetIt {
         refuelRepository: gh<_i857.RefuelRepository>(),
       ),
     );
+    gh.factory<_i1070.IVehicleCubit>(
+      () => _i1070.VehicleCubit(
+        gh<_i868.IWatchAllVehiclesByUserIdUsecase>(),
+        gh<_i267.IAddVehicleUsecase>(),
+        gh<_i793.IUpdateVehicleUsecase>(),
+        gh<_i766.IDeleteVehicleUsecase>(),
+        gh<_i406.IFindVehicleByIdUsecase>(),
+      ),
+    );
     gh.factory<_i34.IAuthCubit>(
       () => _i34.AuthCubit(
         gh<_i188.ILoadUserUsecase>(),
@@ -184,15 +200,7 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i660.ILoginWithEmailUsecase>(),
         gh<_i462.ILogoutUsecase>(),
         gh<_i630.IRegisterWithEmailUsecase>(),
-      ),
-    );
-    gh.factory<_i1070.IVehicleCubit>(
-      () => _i1070.VehicleCubit(
-        gh<_i868.IWatchAllVehiclesByUserIdUsecase>(),
-        gh<_i267.IAddVehicleUsecase>(),
-        gh<_i793.IUpdateVehicleUsecase>(),
-        gh<_i766.IDeleteVehicleUsecase>(),
-        gh<_i406.IFindVehicleByIdUsecase>(),
+        gh<_i990.ISignInWithGoogleUsecase>(),
       ),
     );
     gh.factory<_i817.IRefuelCubit>(
