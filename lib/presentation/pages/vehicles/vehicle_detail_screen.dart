@@ -61,91 +61,99 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> with RouteAwa
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: BlocBuilder<VehicleCubit, VehicleState>(
-          builder: (context, state) {
-            return GasosaAppbar(
-              title: 'Detalhes do veículo',
-              showBackButton: true,
-              leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
-              actions: [
-                state.maybeWhen(
-                  detail:
-                      (item) => IconButton(
-                        onPressed: () {
-                          context.push(RoutePaths.manageVehicle, extra: item.vehicle);
-                        },
-                        icon: Icon(Icons.edit),
-                      ),
-                  orElse: () => const SizedBox.shrink(),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-      body: Column(
-        spacing: AppSpacing.md,
-        children: [
-          BlocBuilder<VehicleCubit, VehicleState>(
+    return BlocListener<RefuelCubit, RefuelState>(
+      listenWhen: (previous, current) => current.maybeWhen(success: (_) => true, orElse: () => false),
+      listener: (context, state) {
+        context.read<VehicleCubit>().fetchVehicleById(widget.vehicleId);
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: BlocBuilder<VehicleCubit, VehicleState>(
             builder: (context, state) {
-              return state.maybeWhen(
-                detail: (vehicle) => VehicleDetailHeader(key: ValueKey(vehicle.id + vehicle.name), vehicle: vehicle),
-                orElse: () {
-                  // CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
-                  return const CircularProgressIndicator();
-                },
+              return GasosaAppbar(
+                title: 'Detalhes do veículo',
+                showBackButton: true,
+                leading: IconButton(onPressed: () => context.pop(), icon: const Icon(Icons.arrow_back_rounded)),
+                actions: [
+                  state.maybeWhen(
+                    detail:
+                        (item) => IconButton(
+                          onPressed: () {
+                            context.push(RoutePaths.manageVehicle, extra: item.vehicle);
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                    orElse: () => const SizedBox.shrink(),
+                  ),
+                ],
               );
             },
           ),
-          Expanded(
-            child: BlocBuilder<RefuelCubit, RefuelState>(
+        ),
+        body: Column(
+          spacing: AppSpacing.md,
+          children: [
+            BlocBuilder<VehicleCubit, VehicleState>(
               builder: (context, state) {
-                return state.when(
-                  initial: () => const SizedBox.shrink(),
-                  loading:
-                      () => CustomLoader<RefuelCubit, RefuelState>(selector: (_) => true, isOverlay: true, size: 48),
-                  loaded: (refuels) {
-                    if (refuels.isEmpty) {
-                      return GaososaEmptyStateWidget(
-                        title: 'Nenhum abastecimento encontrado',
-                        actionLabel: 'Registrar abastecimento',
-                        onPressed: () {
-                          context.push(RoutePaths.manageRefuel(widget.vehicleId));
-                        },
-                      );
-                    }
-
-                    final refuelsWithConsumption = mapToRefuelsWithConsumption(refuels);
-
-                    return ListView.separated(
-                      itemCount: refuelsWithConsumption.length,
-                      separatorBuilder: (_, __) => AppSpacing.gap16,
-                      shrinkWrap: true,
-                      itemBuilder: (_, index) {
-                        final refuel = refuelsWithConsumption[index];
-                        return RefuelCard(item: refuel);
-                      },
-                    );
+                return state.maybeWhen(
+                  detail: (vehicle) {
+                    return VehicleDetailHeader(key: ValueKey(vehicle.id + vehicle.name), vehicle: vehicle);
                   },
-
-                  success: (_) => const SizedBox.shrink(),
-                  error: (_, message) => GasosaErrorWidget(message: 'Erro ao carregar abastecimentos: $message'),
+                  orElse: () {
+                    // CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
+                    return const CircularProgressIndicator();
+                  },
                 );
               },
             ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push(RoutePaths.manageRefuel(widget.vehicleId));
-        },
-        tooltip: 'Registrar abastecimento',
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        child: Icon(Icons.add, color: AppColors.text),
+            Expanded(
+              child: BlocBuilder<RefuelCubit, RefuelState>(
+                builder: (context, state) {
+                  return state.when(
+                    initial: () => const SizedBox.shrink(),
+                    loading:
+                        () => CustomLoader<RefuelCubit, RefuelState>(selector: (_) => true, isOverlay: true, size: 48),
+                    loaded: (refuels) {
+                      if (refuels.isEmpty) {
+                        return GaososaEmptyStateWidget(
+                          title: 'Nenhum abastecimento encontrado',
+                          actionLabel: 'Registrar abastecimento',
+                          onPressed: () {
+                            context.push(RoutePaths.manageRefuel(widget.vehicleId));
+                          },
+                        );
+                      }
+
+                      final refuelsWithConsumption = mapToRefuelsWithConsumption(refuels);
+
+                      return ListView.separated(
+                        itemCount: refuelsWithConsumption.length,
+                        separatorBuilder: (_, __) => AppSpacing.gap16,
+                        shrinkWrap: true,
+                        itemBuilder: (_, index) {
+                          final refuel = refuelsWithConsumption[index];
+                          return RefuelCard(item: refuel);
+                        },
+                      );
+                    },
+
+                    success: (_) => const SizedBox.shrink(),
+                    error: (_, message) => GasosaErrorWidget(message: 'Erro ao carregar abastecimentos: $message'),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.push(RoutePaths.manageRefuel(widget.vehicleId));
+          },
+          tooltip: 'Registrar abastecimento',
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: Icon(Icons.add, color: AppColors.text),
+        ),
       ),
     );
   }
