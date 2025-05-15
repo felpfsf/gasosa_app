@@ -4,6 +4,7 @@ import 'package:gasosa_app/domain/entities/user.dart';
 import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/sign_in_with_google_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
@@ -20,6 +21,7 @@ abstract class IAuthCubit {
   Future<void> register(User user, String password);
   Future<void> login(String email, String password);
   Future<void> checkLogionStatus();
+  Future<void> signInWithGoogle();
 }
 
 @Injectable(as: IAuthCubit)
@@ -30,6 +32,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
   final ILoginWithEmailUsecase _loginWithEmailUsecase;
   final ILogoutUsecase _logoutUsecase;
   final IRegisterWithEmailUsecase _registerWithEmailUsecase;
+  final ISignInWithGoogleUsecase _iSignInWithGoogleUsecase;
 
   AuthCubit(
     this._loadUserUsecase,
@@ -38,6 +41,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
     this._loginWithEmailUsecase,
     this._logoutUsecase,
     this._registerWithEmailUsecase,
+    this._iSignInWithGoogleUsecase,
   ) : super(AuthState.initial());
 
   @override
@@ -46,9 +50,7 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
 
     final result = await _loadUserUsecase(userId);
 
-    result.fold((failure) => emit(AuthState.error(message: failure.message)), (
-      user,
-    ) {
+    result.fold((failure) => emit(AuthState.error(message: failure.message)), (user) {
       if (user != null) {
         emit(AuthState.authenticated(user));
       } else {
@@ -86,19 +88,16 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
     emit(AuthState.unauthenticated());
     final result = await _logoutUsecase();
     await removeUserId();
-    result.fold(
-      (failure) => emit(AuthState.error(message: failure.message)),
-      (_) => emit(AuthState.unauthenticated()),
-    );
+    result.fold((failure) => emit(AuthState.error(message: failure.message)), (_) => emit(AuthState.unauthenticated()));
   }
 
   @override
   Future<void> login(String email, String password) async {
+    emit(AuthState.loading());
+
     final result = await _loginWithEmailUsecase(email, password);
 
-    result.fold((failure) => emit(AuthState.error(message: failure.message)), (
-      user,
-    ) async {
+    result.fold((failure) => emit(AuthState.error(message: failure.message)), (user) async {
       await persistUserId(user.id);
       emit(AuthState.authenticated(user));
     });
@@ -106,6 +105,8 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
 
   @override
   Future<void> register(User user, String password) async {
+    emit(AuthState.loading());
+
     final result = await _registerWithEmailUsecase(user, password);
 
     await result.fold(
@@ -143,5 +144,33 @@ class AuthCubit extends Cubit<AuthState> implements IAuthCubit {
     } else {
       emit(AuthState.unauthenticated());
     }
+  }
+
+  @override
+  Future<void> signInWithGoogle() async {
+    emit(AuthState.loading());
+
+    final result = await _iSignInWithGoogleUsecase();
+
+    await result.fold((failure) async => emit(AuthState.error(message: failure.message)), (fbUser) async {
+      final userEntity = User(
+        id: fbUser.id,
+        name: fbUser.name,
+        email: fbUser.email,
+        photoUrl: fbUser.photoUrl,
+        createdAt: DateTime.now(),
+      );
+
+      final saveResult = await _saveUserUsecase(userEntity);
+
+      await persistUserId(fbUser.id);
+
+      saveResult.fold(
+        (saveFailure) => emit(AuthState.error(message: saveFailure.message)),
+        (_) => emit(AuthState.authenticated(userEntity)),
+      );
+
+      emit(AuthState.authenticated(userEntity));
+    });
   }
 }
