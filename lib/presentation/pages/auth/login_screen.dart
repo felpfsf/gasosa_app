@@ -39,45 +39,44 @@ class _LoginScreenState extends State<LoginScreen> {
       },
       builder: (context, state) {
         final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
-        return Scaffold(
-          body: SafeArea(
-            child:
-                isLoading
-                    ? CustomLoader<AuthCubit, AuthState>(size: 48, isOverlay: true, selector: (_) => true)
-                    : Center(
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
+        return isLoading
+            ? CustomLoader<AuthCubit, AuthState>(size: 48, isOverlay: true, selector: (_) => true)
+            : Scaffold(
+              body: SafeArea(
+                child: Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        LogoHero(size: 200),
+                        AppSpacing.gap24,
+                        Text('Entrar no Gasosa', style: AppTypography.titleLg),
+                        AppSpacing.gap24,
+                        AuthGoogleButton(onPressed: () => context.read<AuthCubit>().signInWithGoogle()),
+                        AppSpacing.gap16,
+                        Row(
                           children: [
-                            LogoHero(size: 200),
-                            AppSpacing.gap24,
-                            Text('Entrar no Gasosa', style: AppTypography.titleLg),
-                            AppSpacing.gap24,
-                            AuthGoogleButton(onPressed: () => context.read<AuthCubit>().signInWithGoogle()),
-                            AppSpacing.gap16,
-                            Row(
-                              children: [
-                                Expanded(child: Divider(thickness: 1)),
-                                Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: const Text('ou')),
-                                Expanded(child: Divider(thickness: 1)),
-                              ],
-                            ),
-                            AppSpacing.gap16,
-                            LoginForm(),
-                            AppSpacing.gap16,
-                            GestureDetector(
-                              onTap: () => context.push('/auth/register'),
-                              child: Text(
-                                'Não tem conta? Cadastre-se',
-                                style: AppTypography.textMdBold.copyWith(color: AppColors.primary),
-                              ),
-                            ),
+                            Expanded(child: Divider(thickness: 1)),
+                            Padding(padding: const EdgeInsets.symmetric(horizontal: 8), child: const Text('ou')),
+                            Expanded(child: Divider(thickness: 1)),
                           ],
                         ),
-                      ),
+                        AppSpacing.gap16,
+                        LoginForm(),
+                        AppSpacing.gap16,
+                        GestureDetector(
+                          onTap: () => context.push('/auth/register'),
+                          child: Text(
+                            'Não tem conta? Cadastre-se',
+                            style: AppTypography.textMdBold.copyWith(color: AppColors.primary),
+                          ),
+                        ),
+                      ],
                     ),
-          ),
-        );
+                  ),
+                ),
+              ),
+            );
       },
     );
   }

@@ -31,46 +31,39 @@ class RegisterScreen extends StatelessWidget {
         );
       },
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text('Cadastrar'),
-            centerTitle: true,
-            elevation: 0,
-            leading: IconButton(
-              onPressed: () => context.pop(),
-              icon: Icon(Icons.arrow_back),
-            ),
-          ),
-          body: SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 32,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    LogoHero(size: 200),
-                    AppSpacing.gap24,
-                    Text('Crie sua conta', style: AppTypography.titleLg),
-                    AppSpacing.gap24,
-                    RegisterForm(),
-                    CustomLoader<AuthCubit, AuthState>(
-                      selector:
-                          (state) => state.maybeWhen(
-                            loading: () => true,
-                            orElse: () => false,
-                          ),
-                      isOverlay: true,
-                      size: 48,
+        final isLoading = state.maybeWhen(loading: () => true, orElse: () => false);
+        return isLoading
+            ? CustomLoader<AuthCubit, AuthState>(selector: (_) => true, isOverlay: true, size: 48)
+            : Scaffold(
+              appBar: AppBar(
+                title: const Text('Cadastrar'),
+                centerTitle: true,
+                elevation: 0,
+                leading: IconButton(onPressed: () => context.pop(), icon: Icon(Icons.arrow_back)),
+              ),
+              body: SafeArea(
+                child: Center(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        LogoHero(size: 200),
+                        AppSpacing.gap24,
+                        Text('Crie sua conta', style: AppTypography.titleLg),
+                        AppSpacing.gap24,
+                        RegisterForm(),
+                        CustomLoader<AuthCubit, AuthState>(
+                          selector: (state) => state.maybeWhen(loading: () => true, orElse: () => false),
+                          isOverlay: true,
+                          size: 48,
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
-        );
+            );
       },
     );
   }
