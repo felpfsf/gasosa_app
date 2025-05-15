@@ -171,13 +171,11 @@ class VehicleCubit extends Cubit<VehicleState> implements IVehicleCubit {
   Future<void> fetchVehicleById(String id) async {
     emit(const VehicleState.loading());
 
-    final result = _findVehicleById(id);
+    final result = await _findVehicleById(id);
 
-    result.then((value) {
-      value.fold(
-        (failure) => emit(VehicleState.error(message: failure.message)),
-        (vehicle) => emit(VehicleState.detail(vehicle)),
-      );
-    });
+    result.fold(
+      (failure) => emit(VehicleState.error(message: failure.message)),
+      (vehicle) => emit(VehicleState.detail(vehicle)),
+    );
   }
 }
