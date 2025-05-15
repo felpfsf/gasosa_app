@@ -119,6 +119,7 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
     if (confirmed) {
       if (!mounted) return;
       context.read<VehicleCubit>().deleteVehicle(widget.initialVehicle!);
+      context.pop();
     }
   }
 
