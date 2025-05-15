@@ -43,7 +43,7 @@ class GasosaConfirmDialog extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context).pop(true);
+                    // Navigator.of(context).pop(true);
                     onConfirm();
                   },
                   style: ElevatedButton.styleFrom(
@@ -54,7 +54,6 @@ class GasosaConfirmDialog extends StatelessWidget {
                   ),
                   child: Text(confirmText, style: AppTypography.textSmBold),
                 ),
-                // GasosaButton(label: confirmText, onPressed: onConfirm, backgroundColor: AppColors.error),
               ],
             ),
           ],
