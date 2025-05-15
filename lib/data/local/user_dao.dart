@@ -23,6 +23,7 @@ class UserDao extends DatabaseAccessor<GasosaDatabase> with _$UserDaoMixin {
       id: query.id,
       name: query.name,
       email: query.email,
+      photoUrl: query.photoUrl,
       createdAt: query.createdAt,
       updatedAt: query.updatedAt,
     );
