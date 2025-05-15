@@ -16,6 +16,7 @@ import 'package:gasosa_app/presentation/widgets/gasosa_error_widget.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class VehicleDetailScreen extends StatefulWidget {
   final String vehicleId;
@@ -101,8 +102,7 @@ class _VehicleDetailScreenState extends State<VehicleDetailScreen> with RouteAwa
                     return VehicleDetailHeader(key: ValueKey(vehicle.id + vehicle.name), vehicle: vehicle);
                   },
                   orElse: () {
-                    // CustomLoader<VehicleCubit, VehicleState>(selector: (_) => true, isOverlay: true, size: 48),
-                    return const CircularProgressIndicator();
+                    return LoadingAnimationWidget.threeArchedCircle(color: AppColors.primary, size: 48);
                   },
                 );
               },
