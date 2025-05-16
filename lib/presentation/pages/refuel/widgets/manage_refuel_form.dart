@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/auth_helper.dart';
+import 'package:gasosa_app/core/helpers/avaliable_fuel_type_for_refuel.dart';
 import 'package:gasosa_app/core/helpers/formatters.dart';
+import 'package:gasosa_app/core/validators/refuel_validators.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
@@ -15,7 +17,6 @@ import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:validatorless/validatorless.dart';
 
 class ManagerRefuelForm extends StatefulWidget {
   final String vehicleId;
@@ -202,10 +203,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
                 _selectedDate = pickedDate;
               });
             },
-            validator: (date) {
-              if (date == null) return 'Data de abastecimento obrigatória';
-              return null;
-            },
+            validator: (date) => RefuelValidators.date(date),
           ),
           GasosaFormField(
             label: 'KM atual *',
@@ -213,10 +211,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
             controller: _odometerEC,
             keyboardType: TextInputType.number,
             inputFormatters: [integerInputFormatter],
-            validator: Validatorless.multiple([
-              Validatorless.required('KM atual é obrigatório'),
-              Validatorless.min(1, 'Valor inválido'),
-            ]),
+            validator: RefuelValidators.odometer,
           ),
           GasosaFormField(
             label: 'Litros abastecidos *',
@@ -224,10 +219,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
             controller: _litersEC,
             keyboardType: TextInputType.number,
             inputFormatters: [litersInputFormatter],
-            validator: Validatorless.multiple([
-              Validatorless.required('Litros abastecidos é obrigatório'),
-              Validatorless.min(1, 'Valor inválido'),
-            ]),
+            validator: RefuelValidators.liters,
           ),
           GasosaFormField(
             label: 'Valor total *',
@@ -235,26 +227,19 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
             controller: _totalValueEC,
             keyboardType: TextInputType.number,
             inputFormatters: [currencyInputFormatter],
-            validator: Validatorless.multiple([
-              Validatorless.required('Valor total é obrigatório'),
-              Validatorless.min(1, 'Valor inválido'),
-            ]),
+            validator: RefuelValidators.totalValue,
           ),
           GasosaDropdownField<FuelType>(
             label: 'Tipo de combustível *',
-            items: FuelType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.label))).toList(),
+            items: avaliableFuelTypeForRefuel().map((e) => DropdownMenuItem(value: e, child: Text(e.label))).toList(),
             value: _selectedFuelType,
             hint: const Text('Selecione o tipo de combustível'),
-            onChanged:
-                (value) => setState(() {
-                  _selectedFuelType = value;
-                }),
-            validator: (value) {
-              if (value == null) {
-                return 'Selecione o tipo de combustível';
-              }
-              return null;
+            onChanged: (fuelType) {
+              setState(() {
+                _selectedFuelType = fuelType;
+              });
             },
+            validator: (fuelType) => RefuelValidators.fuelType(fuelType),
           ),
           AppSpacing.gap8,
           GasosaButton(label: buttonLabel, onPressed: _onSubmit),

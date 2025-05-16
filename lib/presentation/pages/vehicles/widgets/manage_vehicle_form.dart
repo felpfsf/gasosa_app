@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/auth_helper.dart';
 import 'package:gasosa_app/core/helpers/dialog_helper.dart';
+import 'package:gasosa_app/core/validators/vehicle_validators.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/vehicle.dart';
 import 'package:gasosa_app/presentation/cubits/vehicle/vehicle_cubit.dart';
@@ -14,7 +15,6 @@ import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:validatorless/validatorless.dart';
 
 class ManageVehicleForm extends StatefulWidget {
   final Vehicle? initialVehicle;
@@ -130,19 +130,8 @@ class _ManageVehicleFormState extends State<ManageVehicleForm> {
       child: Column(
         spacing: AppSpacing.lg,
         children: [
-          GasosaFormField(
-            label: 'Nome do veículo *',
-            controller: _vehicleNameEC,
-            validator: Validatorless.multiple([
-              Validatorless.required('Nome do veículo é obrigatório'),
-              Validatorless.min(3, 'Nome do veículo deve ter no mínimo 3 caracteres'),
-            ]),
-          ),
-          GasosaFormField(
-            label: 'Placa do veículo',
-            controller: _plateEC,
-            validator: Validatorless.min(3, 'Nome do veículo deve ter no mínimo 3 caracteres'),
-          ),
+          GasosaFormField(label: 'Nome do veículo *', controller: _vehicleNameEC, validator: VehicleValidators.name),
+          GasosaFormField(label: 'Placa do veículo', controller: _plateEC, validator: VehicleValidators.plate),
           GasosaDropdownField<FuelType>(
             label: 'Tipo de combustível *',
             items: FuelType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.label))).toList(),
