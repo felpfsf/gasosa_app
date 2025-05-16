@@ -44,8 +44,9 @@ Este documento acompanha as entregas concluídas para o MVP.
 ### Usuário
 
 - [x] Autenticação Firebase
-- [ ] Autenticação com Google
-- [ ] Tela de perfil (opcional)
+- [x] Autenticação com Google
+- [x] Tela de perfil (opcional)
+- [ ] Editar perfil
 
 ---
 
