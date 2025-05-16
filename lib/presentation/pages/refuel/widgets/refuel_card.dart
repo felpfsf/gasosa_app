@@ -24,7 +24,7 @@ class RefuelCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currency = NumberFormat.currency(locale: 'pt_BR');
+    final currency = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
 
     final pricePerLiter = item.refuel.pricePerLiter?.toStringAsFixed(2) ?? '';
     final liters = item.refuel.liters.toStringAsFixed(2);
