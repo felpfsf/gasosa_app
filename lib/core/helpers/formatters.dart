@@ -22,7 +22,11 @@ double parseMaskedInteger(String value) {
 }
 
 double parseMaskedCurrency(String value) {
-  final cleaned = value.replaceAll('R\$', '').replaceAll(',', '.').replaceAll(RegExp(r'[^\d.]'), '');
+  final cleaned = value
+      .replaceAll('R\$', '')
+      // .replaceAll('.', '')
+      .replaceAll(',', '')
+      .replaceAll(RegExp(r'[^\d.]'), '');
 
   return double.tryParse(cleaned) ?? 0.0;
 }
