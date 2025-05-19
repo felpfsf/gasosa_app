@@ -9,7 +9,8 @@ class Refuel {
   final double liters;
   final double totalValue;
   final double? pricePerLiter;
-  final double? coldStartLitters;
+  final double? coldStartLiters;
+  final double? coldStartValue;
   final String? noteImageUrl;
   final bool isSynced;
   final String createdBy;
@@ -26,7 +27,8 @@ class Refuel {
     required this.liters,
     required this.totalValue,
     this.pricePerLiter,
-    this.coldStartLitters,
+    this.coldStartLiters,
+    this.coldStartValue,
     this.noteImageUrl,
     this.isSynced = false,
     required this.createdBy,
@@ -41,7 +43,8 @@ class Refuel {
     double? liters,
     FuelType? fuelType,
     double? pricePerLiter,
-    double? coldStartLitters,
+    double? coldStartLiters,
+    double? coldStartValue,
     double? totalValue,
     String? noteImageUrl,
     bool? isSynced,
@@ -57,7 +60,8 @@ class Refuel {
       liters: liters ?? this.liters,
       totalValue: totalValue ?? this.totalValue,
       pricePerLiter: pricePerLiter ?? this.pricePerLiter,
-      coldStartLitters: coldStartLitters ?? this.coldStartLitters,
+      coldStartLiters: coldStartLiters ?? this.coldStartLiters,
+      coldStartValue: coldStartValue ?? this.coldStartValue,
       noteImageUrl: noteImageUrl ?? this.noteImageUrl,
       isSynced: isSynced ?? this.isSynced,
       createdBy: createdBy,

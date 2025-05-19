@@ -18,6 +18,8 @@ class Refuels extends Table {
   TextColumn get createdBy => text().references(Users, #id)();
   TextColumn get updatedBy => text().nullable()();
   DateTimeColumn get updatedAt => dateTime().nullable()();
+  RealColumn get coldStartLiters => real().nullable()();
+  RealColumn get coldStartValue => real().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};

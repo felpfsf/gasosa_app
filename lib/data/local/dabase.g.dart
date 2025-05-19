@@ -1107,6 +1107,28 @@ class $RefuelsTable extends Refuels with TableInfo<$RefuelsTable, Refuel> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _coldStartLitersMeta = const VerificationMeta(
+    'coldStartLiters',
+  );
+  @override
+  late final GeneratedColumn<double> coldStartLiters = GeneratedColumn<double>(
+    'cold_start_liters',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _coldStartValueMeta = const VerificationMeta(
+    'coldStartValue',
+  );
+  @override
+  late final GeneratedColumn<double> coldStartValue = GeneratedColumn<double>(
+    'cold_start_value',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1124,6 +1146,8 @@ class $RefuelsTable extends Refuels with TableInfo<$RefuelsTable, Refuel> {
     createdBy,
     updatedBy,
     updatedAt,
+    coldStartLiters,
+    coldStartValue,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -1251,6 +1275,24 @@ class $RefuelsTable extends Refuels with TableInfo<$RefuelsTable, Refuel> {
         updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
       );
     }
+    if (data.containsKey('cold_start_liters')) {
+      context.handle(
+        _coldStartLitersMeta,
+        coldStartLiters.isAcceptableOrUnknown(
+          data['cold_start_liters']!,
+          _coldStartLitersMeta,
+        ),
+      );
+    }
+    if (data.containsKey('cold_start_value')) {
+      context.handle(
+        _coldStartValueMeta,
+        coldStartValue.isAcceptableOrUnknown(
+          data['cold_start_value']!,
+          _coldStartValueMeta,
+        ),
+      );
+    }
     return context;
   }
 
@@ -1330,6 +1372,14 @@ class $RefuelsTable extends Refuels with TableInfo<$RefuelsTable, Refuel> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}updated_at'],
       ),
+      coldStartLiters: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}cold_start_liters'],
+      ),
+      coldStartValue: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}cold_start_value'],
+      ),
     );
   }
 
@@ -1355,6 +1405,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
   final String createdBy;
   final String? updatedBy;
   final DateTime? updatedAt;
+  final double? coldStartLiters;
+  final double? coldStartValue;
   const Refuel({
     required this.id,
     required this.vehicleId,
@@ -1371,6 +1423,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
     required this.createdBy,
     this.updatedBy,
     this.updatedAt,
+    this.coldStartLiters,
+    this.coldStartValue,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1399,6 +1453,12 @@ class Refuel extends DataClass implements Insertable<Refuel> {
     }
     if (!nullToAbsent || updatedAt != null) {
       map['updated_at'] = Variable<DateTime>(updatedAt);
+    }
+    if (!nullToAbsent || coldStartLiters != null) {
+      map['cold_start_liters'] = Variable<double>(coldStartLiters);
+    }
+    if (!nullToAbsent || coldStartValue != null) {
+      map['cold_start_value'] = Variable<double>(coldStartValue);
     }
     return map;
   }
@@ -1435,6 +1495,14 @@ class Refuel extends DataClass implements Insertable<Refuel> {
           updatedAt == null && nullToAbsent
               ? const Value.absent()
               : Value(updatedAt),
+      coldStartLiters:
+          coldStartLiters == null && nullToAbsent
+              ? const Value.absent()
+              : Value(coldStartLiters),
+      coldStartValue:
+          coldStartValue == null && nullToAbsent
+              ? const Value.absent()
+              : Value(coldStartValue),
     );
   }
 
@@ -1459,6 +1527,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
       createdBy: serializer.fromJson<String>(json['createdBy']),
       updatedBy: serializer.fromJson<String?>(json['updatedBy']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
+      coldStartLiters: serializer.fromJson<double?>(json['coldStartLiters']),
+      coldStartValue: serializer.fromJson<double?>(json['coldStartValue']),
     );
   }
   @override
@@ -1480,6 +1550,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
       'createdBy': serializer.toJson<String>(createdBy),
       'updatedBy': serializer.toJson<String?>(updatedBy),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
+      'coldStartLiters': serializer.toJson<double?>(coldStartLiters),
+      'coldStartValue': serializer.toJson<double?>(coldStartValue),
     };
   }
 
@@ -1499,6 +1571,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
     String? createdBy,
     Value<String?> updatedBy = const Value.absent(),
     Value<DateTime?> updatedAt = const Value.absent(),
+    Value<double?> coldStartLiters = const Value.absent(),
+    Value<double?> coldStartValue = const Value.absent(),
   }) => Refuel(
     id: id ?? this.id,
     vehicleId: vehicleId ?? this.vehicleId,
@@ -1519,6 +1593,10 @@ class Refuel extends DataClass implements Insertable<Refuel> {
     createdBy: createdBy ?? this.createdBy,
     updatedBy: updatedBy.present ? updatedBy.value : this.updatedBy,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
+    coldStartLiters:
+        coldStartLiters.present ? coldStartLiters.value : this.coldStartLiters,
+    coldStartValue:
+        coldStartValue.present ? coldStartValue.value : this.coldStartValue,
   );
   Refuel copyWithCompanion(RefuelsCompanion data) {
     return Refuel(
@@ -1547,6 +1625,14 @@ class Refuel extends DataClass implements Insertable<Refuel> {
       createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
       updatedBy: data.updatedBy.present ? data.updatedBy.value : this.updatedBy,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      coldStartLiters:
+          data.coldStartLiters.present
+              ? data.coldStartLiters.value
+              : this.coldStartLiters,
+      coldStartValue:
+          data.coldStartValue.present
+              ? data.coldStartValue.value
+              : this.coldStartValue,
     );
   }
 
@@ -1567,7 +1653,9 @@ class Refuel extends DataClass implements Insertable<Refuel> {
           ..write('createdAt: $createdAt, ')
           ..write('createdBy: $createdBy, ')
           ..write('updatedBy: $updatedBy, ')
-          ..write('updatedAt: $updatedAt')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('coldStartLiters: $coldStartLiters, ')
+          ..write('coldStartValue: $coldStartValue')
           ..write(')'))
         .toString();
   }
@@ -1589,6 +1677,8 @@ class Refuel extends DataClass implements Insertable<Refuel> {
     createdBy,
     updatedBy,
     updatedAt,
+    coldStartLiters,
+    coldStartValue,
   );
   @override
   bool operator ==(Object other) =>
@@ -1608,7 +1698,9 @@ class Refuel extends DataClass implements Insertable<Refuel> {
           other.createdAt == this.createdAt &&
           other.createdBy == this.createdBy &&
           other.updatedBy == this.updatedBy &&
-          other.updatedAt == this.updatedAt);
+          other.updatedAt == this.updatedAt &&
+          other.coldStartLiters == this.coldStartLiters &&
+          other.coldStartValue == this.coldStartValue);
 }
 
 class RefuelsCompanion extends UpdateCompanion<Refuel> {
@@ -1627,6 +1719,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
   final Value<String> createdBy;
   final Value<String?> updatedBy;
   final Value<DateTime?> updatedAt;
+  final Value<double?> coldStartLiters;
+  final Value<double?> coldStartValue;
   final Value<int> rowid;
   const RefuelsCompanion({
     this.id = const Value.absent(),
@@ -1644,6 +1738,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
     this.createdBy = const Value.absent(),
     this.updatedBy = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.coldStartLiters = const Value.absent(),
+    this.coldStartValue = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   RefuelsCompanion.insert({
@@ -1662,6 +1758,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
     required String createdBy,
     this.updatedBy = const Value.absent(),
     this.updatedAt = const Value.absent(),
+    this.coldStartLiters = const Value.absent(),
+    this.coldStartValue = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        vehicleId = Value(vehicleId),
@@ -1688,6 +1786,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
     Expression<String>? createdBy,
     Expression<String>? updatedBy,
     Expression<DateTime>? updatedAt,
+    Expression<double>? coldStartLiters,
+    Expression<double>? coldStartValue,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1706,6 +1806,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
       if (createdBy != null) 'created_by': createdBy,
       if (updatedBy != null) 'updated_by': updatedBy,
       if (updatedAt != null) 'updated_at': updatedAt,
+      if (coldStartLiters != null) 'cold_start_liters': coldStartLiters,
+      if (coldStartValue != null) 'cold_start_value': coldStartValue,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1726,6 +1828,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
     Value<String>? createdBy,
     Value<String?>? updatedBy,
     Value<DateTime?>? updatedAt,
+    Value<double?>? coldStartLiters,
+    Value<double?>? coldStartValue,
     Value<int>? rowid,
   }) {
     return RefuelsCompanion(
@@ -1744,6 +1848,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
       createdBy: createdBy ?? this.createdBy,
       updatedBy: updatedBy ?? this.updatedBy,
       updatedAt: updatedAt ?? this.updatedAt,
+      coldStartLiters: coldStartLiters ?? this.coldStartLiters,
+      coldStartValue: coldStartValue ?? this.coldStartValue,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1796,6 +1902,12 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
     }
+    if (coldStartLiters.present) {
+      map['cold_start_liters'] = Variable<double>(coldStartLiters.value);
+    }
+    if (coldStartValue.present) {
+      map['cold_start_value'] = Variable<double>(coldStartValue.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1820,6 +1932,8 @@ class RefuelsCompanion extends UpdateCompanion<Refuel> {
           ..write('createdBy: $createdBy, ')
           ..write('updatedBy: $updatedBy, ')
           ..write('updatedAt: $updatedAt, ')
+          ..write('coldStartLiters: $coldStartLiters, ')
+          ..write('coldStartValue: $coldStartValue, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -2734,6 +2848,8 @@ typedef $$RefuelsTableCreateCompanionBuilder =
       required String createdBy,
       Value<String?> updatedBy,
       Value<DateTime?> updatedAt,
+      Value<double?> coldStartLiters,
+      Value<double?> coldStartValue,
       Value<int> rowid,
     });
 typedef $$RefuelsTableUpdateCompanionBuilder =
@@ -2753,6 +2869,8 @@ typedef $$RefuelsTableUpdateCompanionBuilder =
       Value<String> createdBy,
       Value<String?> updatedBy,
       Value<DateTime?> updatedAt,
+      Value<double?> coldStartLiters,
+      Value<double?> coldStartValue,
       Value<int> rowid,
     });
 
@@ -2866,6 +2984,16 @@ class $$RefuelsTableFilterComposer
 
   ColumnFilters<DateTime> get updatedAt => $composableBuilder(
     column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get coldStartLiters => $composableBuilder(
+    column: $table.coldStartLiters,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get coldStartValue => $composableBuilder(
+    column: $table.coldStartValue,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -2990,6 +3118,16 @@ class $$RefuelsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<double> get coldStartLiters => $composableBuilder(
+    column: $table.coldStartLiters,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get coldStartValue => $composableBuilder(
+    column: $table.coldStartValue,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$VehiclesTableOrderingComposer get vehicleId {
     final $$VehiclesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -3093,6 +3231,16 @@ class $$RefuelsTableAnnotationComposer
   GeneratedColumn<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
+  GeneratedColumn<double> get coldStartLiters => $composableBuilder(
+    column: $table.coldStartLiters,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get coldStartValue => $composableBuilder(
+    column: $table.coldStartValue,
+    builder: (column) => column,
+  );
+
   $$VehiclesTableAnnotationComposer get vehicleId {
     final $$VehiclesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -3183,6 +3331,8 @@ class $$RefuelsTableTableManager
                 Value<String> createdBy = const Value.absent(),
                 Value<String?> updatedBy = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
+                Value<double?> coldStartLiters = const Value.absent(),
+                Value<double?> coldStartValue = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RefuelsCompanion(
                 id: id,
@@ -3200,6 +3350,8 @@ class $$RefuelsTableTableManager
                 createdBy: createdBy,
                 updatedBy: updatedBy,
                 updatedAt: updatedAt,
+                coldStartLiters: coldStartLiters,
+                coldStartValue: coldStartValue,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -3219,6 +3371,8 @@ class $$RefuelsTableTableManager
                 required String createdBy,
                 Value<String?> updatedBy = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
+                Value<double?> coldStartLiters = const Value.absent(),
+                Value<double?> coldStartValue = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => RefuelsCompanion.insert(
                 id: id,
@@ -3236,6 +3390,8 @@ class $$RefuelsTableTableManager
                 createdBy: createdBy,
                 updatedBy: updatedBy,
                 updatedAt: updatedAt,
+                coldStartLiters: coldStartLiters,
+                coldStartValue: coldStartValue,
                 rowid: rowid,
               ),
           withReferenceMapper:
