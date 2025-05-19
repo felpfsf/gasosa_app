@@ -35,6 +35,11 @@ class RefuelCard extends StatelessWidget {
 
     final distanceLabel = formatDistance(item.distance);
 
+    final hasColdStart = item.refuel.coldStartLiters != null && item.refuel.coldStartValue != null;
+
+    final coldStartLiters = item.refuel.coldStartLiters?.toStringAsFixed(2) ?? '';
+    final coldStartValue = item.refuel.coldStartValue?.toStringAsFixed(2) ?? '';
+
     void onEditPressed() {
       context.push(RoutePaths.manageRefuel(item.refuel.vehicleId), extra: item.refuel);
     }
@@ -120,6 +125,18 @@ class RefuelCard extends StatelessWidget {
                   spacing: AppSpacing.xs,
                   children: [Icon(Icons.speed), Text('Consumo: $consumptionLabel', style: AppTypography.textSmRegular)],
                 ),
+              ],
+            ),
+          ],
+          if (hasColdStart) ...[
+            Divider(height: AppSpacing.md),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              spacing: AppSpacing.sm,
+              children: [
+                Text('Abastecimento Partida a Frio', style: AppTypography.textSmRegular),
+                Text('$coldStartLiters L', style: AppTypography.textSmBold),
+                Text('$coldStartValue R\$', style: AppTypography.textSmBold),
               ],
             ),
           ],

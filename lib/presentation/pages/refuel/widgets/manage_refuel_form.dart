@@ -9,6 +9,7 @@ import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_button.dart';
+import 'package:gasosa_app/presentation/widgets/gasosa_checkbox.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_date_picker_field.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_dropdown_field.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_form_field.dart';
@@ -33,17 +34,33 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
   final _litersEC = TextEditingController();
   final _totalValueEC = TextEditingController();
   final _odometerEC = TextEditingController();
+  final _coldStartLitersEC = TextEditingController();
+  final _coldStartValueEC = TextEditingController();
+
   FuelType? _selectedFuelType;
   DateTime? _selectedDate = DateTime.now();
 
+  bool _hasColdStart = false;
+
   @override
   void initState() {
-    if (widget.initialRefuel != null) {
-      _litersEC.text = formatMaskedLiters(widget.initialRefuel!.liters).toString();
-      _totalValueEC.text = formatMaskedCurrency(widget.initialRefuel!.totalValue).toString();
-      _odometerEC.text = widget.initialRefuel!.odometer.toString();
-      _selectedFuelType = widget.initialRefuel!.fuelType;
-      _selectedDate = widget.initialRefuel!.date;
+    final refuel = widget.initialRefuel;
+    if (refuel != null) {
+      _litersEC.text = formatMaskedLiters(refuel.liters);
+      _totalValueEC.text = formatMaskedCurrency(refuel.totalValue);
+      _odometerEC.text = refuel.odometer.toString();
+      _selectedFuelType = refuel.fuelType;
+      _selectedDate = refuel.date;
+      final hasColdStart = refuel.coldStartLiters != null && refuel.coldStartValue != null;
+      _hasColdStart = hasColdStart;
+
+      if (_hasColdStart) {
+        _coldStartLitersEC.text = formatMaskedLiters(refuel.coldStartLiters ?? 0);
+        _coldStartValueEC.text = formatMaskedCurrency(refuel.coldStartValue ?? 0);
+      } else {
+        _coldStartLitersEC.clear();
+        _coldStartValueEC.clear();
+      }
     }
     super.initState();
   }
@@ -53,6 +70,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     _litersEC.dispose();
     _totalValueEC.dispose();
     _odometerEC.dispose();
+    _coldStartLitersEC.dispose();
+    _coldStartValueEC.dispose();
 
     super.dispose();
   }
@@ -63,6 +82,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     required double odometer,
     required DateTime? date,
     required FuelType? fuelType,
+    required double? coldStartLiters,
+    required double? coldStartValue,
   }) {
     final validationErrors = <String>[];
 
@@ -71,6 +92,10 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     if (odometer <= 0) validationErrors.add('KM atual é obrigatório');
     if (date == null) validationErrors.add('Data de abastecimento é obrigatório');
     if (fuelType == null) validationErrors.add('Tipo de combustível é obrigatório');
+    if (_hasColdStart) {
+      if (coldStartLiters == null) validationErrors.add('Litros abastecidos (partida a frio) é obrigatório');
+      if (coldStartValue == null) validationErrors.add('Valor total (partida a frio) é obrigatório');
+    }
 
     return validationErrors;
   }
@@ -81,6 +106,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     FuelType fuelType,
     double liters,
     double totalValue,
+    double? coldStartLiters,
+    double? coldStartValue,
     double odometer,
     String userId,
   })?
@@ -98,6 +125,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     final liters = parseMaskedLiters(_litersEC.text);
     final totalValue = parseMaskedCurrency(_totalValueEC.text);
     final odometer = parseMaskedInteger(_odometerEC.text);
+    final coldStartLiters = _hasColdStart ? parseMaskedLiters(_coldStartLitersEC.text) : null;
+    final coldStartValue = _hasColdStart ? parseMaskedCurrency(_coldStartValueEC.text) : null;
 
     if (fuelType == null) {
       Messages.showError(context, 'Selecione o tipo de combustível');
@@ -119,6 +148,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       totalValue: totalValue,
       odometer: odometer,
       userId: userId,
+      coldStartLiters: coldStartLiters,
+      coldStartValue: coldStartValue,
     );
   }
 
@@ -131,6 +162,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       double totalValue,
       double odometer,
       String userId,
+      double? coldStartLiters,
+      double? coldStartValue,
     })
     data,
   ) {
@@ -148,6 +181,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       fuelType: data.fuelType,
       liters: data.liters,
       totalValue: data.totalValue,
+      coldStartLiters: data.coldStartLiters,
+      coldStartValue: data.coldStartValue,
       createdBy: data.userId,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -174,6 +209,8 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       odometer: formData.odometer,
       date: formData.date,
       fuelType: formData.fuelType,
+      coldStartLiters: formData.coldStartLiters,
+      coldStartValue: formData.coldStartValue,
     );
 
     if (validationErrors.isNotEmpty) {
@@ -207,7 +244,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
           ),
           GasosaFormField(
             label: 'KM atual *',
-            hint: '100.000 KM',
+            hint: 'Ex: 100.000 KM',
             controller: _odometerEC,
             keyboardType: TextInputType.number,
             inputFormatters: [integerInputFormatter],
@@ -215,7 +252,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
           ),
           GasosaFormField(
             label: 'Litros abastecidos *',
-            hint: '40.000 L',
+            hint: 'Ex: 40.000 L',
             controller: _litersEC,
             keyboardType: TextInputType.number,
             inputFormatters: [litersInputFormatter],
@@ -223,7 +260,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
           ),
           GasosaFormField(
             label: 'Valor total *',
-            hint: 'R\$ 100,00',
+            hint: 'Ex: R\$ 100,00',
             controller: _totalValueEC,
             keyboardType: TextInputType.number,
             inputFormatters: [currencyInputFormatter],
@@ -241,6 +278,34 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
             },
             validator: (fuelType) => RefuelValidators.fuelType(fuelType),
           ),
+          if (_selectedFuelType == FuelType.ethanol || _selectedFuelType == FuelType.gnv)
+            GasosaCheckbox(
+              title: 'Abasteceu partida a frio?',
+              value: _hasColdStart,
+              onChanged: (value) {
+                setState(() {
+                  _hasColdStart = value ?? false;
+                });
+              },
+            ),
+          if (_hasColdStart) ...[
+            GasosaFormField(
+              label: 'Litros abastecidos (partida a frio) *',
+              hint: 'Ex: 0.5 L',
+              controller: _coldStartLitersEC,
+              keyboardType: TextInputType.number,
+              inputFormatters: [litersInputFormatter],
+              validator: RefuelValidators.liters,
+            ),
+            GasosaFormField(
+              label: 'Valor total (partida a frio) *',
+              hint: 'Ex: R\$ 3,00',
+              controller: _coldStartValueEC,
+              keyboardType: TextInputType.number,
+              inputFormatters: [currencyInputFormatter],
+              validator: RefuelValidators.totalValue,
+            ),
+          ],
           AppSpacing.gap8,
           GasosaButton(label: buttonLabel, onPressed: _onSubmit),
           GasosaButton(
