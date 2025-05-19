@@ -5,6 +5,7 @@ import 'package:gasosa_app/presentation/widgets/gasosa_card.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_typography.dart';
 
+// TODO: SERIA MELHOR ALTERAR A COR DE BACKGROUND ???
 class VehicleDetailHeader extends StatelessWidget {
   final VehicleWithLastRefuel vehicle;
   const VehicleDetailHeader({super.key, required this.vehicle});
