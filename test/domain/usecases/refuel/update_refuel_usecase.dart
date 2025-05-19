@@ -19,9 +19,7 @@ void main() {
 
   setUp(() {
     mockRefuelRepository = MockRefuelRepository();
-    updateRefuelUsecase = UpdateRefuelUsecase(
-      refuelRepository: mockRefuelRepository,
-    );
+    updateRefuelUsecase = UpdateRefuelUsecase(refuelRepository: mockRefuelRepository);
   });
 
   test('should return void when update is successfull', () async {
@@ -34,16 +32,15 @@ void main() {
       liters: 40.0,
       totalValue: 240.0,
       pricePerLiter: 6.0,
-      coldStartLitters: null,
+      coldStartLiters: null,
+      coldStartValue: null,
       noteImageUrl: null,
       isSynced: false,
       createdAt: DateTime.now(),
       createdBy: 'user-1',
     );
 
-    when(
-      () => mockRefuelRepository.updateRefuel(refuel),
-    ).thenAnswer((_) async => Right(null));
+    when(() => mockRefuelRepository.updateRefuel(refuel)).thenAnswer((_) async => Right(null));
 
     final result = await updateRefuelUsecase(refuel);
 
@@ -61,7 +58,64 @@ void main() {
       liters: 40.0,
       totalValue: 240.0,
       pricePerLiter: 6.0,
-      coldStartLitters: null,
+      coldStartLiters: null,
+      coldStartValue: null,
+      noteImageUrl: null,
+      isSynced: false,
+      createdAt: DateTime.now(),
+      createdBy: 'user-1',
+    );
+
+    when(
+      () => mockRefuelRepository.updateRefuel(refuel),
+    ).thenAnswer((_) async => Left(DatabaseFailure('Error updating')));
+
+    final result = await updateRefuelUsecase(refuel);
+
+    expect(result, isA<Left<Failure, void>>());
+    verify(() => mockRefuelRepository.updateRefuel(refuel)).called(1);
+  });
+
+  test('should return failure when update is failed', () async {
+    final refuel = Refuel(
+      id: '1',
+      vehicleId: 'car-1',
+      date: DateTime.now(),
+      odometer: 12000,
+      fuelType: FuelType.gasoline,
+      liters: 40.0,
+      totalValue: 240.0,
+      pricePerLiter: 6.0,
+      coldStartLiters: null,
+      coldStartValue: null,
+      noteImageUrl: null,
+      isSynced: false,
+      createdAt: DateTime.now(),
+      createdBy: 'user-1',
+    );
+
+    when(
+      () => mockRefuelRepository.updateRefuel(refuel),
+    ).thenAnswer((_) async => Left(DatabaseFailure('Error updating')));
+
+    final result = await updateRefuelUsecase(refuel);
+
+    expect(result, isA<Left<Failure, void>>());
+    verify(() => mockRefuelRepository.updateRefuel(refuel)).called(1);
+  });
+
+  test('should return failure when update is failed', () async {
+    final refuel = Refuel(
+      id: '1',
+      vehicleId: 'car-1',
+      date: DateTime.now(),
+      odometer: 12000,
+      fuelType: FuelType.gasoline,
+      liters: 40.0,
+      totalValue: 240.0,
+      pricePerLiter: 6.0,
+      coldStartLiters: null,
+      coldStartValue: null,
       noteImageUrl: null,
       isSynced: false,
       createdAt: DateTime.now(),
