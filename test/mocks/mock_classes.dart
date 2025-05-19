@@ -4,6 +4,7 @@ import 'package:gasosa_app/domain/repositories/vehicle_repository.dart';
 import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/sign_in_with_google_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/add_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/delete_refuel_usecase.dart';
 import 'package:gasosa_app/domain/usecases/refuel/find_refuel_by_id_usecase.dart';
@@ -38,6 +39,8 @@ class MockLoginWithEmailUsecase extends Mock implements ILoginWithEmailUsecase {
 class MockLogoutUsecase extends Mock implements ILogoutUsecase {}
 
 class MockRegisterWithEmailUsecase extends Mock implements IRegisterWithEmailUsecase {}
+
+class MockSignInWithGoogleUsecase extends Mock implements ISignInWithGoogleUsecase {}
 
 /* Vehicle */
 

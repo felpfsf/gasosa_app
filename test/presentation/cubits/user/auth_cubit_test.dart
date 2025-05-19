@@ -6,6 +6,7 @@ import 'package:gasosa_app/domain/entities/user.dart';
 import 'package:gasosa_app/domain/usecases/auth/login_with_email_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/logout_usecase.dart';
 import 'package:gasosa_app/domain/usecases/auth/register_with_email_usecase.dart';
+import 'package:gasosa_app/domain/usecases/auth/sign_in_with_google_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/load_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/save_user_usecase.dart';
 import 'package:gasosa_app/domain/usecases/user/update_user_usecase.dart';
@@ -25,6 +26,7 @@ void main() {
   late ILogoutUsecase logoutUsecase;
   late ILoginWithEmailUsecase loginWithEmailUsecase;
   late IRegisterWithEmailUsecase registerWithEmailUsecase;
+  late ISignInWithGoogleUsecase signInWithGoogleUsecase;
 
   final userId = const Uuid().v4();
 
@@ -47,6 +49,7 @@ void main() {
     logoutUsecase = MockLogoutUsecase();
     loginWithEmailUsecase = MockLoginWithEmailUsecase();
     registerWithEmailUsecase = MockRegisterWithEmailUsecase();
+    signInWithGoogleUsecase = MockSignInWithGoogleUsecase();
 
     authCubit = AuthCubit(
       loadUserUsecase,
@@ -55,6 +58,7 @@ void main() {
       loginWithEmailUsecase,
       logoutUsecase,
       registerWithEmailUsecase,
+      signInWithGoogleUsecase,
     );
   });
 
