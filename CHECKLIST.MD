@@ -39,7 +39,7 @@ Este documento acompanha as entregas concluídas para o MVP.
 - [x] Exclusão com confirmação
 - [x] Cálculo de consumo
 - [ ] Foto de nota fiscal
-- [ ] Adicionar abastecimento de reservatorio partida a frio.
+- [x] Adicionar abastecimento de reservatorio partida a frio.
 
 ### Usuário
 
