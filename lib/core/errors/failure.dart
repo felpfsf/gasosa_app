@@ -19,3 +19,7 @@ class NetworkFailure extends Failure {
 class AuthFailure extends Failure {
   AuthFailure(super.message);
 }
+
+class ImageSaveFailure extends Failure {
+  ImageSaveFailure(super.message);
+}
