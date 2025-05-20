@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
@@ -8,16 +10,16 @@ import 'package:gasosa_app/core/validators/refuel_validators.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
 import 'package:gasosa_app/presentation/cubits/refuel/refuel_cubit.dart';
-import 'package:gasosa_app/presentation/widgets/gasosa_button.dart';
+import 'package:gasosa_app/presentation/pages/refuel/widgets/note_image_saver.dart';
+import 'package:gasosa_app/presentation/pages/refuel/widgets/refuel_data_builder.dart';
+import 'package:gasosa_app/presentation/pages/refuel/widgets/refuel_fields_validator.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_checkbox.dart';
-import 'package:gasosa_app/presentation/widgets/gasosa_date_picker_field.dart';
 import 'package:gasosa_app/presentation/widgets/gasosa_dropdown_field.dart';
-import 'package:gasosa_app/presentation/widgets/gasosa_form_field.dart';
+import 'package:gasosa_app/presentation/widgets/index.dart';
 import 'package:gasosa_app/presentation/widgets/messages.dart';
 import 'package:gasosa_app/theme/app_spacing.dart';
 import 'package:gasosa_app/theme/app_theme.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 
 class ManagerRefuelForm extends StatefulWidget {
   final String vehicleId;
@@ -39,6 +41,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
 
   FuelType? _selectedFuelType;
   DateTime? _selectedDate = DateTime.now();
+  File? _selectedNoteImage;
 
   bool _hasColdStart = false;
 
@@ -74,30 +77,6 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     _coldStartValueEC.dispose();
 
     super.dispose();
-  }
-
-  List<String> _validateRefuelFields({
-    required double liters,
-    required double totalValue,
-    required double odometer,
-    required DateTime? date,
-    required FuelType? fuelType,
-    required double? coldStartLiters,
-    required double? coldStartValue,
-  }) {
-    final validationErrors = <String>[];
-
-    if (liters <= 0) validationErrors.add('Valor do litro é obrigatório');
-    if (totalValue <= 0) validationErrors.add('Valor total é obrigatório');
-    if (odometer <= 0) validationErrors.add('KM atual é obrigatório');
-    if (date == null) validationErrors.add('Data de abastecimento é obrigatório');
-    if (fuelType == null) validationErrors.add('Tipo de combustível é obrigatório');
-    if (_hasColdStart) {
-      if (coldStartLiters == null) validationErrors.add('Litros abastecidos (partida a frio) é obrigatório');
-      if (coldStartValue == null) validationErrors.add('Valor total (partida a frio) é obrigatório');
-    }
-
-    return validationErrors;
   }
 
   ({
@@ -153,43 +132,6 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     );
   }
 
-  Refuel _buildRefuelFromData(
-    ({
-      String vehicleId,
-      DateTime? date,
-      FuelType fuelType,
-      double liters,
-      double totalValue,
-      double odometer,
-      String userId,
-      double? coldStartLiters,
-      double? coldStartValue,
-    })
-    data,
-  ) {
-    final isEditing = widget.initialRefuel != null;
-    final refuelId = widget.initialRefuel?.id ?? const Uuid().v4();
-    final createdAt = widget.initialRefuel?.createdAt ?? DateTime.now();
-    final updatedAt = isEditing ? DateTime.now() : null;
-    final updatedBy = isEditing ? data.userId : null;
-
-    return Refuel(
-      id: refuelId,
-      vehicleId: widget.vehicleId,
-      date: data.date!,
-      odometer: data.odometer,
-      fuelType: data.fuelType,
-      liters: data.liters,
-      totalValue: data.totalValue,
-      coldStartLiters: data.coldStartLiters,
-      coldStartValue: data.coldStartValue,
-      createdBy: data.userId,
-      createdAt: createdAt,
-      updatedAt: updatedAt,
-      updatedBy: updatedBy,
-    );
-  }
-
   void _handleSubmit(Refuel refuel, {required bool isEditing}) {
     if (isEditing) {
       context.read<RefuelCubit>().updateRefuel(refuel);
@@ -198,12 +140,12 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
     }
   }
 
-  void _onSubmit() {
+  Future<void> _onSubmit() async {
     final formData = _validateAndParseForm();
 
     if (formData == null) return;
 
-    final validationErrors = _validateRefuelFields(
+    final validationErrors = RefuelFieldsValidator.validateRefuelFields(
       liters: formData.liters,
       totalValue: formData.totalValue,
       odometer: formData.odometer,
@@ -211,6 +153,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       fuelType: formData.fuelType,
       coldStartLiters: formData.coldStartLiters,
       coldStartValue: formData.coldStartValue,
+      hasColdStart: _hasColdStart,
     );
 
     if (validationErrors.isNotEmpty) {
@@ -219,7 +162,21 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       return;
     }
 
-    final refuel = _buildRefuelFromData(formData);
+    final noteImageUrl = await NoteImageSaver.save(_selectedNoteImage!);
+
+    final refuel = RefuelDataBuilder.build(
+      vehicleId: formData.vehicleId,
+      date: formData.date,
+      fuelType: formData.fuelType,
+      liters: formData.liters,
+      totalValue: formData.totalValue,
+      odometer: formData.odometer,
+      userId: formData.userId,
+      coldStartLiters: formData.coldStartLiters,
+      coldStartValue: formData.coldStartValue,
+      noteImageUrl: noteImageUrl,
+      previous: widget.initialRefuel,
+    );
 
     _handleSubmit(refuel, isEditing: widget.initialRefuel != null);
   }
@@ -306,6 +263,14 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
               validator: RefuelValidators.totalValue,
             ),
           ],
+          GasosaPhotoPicker(
+            label: 'Adicionar comprovante fiscal?',
+            onFileSelected: (file) {
+              setState(() {
+                _selectedNoteImage = file;
+              });
+            },
+          ),
           AppSpacing.gap8,
           GasosaButton(label: buttonLabel, onPressed: _onSubmit),
           GasosaButton(
