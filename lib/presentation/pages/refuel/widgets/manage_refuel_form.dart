@@ -6,6 +6,7 @@ import 'package:gasosa_app/core/extensions/fuel_type_extensions.dart';
 import 'package:gasosa_app/core/helpers/auth_helper.dart';
 import 'package:gasosa_app/core/helpers/avaliable_fuel_type_for_refuel.dart';
 import 'package:gasosa_app/core/helpers/formatters.dart';
+import 'package:gasosa_app/core/helpers/image_path_helper.dart';
 import 'package:gasosa_app/core/validators/refuel_validators.dart';
 import 'package:gasosa_app/domain/entities/fuel_type.dart';
 import 'package:gasosa_app/domain/entities/refuel.dart';
@@ -64,8 +65,22 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
         _coldStartLitersEC.clear();
         _coldStartValueEC.clear();
       }
+
+      _loadInitialImage(refuel.noteImageUrl);
     }
     super.initState();
+  }
+
+  Future<void> _loadInitialImage(String? noteImageUrl) async {
+    if (noteImageUrl == null || noteImageUrl.isEmpty) return;
+
+    final file = await getImageFile(noteImageUrl);
+    if (!mounted || file == null) return;
+
+    setState(() {
+      _selectedNoteImage = file;
+      print('Image loaded - $_selectedNoteImage');
+    });
   }
 
   @override
@@ -162,7 +177,11 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
       return;
     }
 
-    final noteImageUrl = await NoteImageSaver.save(_selectedNoteImage!);
+    String? noteImageUrl;
+
+    if (_selectedNoteImage != null) {
+      noteImageUrl = await NoteImageSaver.save(_selectedNoteImage!);
+    }
 
     final refuel = RefuelDataBuilder.build(
       vehicleId: formData.vehicleId,
@@ -265,6 +284,7 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
           ],
           GasosaPhotoPicker(
             label: 'Adicionar comprovante fiscal?',
+            image: _selectedNoteImage,
             onFileSelected: (file) {
               setState(() {
                 _selectedNoteImage = file;
