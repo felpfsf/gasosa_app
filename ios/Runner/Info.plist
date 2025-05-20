@@ -56,5 +56,11 @@
 			</array>
 		</dict>
 	</array>
+	<!-- Permissão para usar a câmera -->
+	<key>NSCameraUsageDescription</key>
+	<string>O Gasosa App precisa acessar a câmera para tirar foto da nota fiscal.</string>
+	<!-- Permissão para acessar a galeria -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>O Gasosa App precisa acessar sua galeria para selecionar uma imagem da nota fiscal.</string>
 </dict>
 </plist>
