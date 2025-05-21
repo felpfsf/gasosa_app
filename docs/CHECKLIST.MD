@@ -38,7 +38,7 @@ Este documento acompanha as entregas concluídas para o MVP.
 - [x] Edição
 - [x] Exclusão com confirmação
 - [x] Cálculo de consumo
-- [ ] Foto de nota fiscal
+- [x] Foto de nota fiscal
 - [x] Adicionar abastecimento de reservatorio partida a frio.
 
 ### Usuário
@@ -73,9 +73,10 @@ Este documento acompanha as entregas concluídas para o MVP.
 
 - [ ] Exportação de dados
 - [ ] Estatísticas e relatórios
-- [ ] Dashboard Web
+- [ ] Dashboard
 - [ ] Upload para Play Store / TestFlight
 
 ---
 
-### *Última atualização: {{13/05/2025}}*
+***Última atualização:** 20/05/2025*
+**Responsável:** [Felipe Ferreira](https://linkedin.com.br/in/felipefsf)
