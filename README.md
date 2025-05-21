@@ -1,35 +1,39 @@
-# ⛽ Gasosa
+# ⛽ Gasosa App
 
-Gasosa é um app mobile para controle de abastecimentos de veículos, desenvolvido com Flutter e Drift.  
-Seu objetivo é eliminar o uso de planilhas ou anotações manuais, permitindo o acompanhamento preciso de consumo, quilometragem e gastos com combustível.
+**Gasosa** é um app mobile para controle de abastecimentos de veículos, desenvolvido com Flutter e Drift.  
+Seu objetivo é eliminar o uso de planilhas e anotações manuais, permitindo o acompanhamento preciso de consumo, quilometragem e gastos com combustível — tudo com uma interface moderna e arquitetura escalável.
 
 ---
 
 ## 🚀 Funcionalidades (MVP)
 
-- Registro de múltiplos veículos
-- Cadastro de abastecimentos com:
-  - Data, hodômetro (KM), tipo de combustível, litros, valor total
+- 📍 Registro de múltiplos veículos
+- ⛽ Cadastro e edição de abastecimentos com:
+  - Data, hodômetro (KM), tipo de combustível
+  - Litros abastecidos, valor total
+  - Partida a frio (gasolina auxiliar)
   - Foto da nota fiscal
-- Cálculo automático de consumo médio (km/L)
-- Armazenamento local com banco de dados offline (Drift)
-- Interface moderna, escura e otimizada para usabilidade
-- Gerenciamento de estado com Cubit (BLoC)
-- Fluxo completo de autenticação via Firebase
+- 📊 Cálculo automático de consumo médio (km/L)
+- 🧠 Visualização contextual e amigável dos dados
+- 💾 Armazenamento local com banco offline (Drift)
+- 👤 Autenticação com e-mail/senha e Google (Firebase)
+- 🌙 Tema escuro padronizado com identidade visual própria
+- 📡 Estrutura pronta para sincronização futura
 
 ---
 
 ## 🧱 Arquitetura
 
-Organizado com base em Clean Architecture:
+Organizado com base nos princípios de **Clean Architecture** + **DDD**:
 
 ```bash
 lib/
-├── core/ # Helpers, configs, erros, DI
-├── data/ # DAO, mappers, repositories locais
-├── domain/ # Entidades, repositórios, usecases
-├── presentation/ # Cubits, pages e widgets
-├── theme/ # Tema, tipografia e espaçamentos
+├── core/         # Helpers, configs, validators, errors, DI
+├── data/         # DAO, mappers, repositórios, implementações
+├── domain/       # Entidades, interfaces, usecases
+├── presentation/ # Cubits, páginas, formulários, widgets
+├── theme/        # Tipografia, espaçamentos, cores
+├── assets/       # Ícones, imagens, fontes
 └── main.dart
 ```
 
@@ -42,27 +46,19 @@ lib/
   - UseCases
   - DAOs
 - Utilização de `mocktail`, `bloc_test` e `flutter_test`
+- Cobertura parcial documentada no [Guia de Testes](docs/tests/tests.md)
 
 ---
 
-## 📱 Tecnologias utilizadas
+## 📄 Documentação
 
-- Flutter + Dart
-- Drift (persistência local com SQLite)
-- Firebase Auth (autenticação)
-- Cubit (gerenciamento de estado)
-- Injectable + GetIt (injeção de dependência)
-- Freezed (modelos imutáveis + estados)
+> Toda as documentações estão disponíveis na pasta `/docs` do projeot.
 
----
-
-## 📈 Próximos passos
-
-- Sincronização com backend remoto (Firestore ou Supabase)
-- Dashboard web para visualização de dados
-- Exportação e gráficos analíticos
-- Deploy para lojas (Android / iOS)
-
+- [Especificação do Projeto](docs/specs/pds.md)
+- [ADR 001: Arquitetura Base do Gasosa App](docs/adr/001-base-architecture.md)
+- [Design System](docs/ui/design_system.md)
+- [Guia de Testes](docs/tests/tests.md)
+  
 ---
 
 ## 📄 Licença
