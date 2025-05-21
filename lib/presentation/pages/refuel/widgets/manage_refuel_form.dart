@@ -79,7 +79,6 @@ class _ManagerRefuelFormState extends State<ManagerRefuelForm> {
 
     setState(() {
       _selectedNoteImage = file;
-      print('Image loaded - $_selectedNoteImage');
     });
   }
 
