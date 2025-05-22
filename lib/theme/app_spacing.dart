@@ -2,6 +2,8 @@
 import 'package:flutter/widgets.dart';
 
 class AppSpacing {
+  // TODO: Adicionar Dart docs para essas classes
+  /// 4 - Espaçamento entre elementos
   static const double xs = 4;
   static const double sm = 8;
   static const double md = 16;
